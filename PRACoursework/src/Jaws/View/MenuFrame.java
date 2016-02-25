@@ -2,6 +2,8 @@ package Jaws.View;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,6 +31,18 @@ public class MenuFrame extends JFrame{
 		bottomButtons.add(jbSearch);
 		bottomButtons.add(jbFavourites);
 		add(picture, BorderLayout.CENTER);
+		
+		jbSearch.addActionListener(new ActionListener(){
+			
+			public void actionPerformed(ActionEvent e) {
+				SearchFrame newSearch = new SearchFrame();
+				setVisible(false);
+				newSearch.setVisible(true);
+				
+			}
+			
+			
+		});
 		
 		pack();
 		setVisible(true);
