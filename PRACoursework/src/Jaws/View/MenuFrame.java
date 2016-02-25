@@ -41,6 +41,16 @@ public class MenuFrame extends JFrame{
 			
 			
 		});
+		jbFavourites.addActionListener(new ActionListener(){
+			
+			public void actionPerformed(ActionEvent a){
+				Favourites newfavourites = new Favourites();
+				setVisible(false);
+				newfavourites.setVisible(true);
+			
+				
+			}
+		});
 		
 		pack();
 		setVisible(true);
