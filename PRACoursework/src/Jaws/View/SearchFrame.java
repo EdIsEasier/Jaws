@@ -32,5 +32,6 @@ public class SearchFrame extends JFrame{
 		
 		jpTrackerRange.add(new JLabel("Tracking Range"));
 		jpTrackerGender.add(new JLabel("Gender"));
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 }

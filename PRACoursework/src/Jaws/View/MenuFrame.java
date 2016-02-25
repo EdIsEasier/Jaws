@@ -20,8 +20,7 @@ public class MenuFrame extends JFrame{
 	}
 	
 	public void createWidgets(){
-		JLabel picture = new JLabel(new ImageIcon(this.getClass().getResource("resources/randypic.jpg")));
-
+		JLabel picture = new JLabel(new ImageIcon(this.getClass().getResource("resources/sharkPic.jpg")));
 		JButton jbSearch = new JButton("Search");
 		JButton jbFavourites = new JButton("Favourites");
 		setLayout(new BorderLayout());
