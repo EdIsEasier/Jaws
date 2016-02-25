@@ -44,6 +44,7 @@ public class SearchFrame extends JFrame{
 		
 		jpTrackerRange.add(new JLabel("Tracking Range"));
 		jpTrackerGender.add(new JLabel("Gender"));
+<<<<<<< HEAD
 		jpTrackerStage.add(new JLabel("Stage of Life"));
 		jpTrackerTag.add(new JLabel("Tag Location"));
 		
@@ -62,5 +63,8 @@ public class SearchFrame extends JFrame{
 		jpTrackerSearch.add(new JLabel(new ImageIcon(this.getClass().getResource("resources/randypic.jpg"))), BorderLayout.CENTER);
 		
 		pack();
+=======
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+>>>>>>> branch 'master' of https://BenjaminKrarup@bitbucket.org/BenjaminKrarup/pracoursework.git
 	}
 }
