@@ -9,8 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import api.jaws.Jaws;
-
 public class MenuFrame extends JFrame{
 	
 	public MenuFrame(){
@@ -20,7 +18,7 @@ public class MenuFrame extends JFrame{
 	}
 	
 	public void createWidgets(){
-		JLabel picture = new JLabel(new ImageIcon("C:\\Users\\Michael\\git\\pracoursework\\PRACoursework\\randypic.jpg"));
+		JLabel picture = new JLabel(new ImageIcon(this.getClass().getResource("resources/randypic.jpg")));
 		JButton jbSearch = new JButton("Search");
 		JButton jbFavourites = new JButton("Favourites");
 		setLayout(new BorderLayout());
