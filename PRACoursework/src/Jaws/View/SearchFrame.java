@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class SearchFrame extends JFrame{
+	private JTextArea jtaDescription;
 	
 	public SearchFrame(){
 		super("Search");
@@ -91,6 +92,7 @@ public class SearchFrame extends JFrame{
 			jpDetails2.add(new JLabel("Length: "));
 			jpDetails2.add(new JTextArea(/*add in things needed*/));
 			jpDetails2.add(new JLabel("Weight: "));
+			jpDetails2.add(new JTextArea(/*add in things needed*/));
 			
 			jpDetails3.add(new JLabel("Description"), BorderLayout.NORTH);
 			jpDetails3.add(new JLabel("Enter a massive decription for whatever here but get it to update automatically"), BorderLayout.CENTER);
