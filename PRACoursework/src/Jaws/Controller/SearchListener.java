@@ -22,6 +22,7 @@ public class SearchListener implements ActionListener
 	public SearchListener(String range, String gender, String stage, String location)
 	{
 		allSharks = new ArrayList<>();
+		foundSharks = new ArrayList<>();
 		jaws = new Jaws("jphHPbni3MIBmMKu","jbB8OPuNG5Sxw11c");
 		this.range = range;
 		this.gender = gender;
@@ -33,34 +34,26 @@ public class SearchListener implements ActionListener
 
 	private void updateAllSharks()
 	{
-		// ArrayList<String> sharkNames = jaws.getSharkNames();
-		for (String s : jaws.getSharkNames())
+		for (String s : jaws.getSharkNames()) // Get all the shark names
 		{
-			allSharks.add(jaws.getShark(s));
+			allSharks.add(jaws.getShark(s)); // Retrieve each of the sharks by their name
 		}
 	}
 
 	private void filterByRange(List<Shark> sharks, String range)
 	{
-		ArrayList<Ping> neededSharks;
 		switch(range)
 		{
-			case "All":
-				sharks.addAll(allSharks);
-				break;
 			case "Last 24 hours":
-				neededSharks = jaws.past24Hours();
-				for (Ping p : neededSharks)
-					sharks.add(jaws.getShark(p.getName()));
+				for (Ping p : jaws.past24Hours()) // Get all the sharks that have been detected in the last 24 hrs
+					sharks.add(jaws.getShark(p.getName())); // Add each of those sharks to our passed in result list
 				break;
 			case "Last Week":
-				neededSharks = jaws.pastWeek();
-				for (Ping p : neededSharks)
+				for (Ping p : jaws.pastWeek())
 					sharks.add(jaws.getShark(p.getName()));
 				break;
 			case "Last Month":
-				neededSharks = jaws.pastMonth();
-				for (Ping p : neededSharks)
+				for (Ping p : jaws.pastMonth())
 					sharks.add(jaws.getShark(p.getName()));
 				break;
 		}
@@ -70,8 +63,6 @@ public class SearchListener implements ActionListener
 	{
 		switch(gender)
 		{
-			case "All":
-				break;
 			case "Male":
 				for (Shark s : sharks)
 				{
@@ -93,8 +84,6 @@ public class SearchListener implements ActionListener
 	{
 		switch(stage)
 		{
-			case "All":
-				break;
 			case "Mature":
 				for (Shark s : sharks)
 				{
@@ -128,8 +117,9 @@ public class SearchListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		filterByRange(foundSharks, range);
-		filterByGender(foundSharks, gender);
-		filterByStage(foundSharks, stage);
+		foundSharks.addAll(allSharks); // add all the sharks to the results
+		filterByRange(foundSharks, range); // filter the results by range
+		filterByGender(foundSharks, gender); // filter the results by gender
+		filterByStage(foundSharks, stage); // filter the results by stage of life
 	}
 }
