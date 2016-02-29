@@ -13,8 +13,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import api.jaws.Jaws;
+
 public class SearchFrame extends JFrame{
 	private JTextArea jtaDescription;
+	//will probably pass in instead, just using for acknowledgement
+	private Jaws shark = new Jaws("jphHPbni3MIBmMKu", "jbB8OPuNG5Sxw11c");
 	
 	public SearchFrame(){
 		super("Search");
@@ -24,6 +28,7 @@ public class SearchFrame extends JFrame{
 
 	private void createWidgets() {
 		setLayout(new BorderLayout());
+		JPanel overallFrame = new JPanel(new BorderLayout());
 		JPanel jpTracker = new JPanel(new GridLayout(5, 1));
 		jpTracker.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		JPanel jpTrackerRange = new JPanel(new GridLayout(2, 1));
@@ -38,7 +43,7 @@ public class SearchFrame extends JFrame{
 		jpTrackerTag.setBorder(BorderFactory.createEtchedBorder());
 		jpTrackerSearch.setBorder(BorderFactory.createEtchedBorder());
 		
-		add(jpTracker, BorderLayout.WEST);
+		overallFrame.add(jpTracker, BorderLayout.WEST);
 		jpTracker.add(jpTrackerRange);
 		jpTracker.add(jpTrackerGender);
 		jpTracker.add(jpTrackerStage);
@@ -55,6 +60,21 @@ public class SearchFrame extends JFrame{
 		JComboBox cbStage = new JComboBox();
 		JComboBox cbTag = new JComboBox();
 		
+		cbRange.addItem("Last 24 Hours");
+		cbRange.addItem("Last Week");
+		cbRange.addItem("Last Month");
+		
+		cbGender.addItem("Male");
+		cbGender.addItem("Female");
+		cbGender.addItem("All");
+		
+		cbStage.addItem("Mature");
+		cbStage.addItem("Immature");
+		cbStage.addItem("Undetermined");
+		cbStage.addItem("All");
+		
+		cbTag.addItem("From API");
+		
 		jpTrackerRange.add(cbRange);
 		jpTrackerGender.add(cbGender);
 		jpTrackerStage.add(cbStage);
@@ -67,7 +87,10 @@ public class SearchFrame extends JFrame{
 		JPanel jpAllDetails = new JPanel(new GridLayout(3, 1));
 		jpAllDetails.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		createDescriptions(3, jpAllDetails);
-		add(jpAllDetails, BorderLayout.CENTER);
+		overallFrame.add(jpAllDetails, BorderLayout.CENTER);
+		
+		add(overallFrame, BorderLayout.CENTER);
+		add(new JLabel(shark.getAcknowledgement()), BorderLayout.SOUTH);
 		
 		pack();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
