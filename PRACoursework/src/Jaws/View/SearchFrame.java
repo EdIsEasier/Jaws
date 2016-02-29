@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import Jaws.Controller.SearchListener;
 import api.jaws.Jaws;
 
 public class SearchFrame extends JFrame{
@@ -64,16 +65,18 @@ public class SearchFrame extends JFrame{
 		cbRange.addItem("Last Week");
 		cbRange.addItem("Last Month");
 		
+		cbGender.addItem("All");
 		cbGender.addItem("Male");
 		cbGender.addItem("Female");
-		cbGender.addItem("All");
 		
+		cbStage.addItem("All");
 		cbStage.addItem("Mature");
 		cbStage.addItem("Immature");
 		cbStage.addItem("Undetermined");
-		cbStage.addItem("All");
 		
-		cbTag.addItem("From API");
+		for(String c: shark.getTagLocations()){
+			cbTag.addItem(c);
+		}
 		
 		jpTrackerRange.add(cbRange);
 		jpTrackerGender.add(cbGender);
@@ -84,9 +87,17 @@ public class SearchFrame extends JFrame{
 		jpTrackerSearch.add(jbSearch, BorderLayout.NORTH);
 		jpTrackerSearch.add(new JLabel(new ImageIcon(this.getClass().getResource("resources/sharkPic.jpg"))), BorderLayout.CENTER);
 		
+		String range = (String)cbRange.getSelectedItem();
+		String gender = (String)cbGender.getSelectedItem();
+		String stage = (String)cbStage.getSelectedItem();
+		String tag = (String)cbTag.getSelectedItem();
+		
+		
+		jbSearch.addActionListener(new SearchListener(shark, range, gender, stage, tag));
 		JPanel jpAllDetails = new JPanel(new GridLayout(3, 1));
 		jpAllDetails.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		createDescriptions(3, jpAllDetails);
+		//just a test for our ResultsPanel
+		//createDescriptions(3, jpAllDetails);
 		overallFrame.add(jpAllDetails, BorderLayout.CENTER);
 		
 		add(overallFrame, BorderLayout.CENTER);
@@ -98,32 +109,8 @@ public class SearchFrame extends JFrame{
 	
 	public void createDescriptions(int n, JPanel panel){
 		for(int i = 1; i <= n; i++){
-			JPanel jpDetails1 = new JPanel(new GridLayout(2, 1));
-			JPanel jpDetails2 = new JPanel(new GridLayout(6, 2));
-			JPanel jpDetails3 = new JPanel(new BorderLayout());
-			jpDetails1.add(jpDetails2);
-			jpDetails1.add(jpDetails3);
-			jpDetails2.add(new JLabel("Name: "));
-			//might just make labels and update from view or whatnot
-			jpDetails2.add(new JTextArea(/*add in things needed*/));
-			jpDetails2.add(new JLabel("Gender: "));
-			jpDetails2.add(new JTextArea(/*add in things needed*/));
-			jpDetails2.add(new JLabel("Stage of Life: "));
-			jpDetails2.add(new JTextArea(/*add in things needed*/));
-			jpDetails2.add(new JLabel("Species: "));
-			jpDetails2.add(new JTextArea(/*add in things needed*/));
-			jpDetails2.add(new JLabel("Length: "));
-			jpDetails2.add(new JTextArea(/*add in things needed*/));
-			jpDetails2.add(new JLabel("Weight: "));
-			jpDetails2.add(new JTextArea(/*add in things needed*/));
-			
-			jpDetails3.add(new JLabel("Description"), BorderLayout.NORTH);
-			jpDetails3.add(new JLabel("Enter a massive decription for whatever here but get it to update automatically"), BorderLayout.CENTER);
-			jpDetails3.add(new JLabel("Last Ping: 34u823742873"), BorderLayout.SOUTH);
-			
-			jpDetails1.setBorder(BorderFactory.createEtchedBorder());
-			
-			panel.add(jpDetails1);
+			ResultsPanel rPanel = new ResultsPanel();
+			panel.add(rPanel);
 		}
 		
 	}
