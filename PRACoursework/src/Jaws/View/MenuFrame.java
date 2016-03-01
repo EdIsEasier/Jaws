@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,16 +21,21 @@ public class MenuFrame extends JFrame{
 	}
 	
 	public void createWidgets(){
+		
 		JLabel picture = new JLabel(new ImageIcon(this.getClass().getResource("resources/sharkPic.jpg")));
 		JButton jbSearch = new JButton("Search");
 		JButton jbFavourites = new JButton("Favourites");
 		setLayout(new BorderLayout());
 		JPanel bottomButtons = new JPanel(new GridLayout(2, 0));
-		add(bottomButtons, BorderLayout.SOUTH);
+		JPanel spaceborder = new JPanel(new BorderLayout());
+		add(spaceborder);
+		spaceborder.add(bottomButtons, BorderLayout.SOUTH);
 		bottomButtons.add(jbSearch);
 		bottomButtons.add(jbFavourites);
-		add(picture, BorderLayout.CENTER);
+		spaceborder.add(picture, BorderLayout.CENTER);
+		spaceborder.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
 		
+	
 		jbSearch.addActionListener(new ActionListener(){
 			
 			public void actionPerformed(ActionEvent e) {
