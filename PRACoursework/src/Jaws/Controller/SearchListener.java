@@ -8,8 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import Jaws.View.ResultsPanel;
 
@@ -154,6 +156,37 @@ public class SearchListener implements ActionListener
 		}
 	}
 	
+	private void swapSharks(List<Shark> sList, Shark shark){
+		sList.set(sList.indexOf(shark), sList.get(sList.indexOf(shark) + 1));
+		sList.set(sList.indexOf(shark ) + 1, shark);
+	}
+	
+	private void swapPings(List<Ping> pList, Ping pings){
+		pList.set(pList.indexOf(pings), pList.get(pList.indexOf(pings) + 1));
+		pList.set(pList.indexOf(pings ) + 1, pings);
+	}
+	
+	private void orderByTime(){
+		for(Shark s: foundSharks){
+			Date thisDate = changeToDate(getPing(s));
+			Date nextDate = changeToDate(pings.get(foundSharks.indexOf(s) + 1));
+			if(thisDate.after(nextDate)){
+				swapSharks(foundSharks, s);
+				swapPings(pings, pings.get(foundSharks.indexOf(s)));
+			}
+		}
+	}
+	
+	private void createPanels(List<Shark> sList){
+		for(Shark s: foundSharks){
+			ResultsPanel rPanel = new ResultsPanel(s, changeToDate(getPing(s)));
+		}
+	}
+	
+	private Ping getPing(Shark shark){
+		return pings.get(foundSharks.indexOf(shark));
+	}
+	
 	private Date changeToDate(Ping p){
 		Date date = new Date(p.getTime());
 		return date;
@@ -162,13 +195,11 @@ public class SearchListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		List<Shark> correctOrder = new ArrayList<Shark>();
 		filterByRange(allSharks, range); // filter the results by range
 		filterByGender(foundSharks, gender); // filter the results by gender
 		filterByStage(foundSharks, stage); // filter the results by stage of life
 		filterByTagLoc(foundSharks, location); // filter the results by tag location
-		for(Shark s: foundSharks){
-			Date tempDate = changeToDate(pings.get(foundSharks.indexOf(s)));
-			ResultsPanel rPanel = new ResultsPanel(s, tempDate);
-		}
+		orderByTime();
 	}
 }
