@@ -32,7 +32,6 @@ public class Favourites extends JFrame{
 		jtaSharks.setEditable(false);
 		add(jtaSharks, BorderLayout.CENTER);
 		
-		
 		pack();
 	}
 	
