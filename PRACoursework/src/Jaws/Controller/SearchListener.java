@@ -41,7 +41,7 @@ public class SearchListener implements ActionListener
 
 	private void filterByRange(List<Shark> sharks, String range)
 	{
-		List<Shark> tempSharks = new ArrayList<Shark>;
+		List<Shark> tempSharks = new ArrayList<Shark>();
 		Iterator<Shark> sharkIter = sharks.iterator();
 		switch(range)
 		{
@@ -76,7 +76,7 @@ public class SearchListener implements ActionListener
 				}
 				break;
 		}
-		
+		addSharks(tempSharks);
 	}
 
 	private void filterByGender(List<Shark> sharks, String gender)
@@ -137,14 +137,15 @@ public class SearchListener implements ActionListener
 		}
 	}
 	
-	private void removeSharks(List<Shark> sharkList){
-		
+	private void addSharks(List<Shark> sharkList){
+		for(Shark sh: sharkList){
+			foundSharks.add(sh);
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		foundSharks.addAll(allSharks); // add all the sharks to the results
 		filterByRange(foundSharks, range); // filter the results by range
 		filterByGender(foundSharks, gender); // filter the results by gender
 		filterByStage(foundSharks, stage); // filter the results by stage of life
