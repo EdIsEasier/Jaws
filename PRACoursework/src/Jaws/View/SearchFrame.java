@@ -107,11 +107,11 @@ public class SearchFrame extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
-	public void createDescriptions(int n, JPanel panel){
+	/*public void createDescriptions(int n, JPanel panel){
 		for(int i = 1; i <= n; i++){
 			ResultsPanel rPanel = new ResultsPanel();
 			panel.add(rPanel);
 		}
 		
-	}
+	}*/
 }

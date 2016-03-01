@@ -7,16 +7,18 @@ import api.jaws.Shark;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import Jaws.View.ResultsPanel;
 
-// SUPER EXPERIMENTAL AND UNFINISHED
 
 public class SearchListener implements ActionListener
 {
 	private List<Shark> allSharks;
 	private List<Shark> foundSharks;
+	private List<Ping> pings;
 	private String range, gender, stage, location;
 	private Jaws jaws;
 
@@ -41,7 +43,6 @@ public class SearchListener implements ActionListener
 
 	private void filterByRange(List<Shark> sharks, String range)
 	{
-		List<Shark> tempSharks = new ArrayList<Shark>();
 		Iterator<Shark> sharkIter = sharks.iterator();
 		switch(range)
 		{
@@ -50,7 +51,8 @@ public class SearchListener implements ActionListener
 					for(Ping p : jaws.past24Hours()){
 						Shark tempShark = sharkIter.next();
 						if(tempShark.getName().equals(p.getName())){
-							tempSharks.add(tempShark);
+							foundSharks.add(tempShark);
+							pings.add(p);
 						}
 					}
 				}
@@ -60,7 +62,9 @@ public class SearchListener implements ActionListener
 					for(Ping p : jaws.pastWeek()){
 						Shark tempShark = sharkIter.next();
 						if(tempShark.getName().equals(p.getName())){
-							tempSharks.add(tempShark);
+							foundSharks.add(tempShark);
+							pings.add(p);
+							
 						}
 					}
 				}
@@ -70,13 +74,13 @@ public class SearchListener implements ActionListener
 					for(Ping p : jaws.pastMonth()){
 						Shark tempShark = sharkIter.next();
 						if(tempShark.getName().equals(p.getName())){
-							tempSharks.add(tempShark);
+							foundSharks.add(tempShark);
+							pings.add(p);
 						}
 					}
 				}
 				break;
 		}
-		addSharks(tempSharks);
 	}
 
 	private void filterByGender(List<Shark> sharks, String gender)
@@ -86,15 +90,19 @@ public class SearchListener implements ActionListener
 			case "Male":
 				for (Shark s : sharks)
 				{
-					if (s.getGender().equals("Female"))
+					if (s.getGender().equals("Female")){
 						sharks.remove(s);
+						pings.remove(sharks.indexOf(s));
+					}
 				}
 				break;
 			case "Female":
 				for (Shark s : sharks)
 				{
-					if (s.getGender().equals("Male"))
+					if (s.getGender().equals("Male")){
 						sharks.remove(s);
+						pings.remove(sharks.indexOf(s));
+					}
 				}
 				break;
 		}
@@ -107,22 +115,28 @@ public class SearchListener implements ActionListener
 			case "Mature":
 				for (Shark s : sharks)
 				{
-					if (!s.getStageOfLife().equals("Mature"))
+					if (!s.getStageOfLife().equals("Mature")){
 						sharks.remove(s);
+						pings.remove(sharks.indexOf(s));
+					}
 				}
 				break;
 			case "Immature":
 				for (Shark s : sharks)
 				{
-					if (!s.getStageOfLife().equals("Immature"))
+					if (!s.getStageOfLife().equals("Immature")){
 						sharks.remove(s);
+						pings.remove(sharks.indexOf(s));
+					}
 				}
 				break;
 			case "Undetermined":
 				for (Shark s : sharks)
 				{
-					if (!s.getStageOfLife().equals("Undetermined"))
+					if (!s.getStageOfLife().equals("Undetermined")){
 						sharks.remove(s);
+						pings.remove(sharks.indexOf(s));
+					}
 				}
 				break;
 		}
@@ -132,24 +146,29 @@ public class SearchListener implements ActionListener
 	{
 		Iterator<Shark> sharkIter = sharks.iterator();
 		while (sharkIter.hasNext()) {
-			if (!sharkIter.next().getTagLocation().equals(location))
+			Shark tempShark = sharkIter.next();
+			if (!tempShark.getTagLocation().equals(location)){
 				sharkIter.remove();
+				pings.remove(sharks.indexOf(tempShark));
+			}
 		}
 	}
 	
-	private void addSharks(List<Shark> sharkList){
-		for(Shark sh: sharkList){
-			foundSharks.add(sh);
-		}
+	private Date changeToDate(Ping p){
+		Date date = new Date(p.getTime());
+		return date;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		filterByRange(foundSharks, range); // filter the results by range
+		filterByRange(allSharks, range); // filter the results by range
 		filterByGender(foundSharks, gender); // filter the results by gender
 		filterByStage(foundSharks, stage); // filter the results by stage of life
 		filterByTagLoc(foundSharks, location); // filter the results by tag location
-		System.out.println(foundSharks);
+		for(Shark s: foundSharks){
+			Date tempDate = changeToDate(pings.get(foundSharks.indexOf(s)));
+			ResultsPanel rPanel = new ResultsPanel(s, tempDate);
+		}
 	}
 }
