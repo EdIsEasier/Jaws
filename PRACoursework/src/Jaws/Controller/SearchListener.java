@@ -9,8 +9,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import Jaws.View.ResultsPanel;
 
@@ -22,6 +24,7 @@ public class SearchListener implements ActionListener
 	private List<Shark> allSharks;
 	private List<Shark> foundSharks;
 	private List<Ping> pings;
+	private Map<Shark, Ping> sharksPings;
 	private JComboBox range, gender, stage, location;
 	private Jaws jaws;
 
@@ -30,19 +33,25 @@ public class SearchListener implements ActionListener
 		allSharks = new ArrayList<>();
 		foundSharks = new ArrayList<>();
 		pings = new ArrayList<>();
+		sharksPings = new HashMap<>();
 		this.jaws = jaws;
 		this.range = range;
 		this.gender = gender;
 		this.stage = stage;
 		this.location = location;
-		ArrayList<Ping> ping = jaws.past24Hours();
 
+		//ArrayList<Ping> ping = jaws.past24Hours();
+		/*
 		for(int i = 0; i <= 1; i++){
 			System.out.println(ping.get(i).getTime());
 			System.out.println(ping.get(i).getName());
-		}
+		}*/
 
 		updateAllSharks();
+
+		System.out.println("Constructor:");
+		System.out.println(allSharks);
+		System.out.println(sharksPings);
 	}
 
 	private void updateAllSharks()
@@ -53,38 +62,44 @@ public class SearchListener implements ActionListener
 
 	private void filterByRange(List<Shark> sharks, String range)
 	{
-		Iterator<Shark> sharkIter = sharks.iterator();
+		//Iterator<Shark> sharkIter = sharks.iterator();
 		switch(range)
 		{
 			case "Last 24 Hours":
 				for(Ping p : jaws.past24Hours()){
+					Iterator<Shark> sharkIter = sharks.iterator();
 					while (sharkIter.hasNext()) {
 						Shark tempShark = sharkIter.next();
 						if(tempShark.getName().equals(p.getName())){
 							foundSharks.add(tempShark);
-							pings.add(p);
+							sharksPings.put(tempShark, p);
+							//pings.add(p);
 						}
 					}
 				}
 				break;
 			case "Last Week":
 				for(Ping p : jaws.pastWeek()){
+					Iterator<Shark> sharkIter = sharks.iterator();
 					while (sharkIter.hasNext()) {
 						Shark tempShark = sharkIter.next();
 						if(tempShark.getName().equals(p.getName())){
 							foundSharks.add(tempShark);
-							pings.add(p);
+							sharksPings.put(tempShark, p);
+							//pings.add(p);
 						}
 					}
 				}
 				break;
 			case "Last Month":
 				for(Ping p : jaws.pastMonth()){
+					Iterator<Shark> sharkIter = sharks.iterator();
 					while (sharkIter.hasNext()) {
 						Shark tempShark = sharkIter.next();
 						if(tempShark.getName().equals(p.getName())){
 							foundSharks.add(tempShark);
-							pings.add(p);
+							sharksPings.put(tempShark, p);
+							//pings.add(p);
 						}
 					}
 				}
@@ -104,6 +119,7 @@ public class SearchListener implements ActionListener
 					if (tempShark.getGender().equals("Female"))
 					{
 						sharkIter.remove();
+						sharksPings.remove(tempShark);
 					}
 				}
 				break;
@@ -114,6 +130,7 @@ public class SearchListener implements ActionListener
 					if (tempShark.getGender().equals("Male"))
 					{
 						sharkIter.remove();
+						sharksPings.remove(tempShark);
 					}
 				}
 				break;
@@ -122,32 +139,39 @@ public class SearchListener implements ActionListener
 
 	private void filterByStage(List<Shark> sharks, String stage)
 	{
+		Iterator<Shark> sharkIter = sharks.iterator();
 		switch(stage)
 		{
 			case "Mature":
-				for (Shark s : sharks)
+				while(sharkIter.hasNext())
 				{
-					if (!s.getStageOfLife().equals("Mature")){
-						sharks.remove(s);
-						pings.remove(sharks.indexOf(s));
+					Shark tempShark = sharkIter.next();
+					if (!tempShark.getStageOfLife().equals("Mature")){
+						sharkIter.remove();
+						sharksPings.remove(tempShark);
+						//pings.remove(sharks.indexOf(s));
 					}
 				}
 				break;
 			case "Immature":
-				for (Shark s : sharks)
+				while(sharkIter.hasNext())
 				{
-					if (!s.getStageOfLife().equals("Immature")){
-						sharks.remove(s);
-						pings.remove(sharks.indexOf(s));
+					Shark tempShark = sharkIter.next();
+					if (!tempShark.getStageOfLife().equals("Immature")){
+						sharkIter.remove();
+						sharksPings.remove(tempShark);
+						//pings.remove(sharks.indexOf(s));
 					}
 				}
 				break;
 			case "Undetermined":
-				for (Shark s : sharks)
+				while(sharkIter.hasNext())
 				{
-					if (!s.getStageOfLife().equals("Undetermined")){
-						sharks.remove(s);
-						pings.remove(sharks.indexOf(s));
+					Shark tempShark = sharkIter.next();
+					if (!tempShark.getStageOfLife().equals("Undetermined")){
+						sharkIter.remove();
+						sharksPings.remove(tempShark);
+						//pings.remove(sharks.indexOf(tempShark));
 					}
 				}
 				break;
@@ -161,7 +185,8 @@ public class SearchListener implements ActionListener
 			Shark tempShark = sharkIter.next();
 			if (!tempShark.getTagLocation().equals(location)){
 				sharkIter.remove();
-				pings.remove(sharks.indexOf(tempShark));
+				sharksPings.remove(tempShark);
+				//pings.remove(sharks.indexOf(tempShark));
 			}
 		}
 	}
@@ -225,6 +250,9 @@ public class SearchListener implements ActionListener
 		filterByGender(foundSharks, strGender); // filter the results by gender
 		filterByStage(foundSharks, strStage); // filter the results by stage of life
 		filterByTagLoc(foundSharks, strLocation); // filter the results by tag location
-		orderByTime();
+		//orderByTime();
+		System.out.println("actionPerformed:");
+		System.out.println(foundSharks);
+		System.out.println(sharksPings);
 	}
 }
