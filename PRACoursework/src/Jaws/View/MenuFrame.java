@@ -34,14 +34,17 @@ public class MenuFrame extends JFrame{
 		bottomButtons.add(jbFavourites);
 		spaceborder.add(picture, BorderLayout.CENTER);
 		spaceborder.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+
 		
 	
 		jbSearch.addActionListener(new ActionListener(){
 			
 			public void actionPerformed(ActionEvent e) {
 				SearchFrame newSearch = new SearchFrame();
-				setVisible(false);
+				setVisible(true);
 				newSearch.setVisible(true);
+				
+				
 				
 			}
 			
@@ -51,8 +54,10 @@ public class MenuFrame extends JFrame{
 			
 			public void actionPerformed(ActionEvent a){
 				Favourites newfavourites = new Favourites();
-				setVisible(false);
+				setVisible(true);
 				newfavourites.setVisible(true);
+				setDefaultCloseOperation(HIDE_ON_CLOSE);
+				
 			
 				
 			}
@@ -60,7 +65,9 @@ public class MenuFrame extends JFrame{
 		
 		pack();
 		setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		
+	
 	}
 	
 	public static void main(String[] args){
