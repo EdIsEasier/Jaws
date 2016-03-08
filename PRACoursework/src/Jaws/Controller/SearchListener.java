@@ -7,7 +7,9 @@ import api.jaws.Shark;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +35,13 @@ public class SearchListener implements ActionListener
 		this.gender = gender;
 		this.stage = stage;
 		this.location = location;
-
+		ArrayList<Ping> ping = jaws.past24Hours();
+		
+		for(int i = 0; i <= 1; i++){
+			System.out.println(ping.get(i).getTime());
+			System.out.println(ping.get(i).getName());
+		}
+		
 		updateAllSharks();
 	}
 
@@ -56,6 +64,7 @@ public class SearchListener implements ActionListener
 							foundSharks.add(tempShark);
 							pings.add(p);
 						}
+						
 					}
 				}
 				break;
@@ -66,7 +75,6 @@ public class SearchListener implements ActionListener
 						if(tempShark.getName().equals(p.getName())){
 							foundSharks.add(tempShark);
 							pings.add(p);
-							
 						}
 					}
 				}
@@ -168,8 +176,8 @@ public class SearchListener implements ActionListener
 	
 	private void orderByTime(){
 		for(Shark s: foundSharks){
-			Date thisDate = changeToDate(getPing(s));
-			Date nextDate = changeToDate(pings.get(foundSharks.indexOf(s) + 1));
+			Calendar thisDate = changeToDate(getPing(s));
+			Calendar nextDate = changeToDate(pings.get(foundSharks.indexOf(s) + 1));
 			if(thisDate.after(nextDate)){
 				swapSharks(foundSharks, s);
 				swapPings(pings, pings.get(foundSharks.indexOf(s)));
@@ -187,9 +195,19 @@ public class SearchListener implements ActionListener
 		return pings.get(foundSharks.indexOf(shark));
 	}
 	
-	private Date changeToDate(Ping p){
-		Date date = new Date(p.getTime());
-		return date;
+	private Calendar changeToDate(Ping p){
+		Calendar calendar = new GregorianCalendar();
+		String[] dates = p.getTime().split(" ");
+		String[] sDate = dates[0].split("-");
+		String[] sTime = dates[1].split(":");
+		int[] date = new int[3];
+		int[] time = new int[3];
+		for(int i = 0; i < 3; i++){
+			date[i] = Integer.parseInt(sDate[i]);
+			time[i] = Integer.parseInt(sTime[i]);
+		}
+		calendar.set(date[0], date[1], date[2], time[0], time[1], time[2]);
+		return calendar;
 	}
 
 	@Override

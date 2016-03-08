@@ -3,6 +3,7 @@ package Jaws.View;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -15,13 +16,13 @@ import api.jaws.Shark;
 
 public class ResultsPanel extends JPanel{
 	private Shark shark;
-	private Date date;
+	private Calendar date;
 	
-	public ResultsPanel(Shark shark, Date date) {
+	public ResultsPanel(Shark shark, Calendar calendar) {
 		super(new GridLayout(2, 1));
 		
 		this.shark = shark;
-		this.date = date;
+		this.date = calendar;
 		
 		this.setBorder(BorderFactory.createEtchedBorder());
 		createWidgets();
