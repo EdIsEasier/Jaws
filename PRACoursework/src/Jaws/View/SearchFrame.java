@@ -93,7 +93,7 @@ public class SearchFrame extends JFrame{
 		String tag = (String)cbTag.getSelectedItem();
 		
 		
-		jbSearch.addActionListener(new SearchListener(shark, range, gender, stage, tag));
+		jbSearch.addActionListener(new SearchListener(shark, cbRange, cbGender, cbStage, cbTag));
 		JPanel jpAllDetails = new JPanel(new GridLayout(3, 1));
 		jpAllDetails.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		//just a test for our ResultsPanel

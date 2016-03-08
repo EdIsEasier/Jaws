@@ -8,14 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import Jaws.View.ResultsPanel;
+
+import javax.swing.JComboBox;
 
 
 public class SearchListener implements ActionListener
@@ -23,25 +22,26 @@ public class SearchListener implements ActionListener
 	private List<Shark> allSharks;
 	private List<Shark> foundSharks;
 	private List<Ping> pings;
-	private String range, gender, stage, location;
+	private JComboBox range, gender, stage, location;
 	private Jaws jaws;
 
-	public SearchListener(Jaws jaws, String range, String gender, String stage, String location)
+	public SearchListener(Jaws jaws, JComboBox range, JComboBox gender, JComboBox stage, JComboBox location)
 	{
 		allSharks = new ArrayList<>();
 		foundSharks = new ArrayList<>();
+		pings = new ArrayList<>();
 		this.jaws = jaws;
 		this.range = range;
 		this.gender = gender;
 		this.stage = stage;
 		this.location = location;
 		ArrayList<Ping> ping = jaws.past24Hours();
-		
+
 		for(int i = 0; i <= 1; i++){
 			System.out.println(ping.get(i).getTime());
 			System.out.println(ping.get(i).getName());
 		}
-		
+
 		updateAllSharks();
 	}
 
@@ -64,7 +64,7 @@ public class SearchListener implements ActionListener
 							foundSharks.add(tempShark);
 							pings.add(p);
 						}
-						
+
 					}
 				}
 				break;
@@ -213,11 +213,16 @@ public class SearchListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		String strRange = range.getSelectedItem().toString();
+		String strGender = gender.getSelectedItem().toString();
+		String strStage = stage.getSelectedItem().toString();
+		String strLocation = location.getSelectedItem().toString();
+
 		List<Shark> correctOrder = new ArrayList<Shark>();
-		filterByRange(allSharks, range); // filter the results by range
-		filterByGender(foundSharks, gender); // filter the results by gender
-		filterByStage(foundSharks, stage); // filter the results by stage of life
-		filterByTagLoc(foundSharks, location); // filter the results by tag location
+		filterByRange(allSharks, strRange); // filter the results by range
+		filterByGender(foundSharks, strGender); // filter the results by gender
+		filterByStage(foundSharks, strStage); // filter the results by stage of life
+		filterByTagLoc(foundSharks, strLocation); // filter the results by tag location
 		orderByTime();
 	}
 }
