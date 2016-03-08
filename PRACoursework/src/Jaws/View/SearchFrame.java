@@ -74,6 +74,7 @@ public class SearchFrame extends JFrame{
 		cbStage.addItem("Immature");
 		cbStage.addItem("Undetermined");
 		
+		cbTag.addItem("All");
 		for(String c: shark.getTagLocations()){
 			cbTag.addItem(c);
 		}

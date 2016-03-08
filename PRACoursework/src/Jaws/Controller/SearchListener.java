@@ -180,20 +180,22 @@ public class SearchListener implements ActionListener
 	
 	private void filterByTagLoc(List<Shark> sharks, String location)
 	{
-		Iterator<Shark> sharkIter = sharks.iterator();
-		int p = 0;
-		while (sharkIter.hasNext()) {
-			Shark tempShark = sharkIter.next();
-			p++;
-			if (!tempShark.getTagLocation().equals(location)){
-				sharkIter.remove();
-				sharksPings.remove(tempShark);
-				//pings.remove(sharks.indexOf(tempShark));
+		if(!location.equals("All")){
+			Iterator<Shark> sharkIter = sharks.iterator();
+			int p = 0;
+			while (sharkIter.hasNext()) {
+				Shark tempShark = sharkIter.next();
+				p++;
+				if (!tempShark.getTagLocation().equals(location)){
+					sharkIter.remove();
+					sharksPings.remove(tempShark);
+					//pings.remove(sharks.indexOf(tempShark));
+				}
 			}
 		}
 	}
 	
-	private void swapSharks(List<Shark> sList, Shark shark){
+	/*private void swapSharks(List<Shark> sList, Shark shark){
 		sList.set(sList.indexOf(shark), sList.get(sList.indexOf(shark) + 1));
 		sList.set(sList.indexOf(shark ) + 1, shark);
 	}
@@ -207,8 +209,8 @@ public class SearchListener implements ActionListener
 		Iterator it = sharksPings.entrySet().iterator();
 		while(it.hasNext()){
 			Map.Entry nextPair = (Map.Entry)it.next();
-			Calendar thisDate = changeToDate(sharkPings, nextPair.getKey());
-			Calendar nextDate = changeToDate(sharkPings, );
+			Calendar thisDate = changeToDate(sharksPings, nextPair.getKey());
+			Calendar nextDate = changeToDate(sharksPings, );
 			if(thisDate.after(nextDate)){
 				swapSharks(foundSharks, s);
 				swapPings(pings, pings.get(foundSharks.indexOf(s)));
@@ -216,9 +218,9 @@ public class SearchListener implements ActionListener
 		}
 	}
 	
-	private Calendar changeToDate(Map<Shark, Ping> sPings, Shark s){
+	private Calendar changeToDate(Map<Shark, Ping> sPings, Object shark){
 		Calendar calendar = new GregorianCalendar();
-		Ping p = sPings.get(s);
+		Ping p = sPings.get(shark);
 		String[] dates = p.getTime().split(" ");
 		String[] sDate = dates[0].split("-");
 		String[] sTime = dates[1].split(":");
@@ -239,7 +241,7 @@ public class SearchListener implements ActionListener
 			Map.Entry nextPair = (Map.Entry)it.next();
 			ResultsPanel rPanel = new ResultsPanel((Shark)nextPair.getKey(), (Ping)nextPair.getValue());
 		}
-	}
+	}*/
 	
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -255,13 +257,9 @@ public class SearchListener implements ActionListener
 		filterByStage(foundSharks, strStage); // filter the results by stage of life
 		filterByTagLoc(foundSharks, strLocation); // filter the results by tag location
 		//orderByTime();
-<<<<<<< HEAD
-		createPanels(sharksPings);
-=======
-		createPanels(foundSharks, pings);
+		//createPanels(sharksPings);
 		System.out.println("actionPerformed:");
 		System.out.println(foundSharks);
 		System.out.println(sharksPings);
->>>>>>> branch 'master' of https://BenjaminKrarup@bitbucket.org/BenjaminKrarup/pracoursework.git
 	}
 }
