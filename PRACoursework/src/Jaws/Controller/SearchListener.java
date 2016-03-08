@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import Jaws.View.ResultsPanel;
 
@@ -179,9 +180,11 @@ public class SearchListener implements ActionListener
 	}
 	
 	private void orderByTime(){
-		for(Shark s: foundSharks){
-			Calendar thisDate = changeToDate(getPing(s));
-			Calendar nextDate = changeToDate(pings.get(foundSharks.indexOf(s) + 1));
+		Iterator it = sharksPings.entrySet().iterator();
+		while(it.hasNext()){
+			Map.Entry nextPair = (Map.Entry)it.next();
+			Calendar thisDate = changeToDate(sharkPings, nextPair.getKey());
+			Calendar nextDate = changeToDate(sharkPings, );
 			if(thisDate.after(nextDate)){
 				swapSharks(foundSharks, s);
 				swapPings(pings, pings.get(foundSharks.indexOf(s)));
@@ -189,18 +192,9 @@ public class SearchListener implements ActionListener
 		}
 	}
 	
-	private void createPanels(List<Shark> sList, List<Ping> orderedPings){
-		for(Shark s: foundSharks){
-			ResultsPanel rPanel = new ResultsPanel(s, orderedPings.get(foundSharks.indexOf(s)));
-		}
-	}
-	
-	private Ping getPing(Shark shark){
-		return pings.get(foundSharks.indexOf(shark));
-	}
-	
-	private Calendar changeToDate(Ping p){
+	private Calendar changeToDate(Map<Shark, Ping> sPings, Shark s){
 		Calendar calendar = new GregorianCalendar();
+		Ping p = sPings.get(s);
 		String[] dates = p.getTime().split(" ");
 		String[] sDate = dates[0].split("-");
 		String[] sTime = dates[1].split(":");
@@ -213,7 +207,16 @@ public class SearchListener implements ActionListener
 		calendar.set(date[0], date[1], date[2], time[0], time[1], time[2]);
 		return calendar;
 	}
-
+	
+	
+	private void createPanels(Map<Shark, Ping> sharkPing){
+		Iterator it = sharkPing.entrySet().iterator();
+		while(it.hasNext()){
+			Map.Entry nextPair = (Map.Entry)it.next();
+			ResultsPanel rPanel = new ResultsPanel((Shark)nextPair.getKey(), (Ping)nextPair.getValue());
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -227,7 +230,7 @@ public class SearchListener implements ActionListener
 		filterByGender(foundSharks, strGender); // filter the results by gender
 		filterByStage(foundSharks, strStage); // filter the results by stage of life
 		filterByTagLoc(foundSharks, strLocation); // filter the results by tag location
-		orderByTime();
-		createPanels(foundSharks, pings);
+		//orderByTime();
+		createPanels(sharksPings);
 	}
 }
