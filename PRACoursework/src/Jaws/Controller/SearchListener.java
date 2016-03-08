@@ -94,23 +94,26 @@ public class SearchListener implements ActionListener
 
 	private void filterByGender(List<Shark> sharks, String gender)
 	{
+		Iterator<Shark> sharkIter = sharks.iterator();
 		switch(gender)
 		{
 			case "Male":
-				for (Shark s : sharks)
+				while(sharkIter.hasNext())
 				{
-					if (s.getGender().equals("Female")){
-						sharks.remove(s);
-						pings.remove(sharks.indexOf(s));
+					Shark tempShark = sharkIter.next();
+					if (tempShark.getGender().equals("Female"))
+					{
+						sharkIter.remove();
 					}
 				}
 				break;
 			case "Female":
-				for (Shark s : sharks)
+				while(sharkIter.hasNext())
 				{
-					if (s.getGender().equals("Male")){
-						sharks.remove(s);
-						pings.remove(sharks.indexOf(s));
+					Shark tempShark = sharkIter.next();
+					if (tempShark.getGender().equals("Male"))
+					{
+						sharkIter.remove();
 					}
 				}
 				break;
