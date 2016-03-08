@@ -21,16 +21,13 @@ import javax.swing.JComboBox;
 
 public class SearchListener implements ActionListener
 {
-	private List<Shark> allSharks;
-	private List<Shark> foundSharks;
-	private List<Ping> pings;
 	private Map<Shark, Ping> sharksPings;
+	private List<Ping> pings;
 	private JComboBox range, gender, stage, location;
 	private Jaws jaws;
 
 	public SearchListener(Jaws jaws, JComboBox range, JComboBox gender, JComboBox stage, JComboBox location)
 	{
-		allSharks = new ArrayList<>();
 		pings = new ArrayList<>();
 		sharksPings = new HashMap<>();
 		this.jaws = jaws;
@@ -46,59 +43,44 @@ public class SearchListener implements ActionListener
 			System.out.println(ping.get(i).getName());
 		}*/
 
-		updateAllSharks();
-
 		System.out.println("Constructor:");
-		System.out.println(allSharks);
 		System.out.println(sharksPings);
 	}
 
-	private void updateAllSharks()
-	{
-		for (String s : jaws.getSharkNames()) // Get all the shark names
-			allSharks.add(jaws.getShark(s)); // Retrieve each of the sharks by their name
-	}
-
-	private void filterByRange(List<Shark> sharks, String range)
+	private void filterByRange(String range)
 	{
 		//Iterator<Shark> sharkIter = sharks.iterator();
 		switch(range)
 		{
 			case "Last 24 Hours":
 				for(Ping p : jaws.past24Hours()){
-					Iterator<Shark> sharkIter = sharks.iterator();
-					while (sharkIter.hasNext()) {
-						Shark tempShark = sharkIter.next();
-						if(tempShark.getName().equals(p.getName())){
-							foundSharks.add(tempShark);
-							sharksPings.put(tempShark, p);
-							//pings.add(p);
+					for (String s : jaws.getSharkNames())
+					{
+						if (s.equals(p.getName()))
+						{
+							sharksPings.put(jaws.getShark(s), p);
 						}
 					}
 				}
 				break;
 			case "Last Week":
 				for(Ping p : jaws.pastWeek()){
-					Iterator<Shark> sharkIter = sharks.iterator();
-					while (sharkIter.hasNext()) {
-						Shark tempShark = sharkIter.next();
-						if(tempShark.getName().equals(p.getName())){
-							foundSharks.add(tempShark);
-							sharksPings.put(tempShark, p);
-							//pings.add(p);
+					for (String s : jaws.getSharkNames())
+					{
+						if (s.equals(p.getName()))
+						{
+							sharksPings.put(jaws.getShark(s), p);
 						}
 					}
 				}
 				break;
 			case "Last Month":
 				for(Ping p : jaws.pastMonth()){
-					Iterator<Shark> sharkIter = sharks.iterator();
-					while (sharkIter.hasNext()) {
-						Shark tempShark = sharkIter.next();
-						if(tempShark.getName().equals(p.getName())){
-							foundSharks.add(tempShark);
-							sharksPings.put(tempShark, p);
-							//pings.add(p);
+					for (String s : jaws.getSharkNames())
+					{
+						if (s.equals(p.getName()))
+						{
+							sharksPings.put(jaws.getShark(s), p);
 						}
 					}
 				}
@@ -106,30 +88,26 @@ public class SearchListener implements ActionListener
 		}
 	}
 
-	private void filterByGender(List<Shark> sharks, String gender)
+	private void filterByGender(String gender)
 	{
-		Iterator<Shark> sharkIter = sharks.iterator();
+		Iterator sharksPingsIter = sharksPings.entrySet().iterator();
 		switch(gender)
 		{
 			case "Male":
-				while(sharkIter.hasNext())
-				{
-					Shark tempShark = sharkIter.next();
-					if (tempShark.getGender().equals("Female"))
+				while (sharksPingsIter.hasNext()) {
+					Map.Entry<Shark, Ping> pair = (Map.Entry)sharksPingsIter.next();
+					if (pair.getKey().getGender().equals("Female"))
 					{
-						sharkIter.remove();
-						sharksPings.remove(tempShark);
+						sharksPingsIter.remove();
 					}
 				}
 				break;
 			case "Female":
-				while(sharkIter.hasNext())
-				{
-					Shark tempShark = sharkIter.next();
-					if (tempShark.getGender().equals("Male"))
+				while (sharksPingsIter.hasNext()) {
+					Map.Entry<Shark, Ping> pair = (Map.Entry)sharksPingsIter.next();
+					if (pair.getKey().getGender().equals("Male"))
 					{
-						sharkIter.remove();
-						sharksPings.remove(tempShark);
+						sharksPingsIter.remove();
 					}
 				}
 				break;
@@ -238,14 +216,13 @@ public class SearchListener implements ActionListener
 		String strLocation = location.getSelectedItem().toString();
 
 		List<Shark> correctOrder = new ArrayList<Shark>();
-		filterByRange(allSharks, strRange); // filter the results by range
-		filterByGender(foundSharks, strGender); // filter the results by gender
+		filterByRange(strRange); // filter the results by range
+		filterByGender(strGender); // filter the results by gender
 		filterByStage(strStage); // filter the results by stage of life
 		filterByTagLoc(strLocation); // filter the results by tag location
 		//orderByTime();
 		//createPanels(sharksPings);
 		System.out.println("actionPerformed:");
-		System.out.println(foundSharks);
 		System.out.println(sharksPings);
 	}
 }
