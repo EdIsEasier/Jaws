@@ -25,7 +25,7 @@ public class Favourites extends JFrame{
 
 	private void createWidgets() {
 		this.setLayout(new BorderLayout());
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		JLabel jlText = new JLabel("Your Favourite sharks are this far away from you : ");
 		add(jlText,BorderLayout.NORTH);
 		JTextArea jtaSharks = new JTextArea("\n\n\n");
