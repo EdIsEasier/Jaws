@@ -57,20 +57,19 @@ public class SearchListener implements ActionListener
 		switch(range)
 		{
 			case "Last 24 Hours":
-				while (sharkIter.hasNext()) {
-					for(Ping p : jaws.past24Hours()){
+				for(Ping p : jaws.past24Hours()){
+					while (sharkIter.hasNext()) {
 						Shark tempShark = sharkIter.next();
 						if(tempShark.getName().equals(p.getName())){
 							foundSharks.add(tempShark);
 							pings.add(p);
 						}
-
 					}
 				}
 				break;
 			case "Last Week":
-				while (sharkIter.hasNext()) {
-					for(Ping p : jaws.pastWeek()){
+				for(Ping p : jaws.pastWeek()){
+					while (sharkIter.hasNext()) {
 						Shark tempShark = sharkIter.next();
 						if(tempShark.getName().equals(p.getName())){
 							foundSharks.add(tempShark);
@@ -80,8 +79,8 @@ public class SearchListener implements ActionListener
 				}
 				break;
 			case "Last Month":
-				while (sharkIter.hasNext()) {
-					for(Ping p : jaws.pastMonth()){
+				for(Ping p : jaws.pastMonth()){
+					while (sharkIter.hasNext()) {
 						Shark tempShark = sharkIter.next();
 						if(tempShark.getName().equals(p.getName())){
 							foundSharks.add(tempShark);
