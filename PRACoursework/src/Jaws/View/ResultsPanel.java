@@ -12,17 +12,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import api.jaws.Ping;
 import api.jaws.Shark;
 
 public class ResultsPanel extends JPanel{
 	private Shark shark;
-	private Calendar date;
+	private Ping date;
 	
-	public ResultsPanel(Shark shark, Calendar calendar) {
+	public ResultsPanel(Shark shark, Ping ping) {
 		super(new GridLayout(2, 1));
 		
 		this.shark = shark;
-		this.date = calendar;
+		this.date = ping;
 		
 		this.setBorder(BorderFactory.createEtchedBorder());
 		createWidgets();

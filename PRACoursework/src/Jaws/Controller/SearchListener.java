@@ -181,8 +181,10 @@ public class SearchListener implements ActionListener
 	private void filterByTagLoc(List<Shark> sharks, String location)
 	{
 		Iterator<Shark> sharkIter = sharks.iterator();
+		int p = 0;
 		while (sharkIter.hasNext()) {
 			Shark tempShark = sharkIter.next();
+			p++;
 			if (!tempShark.getTagLocation().equals(location)){
 				sharkIter.remove();
 				sharksPings.remove(tempShark);
@@ -212,9 +214,9 @@ public class SearchListener implements ActionListener
 		}
 	}
 	
-	private void createPanels(List<Shark> sList){
+	private void createPanels(List<Shark> sList, List<Ping> orderedPings){
 		for(Shark s: foundSharks){
-			ResultsPanel rPanel = new ResultsPanel(s, changeToDate(getPing(s)));
+			ResultsPanel rPanel = new ResultsPanel(s, orderedPings.get(foundSharks.indexOf(s)));
 		}
 	}
 	
@@ -251,6 +253,7 @@ public class SearchListener implements ActionListener
 		filterByStage(foundSharks, strStage); // filter the results by stage of life
 		filterByTagLoc(foundSharks, strLocation); // filter the results by tag location
 		//orderByTime();
+		createPanels(foundSharks, pings);
 		System.out.println("actionPerformed:");
 		System.out.println(foundSharks);
 		System.out.println(sharksPings);
