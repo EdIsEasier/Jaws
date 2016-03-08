@@ -31,7 +31,6 @@ public class SearchListener implements ActionListener
 	public SearchListener(Jaws jaws, JComboBox range, JComboBox gender, JComboBox stage, JComboBox location)
 	{
 		allSharks = new ArrayList<>();
-		foundSharks = new ArrayList<>();
 		pings = new ArrayList<>();
 		sharksPings = new HashMap<>();
 		this.jaws = jaws;
@@ -137,59 +136,46 @@ public class SearchListener implements ActionListener
 		}
 	}
 
-	private void filterByStage(List<Shark> sharks, String stage)
+	private void filterByStage(String stage)
 	{
-		Iterator<Shark> sharkIter = sharks.iterator();
+		Iterator it = sharksPings.entrySet().iterator();
 		switch(stage)
 		{
 			case "Mature":
-				while(sharkIter.hasNext())
-				{
-					Shark tempShark = sharkIter.next();
-					if (!tempShark.getStageOfLife().equals("Mature")){
-						sharkIter.remove();
-						sharksPings.remove(tempShark);
-						//pings.remove(sharks.indexOf(s));
+				while (it.hasNext()){
+					Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
+					if (!nextPair.getKey().getStageOfLife().equals("Mature")){
+						sharksPings.remove(nextPair.getKey());
 					}
 				}
 				break;
 			case "Immature":
-				while(sharkIter.hasNext())
-				{
-					Shark tempShark = sharkIter.next();
-					if (!tempShark.getStageOfLife().equals("Immature")){
-						sharkIter.remove();
-						sharksPings.remove(tempShark);
-						//pings.remove(sharks.indexOf(s));
+				while (it.hasNext()){
+					Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
+					if (!nextPair.getKey().getStageOfLife().equals("Immature")){
+						sharksPings.remove(nextPair.getKey());
 					}
 				}
 				break;
 			case "Undetermined":
-				while(sharkIter.hasNext())
-				{
-					Shark tempShark = sharkIter.next();
-					if (!tempShark.getStageOfLife().equals("Undetermined")){
-						sharkIter.remove();
-						sharksPings.remove(tempShark);
-						//pings.remove(sharks.indexOf(tempShark));
+				while (it.hasNext()){
+					Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
+					if (!nextPair.getKey().getStageOfLife().equals("Mature")){
+						sharksPings.remove(nextPair.getKey());
 					}
 				}
 				break;
 		}
 	}
 	
-	private void filterByTagLoc(List<Shark> sharks, String location)
+	private void filterByTagLoc(String location)
 	{
 		if(!location.equals("All")){
-			Iterator<Shark> sharkIter = sharks.iterator();
-			int p = 0;
-			while (sharkIter.hasNext()) {
-				Shark tempShark = sharkIter.next();
-				p++;
-				if (!tempShark.getTagLocation().equals(location)){
-					sharkIter.remove();
-					sharksPings.remove(tempShark);
-					//pings.remove(sharks.indexOf(tempShark));
+			Iterator it = sharksPings.entrySet().iterator();
+			while (it.hasNext()){
+				Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
+				if (!nextPair.getKey().getTagLocation().equals(location)){
+					sharksPings.remove(nextPair.getKey());
 				}
 			}
 		}
@@ -254,8 +240,8 @@ public class SearchListener implements ActionListener
 		List<Shark> correctOrder = new ArrayList<Shark>();
 		filterByRange(allSharks, strRange); // filter the results by range
 		filterByGender(foundSharks, strGender); // filter the results by gender
-		filterByStage(foundSharks, strStage); // filter the results by stage of life
-		filterByTagLoc(foundSharks, strLocation); // filter the results by tag location
+		filterByStage(strStage); // filter the results by stage of life
+		filterByTagLoc(strLocation); // filter the results by tag location
 		//orderByTime();
 		//createPanels(sharksPings);
 		System.out.println("actionPerformed:");
