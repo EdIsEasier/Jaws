@@ -27,6 +27,7 @@ public class SearchListener implements ActionListener
 	private JComboBox range, gender, stage, location;
 	private Jaws jaws;
 	private SearchFrame search;
+	private ArrayList<String> nonDuplicates;
 
 	public SearchListener(SearchFrame search, Jaws jaws, JComboBox range, JComboBox gender, JComboBox stage, JComboBox location)
 	{
@@ -38,6 +39,7 @@ public class SearchListener implements ActionListener
 		this.gender = gender;
 		this.stage = stage;
 		this.location = location;
+		nonDuplicates = deleteDuplicates();
 
 		//ArrayList<Ping> ping = jaws.past24Hours();
 		/*
@@ -56,7 +58,7 @@ public class SearchListener implements ActionListener
 		{
 			case "Last 24 Hours":
 				for(Ping p : jaws.past24Hours()){
-					for (String s : jaws.getSharkNames())
+					for (String s : nonDuplicates)
 					{
 						if (s.equals(p.getName()))
 						{
@@ -67,7 +69,7 @@ public class SearchListener implements ActionListener
 				break;
 			case "Last Week":
 				for(Ping p : jaws.pastWeek()){
-					for (String s : jaws.getSharkNames())
+					for (String s : nonDuplicates)
 					{
 						if (s.equals(p.getName()))
 						{
@@ -78,7 +80,7 @@ public class SearchListener implements ActionListener
 				break;
 			case "Last Month":
 				for(Ping p : jaws.pastMonth()){
-					for (String s : jaws.getSharkNames())
+					for (String s : nonDuplicates)
 					{
 						if (s.equals(p.getName()))
 						{
@@ -161,6 +163,31 @@ public class SearchListener implements ActionListener
 		}
 	}
 	
+	private ArrayList<String> deleteDuplicates(){
+		ArrayList<Ping> tempPings = new ArrayList<Ping>();
+		tempPings.addAll(jaws.pastMonth());
+		for(int i = 0; i < jaws.pastMonth().size(); i++){
+			Ping tempPing = jaws.pastMonth().get(i);
+			for(int j = i + 1; j < tempPings.size(); j++){
+				Ping tempPing2 = tempPings.get(i);
+				if(tempPing.getName().equals(tempPing2.getName())){
+					if(changePingToDate(tempPing).before(changePingToDate(tempPing2))){
+						tempPings.remove(j);
+					}
+				}
+			}
+		}
+		return pingToNames(tempPings);
+	}
+	
+	private ArrayList<String> pingToNames(ArrayList<Ping> pings){
+		ArrayList<String> tempStrings = new ArrayList<String>();
+		for(Ping p: pings){
+			tempStrings.add(p.getName());
+		}
+		return tempStrings;
+	}
+	
 	private void swapSharks(List<Shark> sList, Shark shark){
 		sList.set(sList.indexOf(shark), sList.get(sList.indexOf(shark) + 1));
 		sList.set(sList.indexOf(shark ) + 1, shark);
@@ -183,6 +210,22 @@ public class SearchListener implements ActionListener
 			}
 		}
 	//}
+	
+	private Calendar changePingToDate(Ping ping){
+		Calendar calendar = new GregorianCalendar();
+		String time = ping.getTime();
+		String[] dates = time.split(" ");
+		String[] sDate = dates[0].split("-");
+		String[] sTime = dates[1].split(":");
+		int[] date = new int[3];
+		int[] iTime = new int[3];
+		for(int i = 0; i < 3; i++){
+			date[i] = Integer.parseInt(sDate[i]);
+			iTime[i] = Integer.parseInt(sTime[i]);
+		}
+		calendar.set(date[0], date[1], date[2], iTime[0], iTime[1], iTime[2]);
+		return calendar;
+	}
 	
 	private Calendar changeToDate(Map<Shark, Ping> sPings, Object shark){
 		Calendar calendar = new GregorianCalendar();
