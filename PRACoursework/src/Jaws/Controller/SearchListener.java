@@ -49,7 +49,6 @@ public class SearchListener implements ActionListener
 
 	private void filterByRange(String range)
 	{
-		//Iterator<Shark> sharkIter = sharks.iterator();
 		switch(range)
 		{
 			case "Last 24 Hours":
@@ -123,7 +122,8 @@ public class SearchListener implements ActionListener
 				while (it.hasNext()){
 					Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
 					if (!nextPair.getKey().getStageOfLife().equals("Mature")){
-						sharksPings.remove(nextPair.getKey());
+						//sharksPings.remove(nextPair.getKey());
+						it.remove();
 					}
 				}
 				break;
@@ -131,7 +131,8 @@ public class SearchListener implements ActionListener
 				while (it.hasNext()){
 					Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
 					if (!nextPair.getKey().getStageOfLife().equals("Immature")){
-						sharksPings.remove(nextPair.getKey());
+						//sharksPings.remove(nextPair.getKey());
+						it.remove();
 					}
 				}
 				break;
@@ -139,7 +140,8 @@ public class SearchListener implements ActionListener
 				while (it.hasNext()){
 					Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
 					if (!nextPair.getKey().getStageOfLife().equals("Mature")){
-						sharksPings.remove(nextPair.getKey());
+						//sharksPings.remove(nextPair.getKey());
+						it.remove();
 					}
 				}
 				break;
@@ -153,7 +155,8 @@ public class SearchListener implements ActionListener
 			while (it.hasNext()){
 				Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
 				if (!nextPair.getKey().getTagLocation().equals(location)){
-					sharksPings.remove(nextPair.getKey());
+					//sharksPings.remove(nextPair.getKey());
+					it.remove();
 				}
 			}
 		}
@@ -217,12 +220,14 @@ public class SearchListener implements ActionListener
 
 		List<Shark> correctOrder = new ArrayList<Shark>();
 		filterByRange(strRange); // filter the results by range
+		System.out.println("actionPerformed (after range filter):");
+		System.out.println(sharksPings);
 		filterByGender(strGender); // filter the results by gender
 		filterByStage(strStage); // filter the results by stage of life
 		filterByTagLoc(strLocation); // filter the results by tag location
 		//orderByTime();
 		//createPanels(sharksPings);
-		System.out.println("actionPerformed:");
+		System.out.println("actionPerformed (after all filters):");
 		System.out.println(sharksPings);
 	}
 }

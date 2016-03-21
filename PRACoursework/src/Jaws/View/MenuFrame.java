@@ -44,8 +44,6 @@ public class MenuFrame extends JFrame{
 				setVisible(true);
 				newSearch.setVisible(true);
 				
-				
-				
 			}
 			
 			
