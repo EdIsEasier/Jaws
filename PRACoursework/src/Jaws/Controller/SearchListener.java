@@ -165,18 +165,20 @@ public class SearchListener implements ActionListener
 	
 	private ArrayList<String> deleteDuplicates(){
 		ArrayList<Ping> tempPings = new ArrayList<Ping>();
+		ArrayList<Ping> pingToRemove = new ArrayList<Ping>();
 		tempPings.addAll(jaws.pastMonth());
-		for(int i = 0; i < jaws.pastMonth().size(); i++){
-			Ping tempPing = jaws.pastMonth().get(i);
+		for(int i = 0; i < tempPings.size(); i++){
+			Ping tempPing = tempPings.get(i);
 			for(int j = i + 1; j < tempPings.size(); j++){
 				Ping tempPing2 = tempPings.get(j);
 				if(tempPing.getName().equals(tempPing2.getName())){
 					if(changePingToDate(tempPing2).before(changePingToDate(tempPing))){
-						tempPings.remove(j);
+						pingToRemove.add(tempPing2);
 					}
 				}
 			}
 		}
+		tempPings.removeAll(pingToRemove);
 		return pingToNames(tempPings);
 	}
 	
@@ -257,7 +259,7 @@ public class SearchListener implements ActionListener
 		while(it.hasNext()){
 			Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
 			search.createDescriptions(nextPair.getKey(), nextPair.getValue());
-			search.repaint();
+			//search.repaint();
 			search.revalidate();
 			search.pack();
 		}
