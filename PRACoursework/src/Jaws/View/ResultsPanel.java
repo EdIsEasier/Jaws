@@ -48,7 +48,7 @@ public class ResultsPanel extends JPanel{
 		
 		jpDetails3.add(new JLabel("Description"), BorderLayout.NORTH);
 		jpDetails3.add(new JLabel(shark.getDescription()), BorderLayout.CENTER);
-		jpDetails3.add(new JLabel("Last Ping: " + date), BorderLayout.SOUTH);
+		jpDetails3.add(new JLabel("Last Ping: " + date.getTime()), BorderLayout.SOUTH);
 		
 		add(jpDetails2);
 		add(jpDetails3);

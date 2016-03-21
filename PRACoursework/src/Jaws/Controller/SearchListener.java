@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import Jaws.View.ResultsPanel;
+import Jaws.View.SearchFrame;
 
 import javax.swing.JComboBox;
 
@@ -25,9 +26,11 @@ public class SearchListener implements ActionListener
 	private List<Ping> pings;
 	private JComboBox range, gender, stage, location;
 	private Jaws jaws;
+	private SearchFrame search;
 
-	public SearchListener(Jaws jaws, JComboBox range, JComboBox gender, JComboBox stage, JComboBox location)
+	public SearchListener(SearchFrame search, Jaws jaws, JComboBox range, JComboBox gender, JComboBox stage, JComboBox location)
 	{
+		this.search = search;
 		pings = new ArrayList<>();
 		sharksPings = new HashMap<>();
 		this.jaws = jaws;
@@ -122,7 +125,6 @@ public class SearchListener implements ActionListener
 				while (it.hasNext()){
 					Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
 					if (!nextPair.getKey().getStageOfLife().equals("Mature")){
-						//sharksPings.remove(nextPair.getKey());
 						it.remove();
 					}
 				}
@@ -131,7 +133,6 @@ public class SearchListener implements ActionListener
 				while (it.hasNext()){
 					Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
 					if (!nextPair.getKey().getStageOfLife().equals("Immature")){
-						//sharksPings.remove(nextPair.getKey());
 						it.remove();
 					}
 				}
@@ -140,7 +141,6 @@ public class SearchListener implements ActionListener
 				while (it.hasNext()){
 					Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
 					if (!nextPair.getKey().getStageOfLife().equals("Mature")){
-						//sharksPings.remove(nextPair.getKey());
 						it.remove();
 					}
 				}
@@ -155,14 +155,13 @@ public class SearchListener implements ActionListener
 			while (it.hasNext()){
 				Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
 				if (!nextPair.getKey().getTagLocation().equals(location)){
-					//sharksPings.remove(nextPair.getKey());
 					it.remove();
 				}
 			}
 		}
 	}
 	
-	/*private void swapSharks(List<Shark> sList, Shark shark){
+	private void swapSharks(List<Shark> sList, Shark shark){
 		sList.set(sList.indexOf(shark), sList.get(sList.indexOf(shark) + 1));
 		sList.set(sList.indexOf(shark ) + 1, shark);
 	}
@@ -177,13 +176,13 @@ public class SearchListener implements ActionListener
 		while(it.hasNext()){
 			Map.Entry nextPair = (Map.Entry)it.next();
 			Calendar thisDate = changeToDate(sharksPings, nextPair.getKey());
-			Calendar nextDate = changeToDate(sharksPings, );
-			if(thisDate.after(nextDate)){
-				swapSharks(foundSharks, s);
-				swapPings(pings, pings.get(foundSharks.indexOf(s)));
+			//Calendar nextDate = changeToDate(sharksPings, );
+			//if(thisDate.after(nextDate)){
+				//swapSharks(foundSharks, s);
+				//swapPings(pings, pings.get(foundSharks.indexOf(s)));
 			}
 		}
-	}
+	//}
 	
 	private Calendar changeToDate(Map<Shark, Ping> sPings, Object shark){
 		Calendar calendar = new GregorianCalendar();
@@ -208,7 +207,16 @@ public class SearchListener implements ActionListener
 			Map.Entry nextPair = (Map.Entry)it.next();
 			ResultsPanel rPanel = new ResultsPanel((Shark)nextPair.getKey(), (Ping)nextPair.getValue());
 		}
-	}*/
+	}
+	
+	private void createPanels(){
+		Iterator it = sharksPings.entrySet().iterator();
+		while(it.hasNext()){
+			Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
+			search.createDescriptions(nextPair.getKey(), nextPair.getValue());
+		}
+		
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -229,5 +237,7 @@ public class SearchListener implements ActionListener
 		//createPanels(sharksPings);
 		System.out.println("actionPerformed (after all filters):");
 		System.out.println(sharksPings);
+		createPanels();
+		
 	}
 }

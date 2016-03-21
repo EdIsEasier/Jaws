@@ -15,11 +15,14 @@ import javax.swing.JTextArea;
 
 import Jaws.Controller.SearchListener;
 import api.jaws.Jaws;
+import api.jaws.Ping;
+import api.jaws.Shark;
 
 public class SearchFrame extends JFrame{
 	private JTextArea jtaDescription;
 	//will probably pass in instead, just using for acknowledgement
 	private Jaws shark = new Jaws("jphHPbni3MIBmMKu", "jbB8OPuNG5Sxw11c");
+	private JPanel jpAllDetails;
 	
 	public SearchFrame(){
 		super("Search");
@@ -94,8 +97,8 @@ public class SearchFrame extends JFrame{
 		String tag = (String)cbTag.getSelectedItem();
 		
 		
-		jbSearch.addActionListener(new SearchListener(shark, cbRange, cbGender, cbStage, cbTag));
-		JPanel jpAllDetails = new JPanel(new GridLayout(3, 1));
+		jbSearch.addActionListener(new SearchListener(this, shark, cbRange, cbGender, cbStage, cbTag));
+		JPanel jpAllDetails = new JPanel(new GridLayout(2, 1));
 		jpAllDetails.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		//just a test for our ResultsPanel
 		//createDescriptions(3, jpAllDetails);
@@ -108,11 +111,8 @@ public class SearchFrame extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
-	/*public void createDescriptions(int n, JPanel panel){
-		for(int i = 1; i <= n; i++){
-			ResultsPanel rPanel = new ResultsPanel();
-			panel.add(rPanel);
-		}
-		
-	}*/
+	public void createDescriptions(Shark shark, Ping ping){
+		ResultsPanel result = new ResultsPanel(shark, ping);
+		jpAllDetails.add(result);
+	}
 }
