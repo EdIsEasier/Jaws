@@ -98,7 +98,7 @@ public class SearchFrame extends JFrame{
 		
 		
 		jbSearch.addActionListener(new SearchListener(this, shark, cbRange, cbGender, cbStage, cbTag));
-		jpAllDetails = new JPanel(new GridLayout(2, 1));
+		jpAllDetails = new JPanel(new GridLayout(0, 1));
 		jpAllDetails.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		//just a test for our ResultsPanel
 		//createDescriptions(3, jpAllDetails);

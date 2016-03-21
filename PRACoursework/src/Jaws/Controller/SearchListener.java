@@ -49,7 +49,7 @@ public class SearchListener implements ActionListener
 		}*/
 
 		System.out.println("Constructor:");
-		System.out.println(sharksPings);
+		System.out.println(nonDuplicates);
 	}
 
 	private void filterByRange(String range)
@@ -169,9 +169,9 @@ public class SearchListener implements ActionListener
 		for(int i = 0; i < jaws.pastMonth().size(); i++){
 			Ping tempPing = jaws.pastMonth().get(i);
 			for(int j = i + 1; j < tempPings.size(); j++){
-				Ping tempPing2 = tempPings.get(i);
+				Ping tempPing2 = tempPings.get(j);
 				if(tempPing.getName().equals(tempPing2.getName())){
-					if(changePingToDate(tempPing).before(changePingToDate(tempPing2))){
+					if(changePingToDate(tempPing2).before(changePingToDate(tempPing))){
 						tempPings.remove(j);
 					}
 				}
@@ -257,6 +257,9 @@ public class SearchListener implements ActionListener
 		while(it.hasNext()){
 			Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
 			search.createDescriptions(nextPair.getKey(), nextPair.getValue());
+			search.repaint();
+			search.revalidate();
+			search.pack();
 		}
 		
 	}
