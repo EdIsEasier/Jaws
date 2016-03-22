@@ -21,13 +21,15 @@ import api.jaws.Shark;
 public class ResultsPanel extends JPanel{
 	private Shark shark;
 	private Ping date;
+	private Favourites faves;
 	
-	public ResultsPanel(Shark shark, Ping ping) {
+	public ResultsPanel(Shark shark, Ping ping, Favourites faves) {
 		super(new GridLayout(2, 1));
 		
 		this.shark = shark;
 		this.date = ping;
-		
+		this.faves = faves;
+
 		this.setBorder(BorderFactory.createEtchedBorder());
 		createWidgets();
 	}
@@ -57,11 +59,10 @@ public class ResultsPanel extends JPanel{
 		jpDetails3.add(desc, BorderLayout.CENTER);
 		JPanel jpBottomStrip = new JPanel(new BorderLayout());
 		jpBottomStrip.add(new JLabel("Last Ping: " + date.getTime()), BorderLayout.WEST);
-		jpBottomStrip.add(new JButton("Follow"){{addActionListener(new FavouriteButtonListener());}}, BorderLayout.EAST);
+		jpBottomStrip.add(new JButton("Follow"){{addActionListener(new FavouriteButtonListener(faves, shark));}}, BorderLayout.EAST);
 		jpDetails3.add(jpBottomStrip, BorderLayout.SOUTH);
 		
 		add(jpDetails2);
 		add(jpDetails3);
 	}
-
 }

@@ -11,15 +11,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import Jaws.View.SearchFrame;
+import api.jaws.Shark;
 
 public class Favourites extends JFrame{
 		
-	JLabel favourite1 = new JLabel();
-	JButton jbfav = new JButton("Favourite");
+	private JTextArea jtaSharks;
 	
 	public Favourites(){
 		super("Favourites");
-		
+
 		createWidgets();
 	}
 
@@ -28,17 +28,16 @@ public class Favourites extends JFrame{
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		JLabel jlText = new JLabel("Your Favourite sharks are this far away from you : ");
 		add(jlText,BorderLayout.NORTH);
-		JTextArea jtaSharks = new JTextArea("\n\n\n");
+		jtaSharks = new JTextArea();
 		jtaSharks.setEditable(false);
 		add(jtaSharks, BorderLayout.CENTER);
 		
 		pack();
 	}
-	
-	public static void main (String [] args){
-		Favourites fav  = new Favourites();
-		fav.setVisible(true);
-	}
-	
 
+	public void addShark(Shark shark)
+	{
+		jtaSharks.append(shark.getName() + "\n");
+		pack();
+	}
 }

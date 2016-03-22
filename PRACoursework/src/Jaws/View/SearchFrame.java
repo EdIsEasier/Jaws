@@ -9,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,15 +21,17 @@ import api.jaws.Jaws;
 import api.jaws.Ping;
 import api.jaws.Shark;
 
-public class SearchFrame extends JFrame{
+public class SearchFrame extends JFrame
+{
 	private JTextArea jtaDescription;
 	//will probably pass in instead, just using for acknowledgement
 	private Jaws shark = new Jaws("jphHPbni3MIBmMKu", "jbB8OPuNG5Sxw11c");
 	private JPanel jpAllDetails;
+	private Favourites faves;
 	
-	public SearchFrame(){
+	public SearchFrame(Favourites faves){
 		super("Search");
-		
+		this.faves = faves;
 		createWidgets();
 	}
 
@@ -114,7 +117,7 @@ public class SearchFrame extends JFrame{
 	}
 	
 	public void createDescriptions(Shark shark, Ping ping){
-		ResultsPanel result = new ResultsPanel(shark, ping);
+		ResultsPanel result = new ResultsPanel(shark, ping, faves);
 		jpAllDetails.add(result);
 	}
 

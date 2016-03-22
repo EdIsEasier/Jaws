@@ -13,10 +13,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class MenuFrame extends JFrame{
-	
-	public MenuFrame(){
+	private Favourites faves;
+	private SearchFrame search;
+
+	public MenuFrame(SearchFrame searchFrame, Favourites favesFrame){
 		super("Amnity Police");
-		
+
+		search = searchFrame;
+		faves = favesFrame;
+
 		createWidgets();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
@@ -41,9 +46,9 @@ public class MenuFrame extends JFrame{
 		jbSearch.addActionListener(new ActionListener(){
 			
 			public void actionPerformed(ActionEvent e) {
-				SearchFrame newSearch = new SearchFrame();
+				//SearchFrame newSearch = new SearchFrame();
 				setVisible(true);
-				newSearch.setVisible(true);
+				search.setVisible(true);
 				
 			}
 			
@@ -52,9 +57,9 @@ public class MenuFrame extends JFrame{
 		jbFavourites.addActionListener(new ActionListener(){
 			
 			public void actionPerformed(ActionEvent a){
-				Favourites newfavourites = new Favourites();
+				//Favourites newfavourites = new Favourites();
 				setVisible(true);
-				newfavourites.setVisible(true);
+				faves.setVisible(true);
 				
 			
 				
@@ -67,8 +72,14 @@ public class MenuFrame extends JFrame{
 		
 	
 	}
-	
+
+	public Favourites getFavouritesFrame()
+	{
+		return faves;
+	}
+
+	/*
 	public static void main(String[] args){
 		MenuFrame f = new MenuFrame();
-	}
+	}*/
 }
