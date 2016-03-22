@@ -5,21 +5,26 @@ import java.awt.Color;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import Jaws.Controller.SearchListener;
 import api.jaws.Jaws;
+import api.jaws.Ping;
+import api.jaws.Shark;
 
 public class SearchFrame extends JFrame{
 	private JTextArea jtaDescription;
 	//will probably pass in instead, just using for acknowledgement
 	private Jaws shark = new Jaws("jphHPbni3MIBmMKu", "jbB8OPuNG5Sxw11c");
+	private JPanel jpAllDetails;
 	
 	public SearchFrame(){
 		super("Search");
@@ -30,7 +35,8 @@ public class SearchFrame extends JFrame{
 	private void createWidgets() {
 		setLayout(new BorderLayout());
 		JPanel overallFrame = new JPanel(new BorderLayout());
-		JPanel jpTracker = new JPanel(new GridLayout(5, 1));
+		JPanel jpTracker = new JPanel();
+		jpTracker.setLayout(new BoxLayout(jpTracker, BoxLayout.Y_AXIS));
 		jpTracker.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		JPanel jpTrackerRange = new JPanel(new GridLayout(2, 1));
 		JPanel jpTrackerGender = new JPanel(new GridLayout(2, 1));
@@ -94,12 +100,11 @@ public class SearchFrame extends JFrame{
 		String tag = (String)cbTag.getSelectedItem();
 		
 		
-		jbSearch.addActionListener(new SearchListener(shark, cbRange, cbGender, cbStage, cbTag));
-		JPanel jpAllDetails = new JPanel(new GridLayout(3, 1));
+		jbSearch.addActionListener(new SearchListener(this, shark, cbRange, cbGender, cbStage, cbTag));
+		jpAllDetails = new JPanel(new GridLayout(0, 1));
+		JScrollPane jsP = new JScrollPane(jpAllDetails);
 		jpAllDetails.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		//just a test for our ResultsPanel
-		//createDescriptions(3, jpAllDetails);
-		overallFrame.add(jpAllDetails, BorderLayout.CENTER);
+		overallFrame.add(jsP, BorderLayout.CENTER);
 		
 		add(overallFrame, BorderLayout.CENTER);
 		add(new JLabel(shark.getAcknowledgement()), BorderLayout.SOUTH);
@@ -108,11 +113,13 @@ public class SearchFrame extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
-	/*public void createDescriptions(int n, JPanel panel){
-		for(int i = 1; i <= n; i++){
-			ResultsPanel rPanel = new ResultsPanel();
-			panel.add(rPanel);
-		}
-		
-	}*/
+	public void createDescriptions(Shark shark, Ping ping){
+		ResultsPanel result = new ResultsPanel(shark, ping);
+		jpAllDetails.add(result);
+	}
+
+	public JPanel getJpAllDetails()
+	{
+		return jpAllDetails;
+	}
 }
