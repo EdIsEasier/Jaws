@@ -12,6 +12,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import Jaws.View.ResultsPanel;
@@ -27,161 +28,142 @@ public class SearchListener implements ActionListener
 	private JComboBox range, gender, stage, location;
 	private Jaws jaws;
 	private SearchFrame search;
-	private ArrayList<String> nonDuplicates;
+	private ArrayList<Ping> nonDuplicates;
+	private List<Ping> filteredSharks;
 
 	public SearchListener(SearchFrame search, Jaws jaws, JComboBox range, JComboBox gender, JComboBox stage, JComboBox location)
 	{
 		this.search = search;
 		pings = new ArrayList<>();
-		sharksPings = new HashMap<>();
 		this.jaws = jaws;
 		this.range = range;
 		this.gender = gender;
 		this.stage = stage;
 		this.location = location;
 		nonDuplicates = deleteDuplicates();
-
-		//ArrayList<Ping> ping = jaws.past24Hours();
-		/*
-		for(int i = 0; i <= 1; i++){
-			System.out.println(ping.get(i).getTime());
-			System.out.println(ping.get(i).getName());
-		}*/
-
-		System.out.println("Constructor:");
-		System.out.println(nonDuplicates);
+		filteredSharks = new ArrayList<Ping>();
 	}
 
-	private void filterByRange(String range)
-	{
-		switch(range)
-		{
-			case "Last 24 Hours":
-				for(Ping p : jaws.past24Hours()){
-					for (String s : nonDuplicates)
-					{
-						if (s.equals(p.getName()))
-						{
-							sharksPings.put(jaws.getShark(s), p);
+	
+	public void filterByRange(String range){
+		switch(range){
+		case "Last 24 Hours":
+			for(Ping p: nonDuplicates){
+					for(Ping p24: jaws.past24Hours()){
+						if(p.getTime().equals(p24.getTime())){
+							filteredSharks.add(p);
+							continue;
 						}
 					}
 				}
-				break;
-			case "Last Week":
-				for(Ping p : jaws.pastWeek()){
-					for (String s : nonDuplicates)
-					{
-						if (s.equals(p.getName()))
-						{
-							sharksPings.put(jaws.getShark(s), p);
+			break;
+		case "Last Week":
+				for(Ping p: nonDuplicates){
+					for(Ping pw: jaws.pastWeek()){
+						if(p.getTime().equals(pw.getTime())){
+							filteredSharks.add(p);
+							continue;
 						}
 					}
 				}
-				break;
-			case "Last Month":
-				for(Ping p : jaws.pastMonth()){
-					for (String s : nonDuplicates)
-					{
-						if (s.equals(p.getName()))
-						{
-							sharksPings.put(jaws.getShark(s), p);
+			break;
+		case "Last Month":
+				for(Ping p: nonDuplicates){
+					for(Ping pm: jaws.pastMonth()){
+						if(p.getTime().equals(pm.getTime())){
+							filteredSharks.add(p);
+							continue;
 						}
 					}
 				}
-				break;
-		}
-	}
-
-	private void filterByGender(String gender)
-	{
-		Iterator sharksPingsIter = sharksPings.entrySet().iterator();
-		switch(gender)
-		{
-			case "Male":
-				while (sharksPingsIter.hasNext()) {
-					Map.Entry<Shark, Ping> pair = (Map.Entry)sharksPingsIter.next();
-					if (pair.getKey().getGender().equals("Female"))
-					{
-						sharksPingsIter.remove();
-					}
-				}
-				break;
-			case "Female":
-				while (sharksPingsIter.hasNext()) {
-					Map.Entry<Shark, Ping> pair = (Map.Entry)sharksPingsIter.next();
-					if (pair.getKey().getGender().equals("Male"))
-					{
-						sharksPingsIter.remove();
-					}
-				}
-				break;
-		}
-	}
-
-	private void filterByStage(String stage)
-	{
-		Iterator it = sharksPings.entrySet().iterator();
-		switch(stage)
-		{
-			case "Mature":
-				while (it.hasNext()){
-					Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
-					if (!nextPair.getKey().getStageOfLife().equals("Mature")){
-						it.remove();
-					}
-				}
-				break;
-			case "Immature":
-				while (it.hasNext()){
-					Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
-					if (!nextPair.getKey().getStageOfLife().equals("Immature")){
-						it.remove();
-					}
-				}
-				break;
-			case "Undetermined":
-				while (it.hasNext()){
-					Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
-					if (!nextPair.getKey().getStageOfLife().equals("Mature")){
-						it.remove();
-					}
-				}
-				break;
+			break;
 		}
 	}
 	
-	private void filterByTagLoc(String location)
-	{
-		if(!location.equals("All")){
-			Iterator it = sharksPings.entrySet().iterator();
-			while (it.hasNext()){
-				Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
-				if (!nextPair.getKey().getTagLocation().equals(location)){
+	private void filterByGender(String gender){
+		Iterator<Ping> it = filteredSharks.iterator();
+		if(gender.equals("Male")){
+			while(it.hasNext()){
+				String tempShark = it.next().getName();
+				if(!jaws.getShark(tempShark).getGender().equals("Male")){
+					it.remove();
+				}
+			}
+		}
+		if(gender.equals("Female")){
+			while(it.hasNext()){
+				String tempShark = it.next().getName();
+				if(!jaws.getShark(tempShark).getGender().equals("Female")){
 					it.remove();
 				}
 			}
 		}
 	}
 	
-	private ArrayList<String> deleteDuplicates(){
+	private void filterByStage(String stage){
+		Iterator<Ping> it = filteredSharks.iterator();
+		switch(stage){
+			case "Mature":
+				while(it.hasNext()){
+					String tempShark = it.next().getName();
+					if(!jaws.getShark(tempShark).getStageOfLife().equals("Mature")){
+						it.remove();
+					}
+				}
+				break;
+			case "Immature":
+				while(it.hasNext()){
+					String tempShark = it.next().getName();
+					if(!jaws.getShark(tempShark).getStageOfLife().equals("Immature")){
+						it.remove();
+					}
+				}
+				break;
+			case "Undetermined":
+				while(it.hasNext()){
+					String tempShark = it.next().getName();
+					if(!jaws.getShark(tempShark).getStageOfLife().equals("Undetermined")){
+						it.remove();
+					}
+				}
+				break;
+		}
+	}
+	
+	public void filterByTagLoc(String location){
+		if(!location.equals("All")){
+			Iterator<Ping> it = filteredSharks.iterator();
+			while(it.hasNext()){
+				String tempShark = it.next().getName();
+				if(!jaws.getShark(tempShark).getTagLocation().equals(location)){
+					it.remove();
+				}
+			}
+		}
+	}
+	
+	private ArrayList<Ping> deleteDuplicates(){
 		ArrayList<Ping> tempPings = new ArrayList<Ping>();
-		ArrayList<Ping> pingToRemove = new ArrayList<Ping>();
+		ArrayList<Ping> tempPings2 = new ArrayList<Ping>();
 		tempPings.addAll(jaws.pastMonth());
-		for(int i = 0; i < tempPings.size(); i++){
-			Ping tempPing = tempPings.get(i);
-			for(int j = i + 1; j < tempPings.size(); j++){
-				Ping tempPing2 = tempPings.get(j);
+		tempPings2.addAll(jaws.pastMonth());
+		ListIterator<Ping> it = tempPings.listIterator(0);
+		while(it.hasNext()){
+			Ping tempPing = it.next();
+			ListIterator<Ping> it2 = tempPings2.listIterator(0);
+			while(it2.hasNext()){
+				Ping tempPing2 = it2.next();
 				if(tempPing.getName().equals(tempPing2.getName())){
 					if(changePingToDate(tempPing2).before(changePingToDate(tempPing))){
-						pingToRemove.add(tempPing2);
+						it2.remove();
 					}
 				}
 			}
 		}
-		tempPings.removeAll(pingToRemove);
-		return pingToNames(tempPings);
+		return tempPings2;
 	}
 	
+	//could be useful
 	private ArrayList<String> pingToNames(ArrayList<Ping> pings){
 		ArrayList<String> tempStrings = new ArrayList<String>();
 		for(Ping p: pings){
@@ -189,29 +171,6 @@ public class SearchListener implements ActionListener
 		}
 		return tempStrings;
 	}
-	
-	private void swapSharks(List<Shark> sList, Shark shark){
-		sList.set(sList.indexOf(shark), sList.get(sList.indexOf(shark) + 1));
-		sList.set(sList.indexOf(shark ) + 1, shark);
-	}
-	
-	private void swapPings(List<Ping> pList, Ping pings){
-		pList.set(pList.indexOf(pings), pList.get(pList.indexOf(pings) + 1));
-		pList.set(pList.indexOf(pings ) + 1, pings);
-	}
-	
-	private void orderByTime(){
-		Iterator it = sharksPings.entrySet().iterator();
-		while(it.hasNext()){
-			Map.Entry nextPair = (Map.Entry)it.next();
-			Calendar thisDate = changeToDate(sharksPings, nextPair.getKey());
-			//Calendar nextDate = changeToDate(sharksPings, );
-			//if(thisDate.after(nextDate)){
-				//swapSharks(foundSharks, s);
-				//swapPings(pings, pings.get(foundSharks.indexOf(s)));
-			}
-		}
-	//}
 	
 	private Calendar changePingToDate(Ping ping){
 		Calendar calendar = new GregorianCalendar();
@@ -229,39 +188,14 @@ public class SearchListener implements ActionListener
 		return calendar;
 	}
 	
-	private Calendar changeToDate(Map<Shark, Ping> sPings, Object shark){
-		Calendar calendar = new GregorianCalendar();
-		Ping p = sPings.get(shark);
-		String[] dates = p.getTime().split(" ");
-		String[] sDate = dates[0].split("-");
-		String[] sTime = dates[1].split(":");
-		int[] date = new int[3];
-		int[] time = new int[3];
-		for(int i = 0; i < 3; i++){
-			date[i] = Integer.parseInt(sDate[i]);
-			time[i] = Integer.parseInt(sTime[i]);
-		}
-		calendar.set(date[0], date[1], date[2], time[0], time[1], time[2]);
-		return calendar;
-	}
-	
-	
-	private void createPanels(Map<Shark, Ping> sharkPing){
-		Iterator it = sharkPing.entrySet().iterator();
-		while(it.hasNext()){
-			Map.Entry nextPair = (Map.Entry)it.next();
-			ResultsPanel rPanel = new ResultsPanel((Shark)nextPair.getKey(), (Ping)nextPair.getValue());
-		}
-	}
-	
+	//need to order by first found pings
 	private void createPanels(){
-		Iterator it = sharksPings.entrySet().iterator();
+		Iterator<Ping> it = filteredSharks.iterator();
 		while(it.hasNext()){
-			Map.Entry<Shark, Ping> nextPair = (Map.Entry)it.next();
-			search.createDescriptions(nextPair.getKey(), nextPair.getValue());
-			//search.repaint();
+			Ping nextShark = it.next();
+			search.createDescriptions(jaws.getShark(nextShark.getName()), nextShark);
 			search.revalidate();
-			search.pack();
+			//search.pack();
 		}
 		
 	}
@@ -276,16 +210,14 @@ public class SearchListener implements ActionListener
 
 		List<Shark> correctOrder = new ArrayList<Shark>();
 		filterByRange(strRange); // filter the results by range
-		System.out.println("actionPerformed (after range filter):");
-		System.out.println(sharksPings);
 		filterByGender(strGender); // filter the results by gender
 		filterByStage(strStage); // filter the results by stage of life
 		filterByTagLoc(strLocation); // filter the results by tag location
-		//orderByTime();
-		//createPanels(sharksPings);
-		System.out.println("actionPerformed (after all filters):");
-		System.out.println(sharksPings);
 		createPanels();
+		System.out.println("actionPerformed (after range filter):");
+		System.out.println(jaws.past24Hours());
+		System.out.println(nonDuplicates);
+		System.out.println(filteredSharks);
 		
 	}
 }

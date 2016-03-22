@@ -1,6 +1,7 @@
 package Jaws.View;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,7 +48,10 @@ public class ResultsPanel extends JPanel{
 		jpDetails2.add(new JTextArea(shark.getWeight()));
 		
 		jpDetails3.add(new JLabel("Description"), BorderLayout.NORTH);
-		jpDetails3.add(new JLabel(shark.getDescription()), BorderLayout.CENTER);
+		JTextArea desc = new JTextArea(shark.getDescription());
+		desc.setLineWrap(true);
+		desc.setWrapStyleWord(true);
+		jpDetails3.add(desc, BorderLayout.CENTER);
 		jpDetails3.add(new JLabel("Last Ping: " + date.getTime()), BorderLayout.SOUTH);
 		
 		add(jpDetails2);
