@@ -32,7 +32,7 @@ public class MenuFrame extends JFrame{
 		JButton jbSearch = new JButton("Search");
 		JButton jbFavourites = new JButton("Favourites");
 		setLayout(new BorderLayout());
-		JPanel bottomButtons = new JPanel(new GridLayout(2, 0));
+		JPanel bottomButtons = new JPanel(new GridLayout(3, 0));
 		JPanel spaceborder = new JPanel(new BorderLayout());
 		add(spaceborder);
 		spaceborder.add(bottomButtons, BorderLayout.SOUTH);
@@ -40,7 +40,8 @@ public class MenuFrame extends JFrame{
 		bottomButtons.add(jbFavourites);
 		spaceborder.add(picture, BorderLayout.CENTER);
 		spaceborder.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
-
+		JButton jbAddLoginUser = new JButton("Login Or Create a User");
+		bottomButtons.add(jbAddLoginUser);
 		
 	
 		jbSearch.addActionListener(new ActionListener(){
@@ -63,6 +64,12 @@ public class MenuFrame extends JFrame{
 				
 			
 				
+			}
+		});
+		jbAddLoginUser.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent a){
+				LoginCreateFrame loginCreate = new LoginCreateFrame(search, faves);
+				loginCreate.setVisible(true);
 			}
 		});
 		

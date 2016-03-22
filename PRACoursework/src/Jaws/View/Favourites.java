@@ -10,6 +10,8 @@ import javax.swing.JList;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 
+import Jaws.Model.User;
+import Jaws.View.SearchFrame;
 import Jaws.Controller.FavouriteSharkCellRenderer;
 import api.jaws.Location;
 import api.jaws.Shark;
@@ -19,11 +21,12 @@ public class Favourites extends JFrame{
 
 	private final static Location KINGS_LOCATION = new Location(51.5119, 0.1161);
 	private JTextArea jtaSharks;
+	private User loggedIn;
 	private JList jlSharks;
 	private Jaws jaws;
 	private List<Shark> favouriteSharks;
 	private DefaultListModel<Shark> favouriteSharksModel;
-	
+
 	public Favourites(Jaws jaws){
 		super("Favourites");
 
@@ -71,5 +74,9 @@ public class Favourites extends JFrame{
 		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
 		return (earthRadius * c);
+	}
+
+	public void switchUser(User user){
+		loggedIn = user;
 	}
 }

@@ -3,20 +3,23 @@ package Jaws.View;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import Jaws.Controller.SearchListener;
+import Jaws.Model.User;
 import api.jaws.Jaws;
 import api.jaws.Ping;
 import api.jaws.Shark;
@@ -28,11 +31,14 @@ public class SearchFrame extends JFrame
 	private Jaws shark;
 	private JPanel jpAllDetails;
 	private Favourites faves;
-	
+	private ArrayList<User> users;
+	private User loggedIn;
+
 	public SearchFrame(Favourites faves, Jaws jaws){
 		super("Search");
 		this.faves = faves;
 		shark = jaws;
+		users = new ArrayList<User>();
 		createWidgets();
 	}
 
@@ -125,5 +131,46 @@ public class SearchFrame extends JFrame
 	public JPanel getJpAllDetails()
 	{
 		return jpAllDetails;
+	}
+
+	public boolean isUsers(User user){
+		if(users.size() > 0){
+			for(User u: users){
+				if(u.getName().equals(user.getName())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public void addUsers(User user){
+		if(isUsers(user)){
+			JOptionPane warning = new JOptionPane();
+			warning.showMessageDialog(null, "Username Already Taken", "Warning", warning.INFORMATION_MESSAGE);
+		}
+		else{
+			users.add(user);
+			loggedIn = user;
+			faves.switchUser(user);
+		}
+	}
+
+	public boolean login(String username){
+		for(User u: users){
+			if(u.getName().equals(username)){
+				loggedIn = u;
+				faves.switchUser(u);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void failLogin(String username){
+		if(!login(username)){
+			JOptionPane warning = new JOptionPane();
+			warning.showMessageDialog(null, "Could Not Find User", "Login Fail", warning.INFORMATION_MESSAGE);
+		}
 	}
 }
