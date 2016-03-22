@@ -10,12 +10,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import Jaws.Model.User;
 import Jaws.View.SearchFrame;
 import api.jaws.Shark;
 
 public class Favourites extends JFrame{
 		
 	private JTextArea jtaSharks;
+	private User loggedIn;
 	
 	public Favourites(){
 		super("Favourites");
@@ -39,5 +41,9 @@ public class Favourites extends JFrame{
 	{
 		jtaSharks.append(shark.getName() + "\n");
 		pack();
+	}
+	
+	public void switchUser(User user){
+		loggedIn = user;
 	}
 }
