@@ -117,4 +117,9 @@ public class SearchFrame extends JFrame{
 		ResultsPanel result = new ResultsPanel(shark, ping);
 		jpAllDetails.add(result);
 	}
+
+	public JPanel getJpAllDetails()
+	{
+		return jpAllDetails;
+	}
 }

@@ -40,7 +40,7 @@ public class SearchListener implements ActionListener
 		this.gender = gender;
 		this.stage = stage;
 		this.location = location;
-		nonDuplicates = deleteDuplicates();
+		nonDuplicates = new ArrayList<>();
 		filteredSharks = new ArrayList<Ping>();
 	}
 
@@ -190,6 +190,7 @@ public class SearchListener implements ActionListener
 	
 	//need to order by first found pings
 	private void createPanels(){
+		search.getJpAllDetails().removeAll();
 		Iterator<Ping> it = filteredSharks.iterator();
 		while(it.hasNext()){
 			Ping nextShark = it.next();
@@ -203,6 +204,8 @@ public class SearchListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		filteredSharks.clear();
+		nonDuplicates = deleteDuplicates();
 		String strRange = range.getSelectedItem().toString();
 		String strGender = gender.getSelectedItem().toString();
 		String strStage = stage.getSelectedItem().toString();

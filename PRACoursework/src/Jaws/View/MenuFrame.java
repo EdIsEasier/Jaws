@@ -18,6 +18,7 @@ public class MenuFrame extends JFrame{
 		super("Amnity Police");
 		
 		createWidgets();
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 	public void createWidgets(){
@@ -54,7 +55,6 @@ public class MenuFrame extends JFrame{
 				Favourites newfavourites = new Favourites();
 				setVisible(true);
 				newfavourites.setVisible(true);
-				setDefaultCloseOperation(HIDE_ON_CLOSE);
 				
 			
 				
