@@ -25,13 +25,14 @@ public class SearchFrame extends JFrame
 {
 	private JTextArea jtaDescription;
 	//will probably pass in instead, just using for acknowledgement
-	private Jaws shark = new Jaws("jphHPbni3MIBmMKu", "jbB8OPuNG5Sxw11c");
+	private Jaws shark;
 	private JPanel jpAllDetails;
 	private Favourites faves;
 	
-	public SearchFrame(Favourites faves){
+	public SearchFrame(Favourites faves, Jaws jaws){
 		super("Search");
 		this.faves = faves;
+		shark = jaws;
 		createWidgets();
 	}
 
