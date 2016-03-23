@@ -1,6 +1,5 @@
 package Jaws.Controller;
 
-import Jaws.Model.User;
 import Jaws.View.Favourites;
 import api.jaws.Shark;
 
