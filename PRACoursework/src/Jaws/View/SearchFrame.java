@@ -151,4 +151,14 @@ public class SearchFrame extends JFrame
 	{
 		return jpAllDetails;
 	}
+
+	public void clearJpAllDetails()
+	{
+		jpAllDetails.removeAll();
+	}
+
+	public Favourites getFaves()
+	{
+		return faves;
+	}
 }
