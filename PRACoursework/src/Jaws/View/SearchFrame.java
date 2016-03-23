@@ -3,6 +3,8 @@ package Jaws.View;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -101,9 +103,19 @@ public class SearchFrame extends JFrame
 		jpTrackerTag.add(cbTag);
 		
 		JButton jbSearch = new JButton("Search");
+		JButton jbStatistics = new JButton("Statistics");
+		jbStatistics.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+			}
+			
+		});
 		jpTrackerSearch.add(jbSearch, BorderLayout.NORTH);
-		jpTrackerSearch.add(new JLabel(new ImageIcon(this.getClass().getResource("resources/sharkPic.jpg"))), BorderLayout.CENTER);
-		
+		jpTrackerSearch.add(new JLabel(new ImageIcon(this.getClass().getResource("resources/sharkPic.jpg"))), BorderLayout.SOUTH);
+		jpTrackerSearch.add(jbStatistics, BorderLayout.CENTER);
 		String range = (String)cbRange.getSelectedItem();
 		String gender = (String)cbGender.getSelectedItem();
 		String stage = (String)cbStage.getSelectedItem();
