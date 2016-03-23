@@ -59,7 +59,12 @@ public class ResultsPanel extends JPanel{
 		jpDetails3.add(desc, BorderLayout.CENTER);
 		JPanel jpBottomStrip = new JPanel(new BorderLayout());
 		jpBottomStrip.add(new JLabel("Last Ping: " + date.getTime()), BorderLayout.WEST);
-		jpBottomStrip.add(new JButton("Follow"){{addActionListener(new FavouriteButtonListener(faves, shark));}}, BorderLayout.EAST);
+		if(faves.getUser() == null){
+			jpBottomStrip.add(new JButton("Follow"){{addActionListener(new FavouriteButtonListener(faves, shark, null));}}, BorderLayout.EAST);
+		}
+		else{
+			jpBottomStrip.add(new JButton("Follow"){{addActionListener(new FavouriteButtonListener(faves, shark, faves.getUser()));}}, BorderLayout.EAST);
+		}
 		jpDetails3.add(jpBottomStrip, BorderLayout.SOUTH);
 		
 		add(jpDetails2);

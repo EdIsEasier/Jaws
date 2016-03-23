@@ -3,9 +3,13 @@ package Jaws.View;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.imageio.IIOException;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -32,6 +36,8 @@ public class SearchFrame extends JFrame
 	private JPanel jpAllDetails;
 	private Favourites faves;
 	private ArrayList<User> users;
+	private ArrayList<String> madeUsers;
+	private File[] createdUsers;
 	private User loggedIn;
 
 	public SearchFrame(Favourites faves, Jaws jaws){
@@ -39,6 +45,9 @@ public class SearchFrame extends JFrame
 		this.faves = faves;
 		shark = jaws;
 		users = new ArrayList<User>();
+		createdUsers = addAlreadyCreatedUsers();
+		madeUsers = changeFileToString();
+		loggedIn = null;
 		createWidgets();
 	}
 
@@ -120,57 +129,34 @@ public class SearchFrame extends JFrame
 		add(new JLabel(shark.getAcknowledgement()), BorderLayout.SOUTH);
 		
 		pack();
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+	}
+	
+	public File[] addAlreadyCreatedUsers(){
+		File path = new File("C:\\Users\\Michael\\git\\pracoursework\\PRACoursework\\Users");
+		return path.listFiles(new FilenameFilter() { 
+			public boolean accept(File dir, String filename){ 
+				return filename.endsWith(".txt");
+			}
+		} );
+	}
+	
+	public ArrayList<String> changeFileToString(){
+		ArrayList<String> tempUsers = new ArrayList<String>();
+		for(File f: createdUsers){
+			String getUser = f.getName().substring(f.getName().length(), f.getName().length() - 3);
+			tempUsers.add(getUser);
+		}
+		return tempUsers;
 	}
 	
 	public void createDescriptions(Shark shark, Ping ping){
-		ResultsPanel result = new ResultsPanel(shark, ping, faves);
-		jpAllDetails.add(result);
+			ResultsPanel result = new ResultsPanel(shark, ping, faves);
+			jpAllDetails.add(result);
 	}
 
 	public JPanel getJpAllDetails()
 	{
 		return jpAllDetails;
-	}
-
-	public boolean isUsers(User user){
-		if(users.size() > 0){
-			for(User u: users){
-				if(u.getName().equals(user.getName())){
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public void addUsers(User user){
-		if(isUsers(user)){
-			JOptionPane warning = new JOptionPane();
-			warning.showMessageDialog(null, "Username Already Taken", "Warning", warning.INFORMATION_MESSAGE);
-		}
-		else{
-			users.add(user);
-			loggedIn = user;
-			faves.switchUser(user);
-		}
-	}
-
-	public boolean login(String username){
-		for(User u: users){
-			if(u.getName().equals(username)){
-				loggedIn = u;
-				faves.switchUser(u);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void failLogin(String username){
-		if(!login(username)){
-			JOptionPane warning = new JOptionPane();
-			warning.showMessageDialog(null, "Could Not Find User", "Login Fail", warning.INFORMATION_MESSAGE);
-		}
 	}
 }

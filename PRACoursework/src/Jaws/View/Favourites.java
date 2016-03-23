@@ -24,16 +24,17 @@ public class Favourites extends JFrame{
 	private User loggedIn;
 	private JList jlSharks;
 	private Jaws jaws;
-	private List<Shark> favouriteSharks;
+	//private List<Shark> favouriteSharks;
 	private DefaultListModel<Shark> favouriteSharksModel;
 
 	public Favourites(Jaws jaws){
 		super("Favourites");
 
-		favouriteSharks = new ArrayList<>();
+		//favouriteSharks = new ArrayList<>();
 		favouriteSharksModel = new DefaultListModel<>();
 		this.jaws = jaws;
-
+		loggedIn = null;
+		addUserFavourites();
 		createWidgets();
 	}
 
@@ -59,10 +60,18 @@ public class Favourites extends JFrame{
 		Location sharkLocation = jaws.getLastLocation(sharkName);
 		double sharkDistance = calculateDistance(KINGS_LOCATION.getLatitude(), KINGS_LOCATION.getLongitude(), sharkLocation.getLatitude(), sharkLocation.getLongitude());
 		String strSharkDistance = Double.toString(sharkDistance);
-		String thing = sharkName + " " + strSharkDistance + " meters";
+		String sentence = sharkName + " " + strSharkDistance + " meters";
 		favouriteSharksModel.addElement(shark);
 		jtaSharks.append(sharkName + " " + strSharkDistance + " meters");
 		pack();
+	}
+	
+	public void addUserFavourites(){
+		if(loggedIn != null){
+			for(Shark s: loggedIn.getSharks()){
+				addShark(s);
+			}
+		}
 	}
 
 	private double calculateDistance(double lat1, double long1, double lat2, double long2) {
@@ -78,5 +87,9 @@ public class Favourites extends JFrame{
 
 	public void switchUser(User user){
 		loggedIn = user;
+	}
+	
+	public User getUser(){
+		return loggedIn;
 	}
 }
