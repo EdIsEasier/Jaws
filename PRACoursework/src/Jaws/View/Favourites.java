@@ -28,7 +28,7 @@ public class Favourites extends JFrame{
 		//favouriteSharks = new ArrayList<>();
 		favouriteSharksModel = new DefaultListModel<>();
 		this.jaws = jaws;
-		loggedIn = new File(path + "\\Default.txt");
+		loggedIn = new File(path + "Default.txt");
 		addUserFavourites();
 		createWidgets();
 	}

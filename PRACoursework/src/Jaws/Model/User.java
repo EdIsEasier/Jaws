@@ -14,8 +14,10 @@ import api.jaws.Shark;
 public class User {
 	ArrayList<File> allUsers;
 	Favourites faves;
+	String path;
 	
 	public User(Favourites faves) {
+		path = System.getProperty("user.dir") + "\\Users";
 		allUsers = changeToList(addAlreadyCreatedUsers());
 		this.faves = faves;
 	}
@@ -73,8 +75,8 @@ public class User {
 	}
 	
 	public File[] addAlreadyCreatedUsers(){
-		File path = new File("C:\\Users\\Michael\\git\\pracoursework\\PRACoursework\\Users");
-		return path.listFiles(new FilenameFilter() { 
+		File newUser = new File(path);
+		return newUser.listFiles(new FilenameFilter() { 
 			public boolean accept(File dir, String filename){ 
 				return filename.endsWith(".txt");
 			}
