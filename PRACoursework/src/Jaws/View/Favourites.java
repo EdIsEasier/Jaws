@@ -1,23 +1,17 @@
 package Jaws.View;
 
 import java.awt.BorderLayout;
+import java.io.BufferedReader;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.FileReader;
+import java.io.IOException;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 
-import Jaws.Model.User;
-import Jaws.View.SearchFrame;
 import Jaws.Controller.FavouriteSharkCellRenderer;
-import api.jaws.Location;
-import api.jaws.Shark;
 import api.jaws.Jaws;
 
 public class Favourites extends JFrame{
@@ -26,15 +20,16 @@ public class Favourites extends JFrame{
 	private JList jlSharks;
 	private Jaws jaws;
 	private DefaultListModel<String> favouriteSharksModel;
+	private String path;
 
 	public Favourites(Jaws jaws){
 		super("Favourites");
-
+		path = System.getProperty("user.dir") + "\\Users\\";
 		//favouriteSharks = new ArrayList<>();
 		favouriteSharksModel = new DefaultListModel<>();
 		this.jaws = jaws;
-		loggedIn = new File("C:\\Users\\Michael\\git\\pracoursework\\PRACoursework\\Users\\Default.txt");
-		//addUserFavourites();
+		loggedIn = new File(path + "\\Default.txt");
+		addUserFavourites();
 		createWidgets();
 	}
 
@@ -58,16 +53,25 @@ public class Favourites extends JFrame{
 		pack();
 	}
 	
-	/*public void addUserFavourites(){
+	public void addUserFavourites(){
 		if(loggedIn != null){
-			for(Shark s: loggedIn.getSharks()){
-				addShark(s);
+			try {
+				String currentShark;
+				BufferedReader reader = new BufferedReader(new FileReader(loggedIn));
+				while((currentShark = reader.readLine()) != null){
+					addShark(currentShark);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+			
 		}
-	}*/
+	}
 
 	public void switchUser(File user){
 		loggedIn = user;
+		favouriteSharksModel.clear();
+		addUserFavourites();
 	}
 	
 	public File getUser(){

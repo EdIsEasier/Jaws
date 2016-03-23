@@ -28,7 +28,7 @@ public class LoginCreateFrame extends JFrame{
 		createWidgets();
 		this.user = user;
 		this.favs = favs;
-		path = "C:\\Users\\Michael\\git\\pracoursework\\PRACoursework\\Users\\";
+		path = System.getProperty("user.dir") + "\\Users\\";
 		pack();
 	}
 	
