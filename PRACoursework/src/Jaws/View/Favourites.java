@@ -53,15 +53,18 @@ public class Favourites extends JFrame{
 			@Override
 			public void valueChanged(ListSelectionEvent e)
 			{
-				String selectedShark = jlSharks.getSelectedValue().toString();
-				for(Ping p : sharkPings)
-				{
-					if(p.getName().equals(selectedShark))
+				if(isActive()){
+					String selectedShark = jlSharks.getSelectedValue().toString();
+					for(Ping p : sharkPings)
 					{
-						search.clearJpAllDetails();
-						search.createDescriptions(jaws.getShark(selectedShark), p);
-						search.setVisible(true);
-						search.toFront();
+						if(p.getName().equals(selectedShark))
+						{
+							search.clearJpAllDetails();
+							search.createDescriptions(jaws.getShark(selectedShark), p);
+							search.setVisible(true);
+							search.toFront();
+							break;
+						}
 					}
 				}
 			}
