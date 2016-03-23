@@ -43,7 +43,7 @@ public class LoginCreateFrame extends JFrame{
 
 			public void actionPerformed(ActionEvent e) {
 				if(!userProfile.getText().equals("")){
-					User user = new User(userProfile.getText());
+					File file = new File(userProfile);
 					search.addUsers(user);
 				}
 				else{

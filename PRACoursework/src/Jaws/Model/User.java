@@ -1,6 +1,7 @@
 package Jaws.Model;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class User {
 	Favourites faves;
 	
 	public User(Favourites faves) {
-		allUsers = new ArrayList<File>();
+		allUsers = changeToList(addAlreadyCreatedUsers());
 		this.faves = faves;
 	}
 	
@@ -41,9 +42,9 @@ public class User {
 	}
 
 	public boolean login(String username){
-		for(File f: madeUsers){
-			if(s.equals(username)){
-				faves.switchUser(u);
+		for(File f: allUsers){
+			if(f.getName().equals(username + ".txt")){
+				faves.switchUser(f);
 				return true;
 			}
 		}
@@ -56,5 +57,21 @@ public class User {
 			warning.showMessageDialog(null, "Could Not Find User", "Login Fail", warning.INFORMATION_MESSAGE);
 		}
 	}
-
+	
+	public ArrayList<File> changeToList(File[] files){
+		ArrayList<File> tempFiles = new ArrayList<File>();
+		for(int i = 0; i < files.length; i++){
+			tempFiles.add(files[i]);
+		}
+		return tempFiles;
+	}
+	
+	public File[] addAlreadyCreatedUsers(){
+		File path = new File("C:\\Users\\Michael\\git\\pracoursework\\PRACoursework\\Users");
+		return path.listFiles(new FilenameFilter() { 
+			public boolean accept(File dir, String filename){ 
+				return filename.endsWith(".txt");
+			}
+		} );
+	}
 }

@@ -132,24 +132,6 @@ public class SearchFrame extends JFrame
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 	
-	public File[] addAlreadyCreatedUsers(){
-		File path = new File("C:\\Users\\Michael\\git\\pracoursework\\PRACoursework\\Users");
-		return path.listFiles(new FilenameFilter() { 
-			public boolean accept(File dir, String filename){ 
-				return filename.endsWith(".txt");
-			}
-		} );
-	}
-	
-	public ArrayList<String> changeFileToString(){
-		ArrayList<String> tempUsers = new ArrayList<String>();
-		for(File f: createdUsers){
-			String getUser = f.getName().substring(f.getName().length(), f.getName().length() - 3);
-			tempUsers.add(getUser);
-		}
-		return tempUsers;
-	}
-	
 	public void createDescriptions(Shark shark, Ping ping){
 			ResultsPanel result = new ResultsPanel(shark, ping, faves);
 			jpAllDetails.add(result);

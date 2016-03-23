@@ -69,7 +69,7 @@ public class Favourites extends JFrame{
 	
 	public void addUserFavourites(){
 		if(loggedIn != null){
-			for(Shark s: ((Object) loggedIn).getSharks()){
+			for(Shark s: loggedIn.getSharks()){
 				addShark(s);
 			}
 		}
