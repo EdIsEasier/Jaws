@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -18,10 +19,12 @@ public class MenuFrame extends JFrame{
 	private Favourites faves;
 	private SearchFrame search;
 	private User user;
+	private String path;
 
 	public MenuFrame(User user ,SearchFrame searchFrame, Favourites favesFrame){
 		super("Amnity Police");
-
+		
+		path = System.getProperty("user.dir") + "\\Users\\";
 		search = searchFrame;
 		faves = favesFrame;
 		this.user = user;
@@ -36,7 +39,7 @@ public class MenuFrame extends JFrame{
 		JButton jbSearch = new JButton("Search");
 		JButton jbFavourites = new JButton("Favourites");
 		setLayout(new BorderLayout());
-		JPanel bottomButtons = new JPanel(new GridLayout(3, 0));
+		JPanel bottomButtons = new JPanel(new GridLayout(4, 0));
 		JPanel spaceborder = new JPanel(new BorderLayout());
 		add(spaceborder);
 		spaceborder.add(bottomButtons, BorderLayout.SOUTH);
@@ -46,6 +49,8 @@ public class MenuFrame extends JFrame{
 		spaceborder.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
 		JButton jbAddLoginUser = new JButton("Login Or Create a User");
 		bottomButtons.add(jbAddLoginUser);
+		JButton jbLogout = new JButton("LogOut");
+		bottomButtons.add(jbLogout);
 		
 	
 		jbSearch.addActionListener(new ActionListener(){
@@ -57,7 +62,6 @@ public class MenuFrame extends JFrame{
 				
 			}
 			
-			
 		});
 		jbFavourites.addActionListener(new ActionListener(){
 			
@@ -66,15 +70,25 @@ public class MenuFrame extends JFrame{
 				setVisible(true);
 				faves.setVisible(true);
 				
-			
-				
 			}
+			
 		});
 		jbAddLoginUser.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent a){
-				LoginCreateFrame loginCreate = new LoginCreateFrame(user, faves);
+				LoginCreateFrame loginCreate = new LoginCreateFrame(user);
 				loginCreate.setVisible(true);
+				
 			}
+			
+		});
+		jbLogout.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e) {
+				File defaultUser = new File(path + "Default.txt");
+				faves.switchUser(defaultUser);
+				
+			}
+			
 		});
 		
 		pack();
