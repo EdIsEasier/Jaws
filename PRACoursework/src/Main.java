@@ -1,3 +1,4 @@
+import Jaws.Model.User;
 import Jaws.View.Favourites;
 import Jaws.View.MenuFrame;
 import Jaws.View.SearchFrame;
@@ -10,6 +11,7 @@ public class Main
 		Jaws jaws = new Jaws("jphHPbni3MIBmMKu", "jbB8OPuNG5Sxw11c");
 		Favourites favourites = new Favourites(jaws);
 		SearchFrame search = new SearchFrame(favourites, jaws);
-		MenuFrame menu = new MenuFrame(search, favourites);
+		User users = new User(favourites);
+		MenuFrame menu = new MenuFrame(users, search, favourites);
 	}
 }

@@ -12,15 +12,19 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Jaws.Model.User;
+
 public class MenuFrame extends JFrame{
 	private Favourites faves;
 	private SearchFrame search;
+	private User user;
 
-	public MenuFrame(SearchFrame searchFrame, Favourites favesFrame){
+	public MenuFrame(User user ,SearchFrame searchFrame, Favourites favesFrame){
 		super("Amnity Police");
 
 		search = searchFrame;
 		faves = favesFrame;
+		this.user = user;
 
 		createWidgets();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -68,7 +72,7 @@ public class MenuFrame extends JFrame{
 		});
 		jbAddLoginUser.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent a){
-				LoginCreateFrame loginCreate = new LoginCreateFrame(search, faves);
+				LoginCreateFrame loginCreate = new LoginCreateFrame(user, faves);
 				loginCreate.setVisible(true);
 			}
 		});

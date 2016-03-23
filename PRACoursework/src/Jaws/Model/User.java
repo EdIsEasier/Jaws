@@ -2,6 +2,7 @@ package Jaws.Model;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,11 @@ public class User {
 			warning.showMessageDialog(null, "Username Already Taken", "Warning", warning.INFORMATION_MESSAGE);
 		}
 		else{
+			try {
+				user.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			allUsers.add(user);
 			faves.switchUser(user);
 		}

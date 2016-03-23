@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,15 +18,17 @@ public class LoginCreateFrame extends JFrame{
 	private JTextField userProfile;
 	private JButton addUser;
 	private JButton login;
-	private SearchFrame search;
+	private User user;
 	private Favourites favs;
+	private String path;
 	
-	public LoginCreateFrame(SearchFrame search, Favourites favs){
+	public LoginCreateFrame(User user, Favourites favs){
 		super("Login or Create User");
 		setLayout(new BorderLayout());
 		createWidgets();
-		this.search = search;
+		this.user = user;
 		this.favs = favs;
+		path = "C:\\Users\\Michael\\git\\pracoursework\\PRACoursework\\Users\\";
 		pack();
 	}
 	
@@ -43,8 +46,8 @@ public class LoginCreateFrame extends JFrame{
 
 			public void actionPerformed(ActionEvent e) {
 				if(!userProfile.getText().equals("")){
-					File file = new File(userProfile);
-					search.addUsers(user);
+					File file = new File(path + userProfile.getText() + ".txt");
+					user.addUsers(file);
 				}
 				else{
 					JOptionPane warning = new JOptionPane();
@@ -59,7 +62,7 @@ public class LoginCreateFrame extends JFrame{
 
 			public void actionPerformed(ActionEvent e) {
 				if(!userProfile.getText().equals("")){
-					search.failLogin(userProfile.getText());
+					user.failLogin(userProfile.getText());
 				}
 				else{
 					JOptionPane warning = new JOptionPane();

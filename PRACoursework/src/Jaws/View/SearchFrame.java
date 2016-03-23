@@ -3,14 +3,11 @@ package Jaws.View;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-<<<<<<< HEAD
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-=======
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
->>>>>>> refs/remotes/origin/master
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -40,19 +37,17 @@ public class SearchFrame extends JFrame
 	private Jaws shark;
 	private JPanel jpAllDetails;
 	private Favourites faves;
-	private ArrayList<User> users;
-	private ArrayList<String> madeUsers;
-	private File[] createdUsers;
-	private User loggedIn;
+	private ArrayList<Ping> last24Hours;
+	private ArrayList<Ping> lastWeek;
+	private ArrayList<Ping> lastMonth;
 
 	public SearchFrame(Favourites faves, Jaws jaws){
 		super("Search");
 		this.faves = faves;
 		shark = jaws;
-		users = new ArrayList<User>();
-		createdUsers = addAlreadyCreatedUsers();
-		madeUsers = changeFileToString();
-		loggedIn = null;
+		last24Hours = jaws.past24Hours();
+		lastWeek = jaws.pastWeek();
+		lastMonth = jaws.pastMonth();
 		createWidgets();
 	}
 
@@ -134,7 +129,7 @@ public class SearchFrame extends JFrame
 		String tag = (String)cbTag.getSelectedItem();
 		
 		
-		jbSearch.addActionListener(new SearchListener(this, shark, cbRange, cbGender, cbStage, cbTag));
+		jbSearch.addActionListener(new SearchListener(this, shark, cbRange, cbGender, cbStage, cbTag, last24Hours, lastWeek, lastMonth));
 		jpAllDetails = new JPanel(new GridLayout(0, 1));
 		JScrollPane jsP = new JScrollPane(jpAllDetails);
 		jpAllDetails.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -148,8 +143,8 @@ public class SearchFrame extends JFrame
 	}
 	
 	public void createDescriptions(Shark shark, Ping ping){
-			ResultsPanel result = new ResultsPanel(shark, ping, faves);
-			jpAllDetails.add(result);
+		ResultsPanel result = new ResultsPanel(shark, ping, faves);
+		jpAllDetails.add(result);
 	}
 
 	public JPanel getJpAllDetails()

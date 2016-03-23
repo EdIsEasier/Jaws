@@ -30,8 +30,12 @@ public class SearchListener implements ActionListener
 	private SearchFrame search;
 	private ArrayList<Ping> nonDuplicates;
 	private List<Ping> filteredSharks;
+	private ArrayList<Ping> past24Hours;
+	private ArrayList<Ping> pastWeek;
+	private ArrayList<Ping> pastMonth;
+	
 
-	public SearchListener(SearchFrame search, Jaws jaws, JComboBox range, JComboBox gender, JComboBox stage, JComboBox location)
+	public SearchListener(SearchFrame search, Jaws jaws, JComboBox range, JComboBox gender, JComboBox stage, JComboBox location, ArrayList<Ping> past24Hours, ArrayList<Ping> pastWeek, ArrayList<Ping> pastMonth)
 	{
 		this.search = search;
 		pings = new ArrayList<>();
@@ -40,8 +44,11 @@ public class SearchListener implements ActionListener
 		this.gender = gender;
 		this.stage = stage;
 		this.location = location;
-		nonDuplicates = new ArrayList<>();
+		nonDuplicates = deleteDuplicates();
 		filteredSharks = new ArrayList<Ping>();
+		this.past24Hours = past24Hours;
+		this.pastWeek = pastWeek;
+		this.pastMonth = pastMonth;
 	}
 
 	
@@ -49,7 +56,7 @@ public class SearchListener implements ActionListener
 		switch(range){
 		case "Last 24 Hours":
 			for(Ping p: nonDuplicates){
-					for(Ping p24: jaws.past24Hours()){
+					for(Ping p24: past24Hours){
 						if(p.getTime().equals(p24.getTime())){
 							filteredSharks.add(p);
 							continue;
@@ -59,7 +66,7 @@ public class SearchListener implements ActionListener
 			break;
 		case "Last Week":
 				for(Ping p: nonDuplicates){
-					for(Ping pw: jaws.pastWeek()){
+					for(Ping pw: pastWeek){
 						if(p.getTime().equals(pw.getTime())){
 							filteredSharks.add(p);
 							continue;
@@ -69,7 +76,7 @@ public class SearchListener implements ActionListener
 			break;
 		case "Last Month":
 				for(Ping p: nonDuplicates){
-					for(Ping pm: jaws.pastMonth()){
+					for(Ping pm: pastMonth){
 						if(p.getTime().equals(pm.getTime())){
 							filteredSharks.add(p);
 							continue;
@@ -205,7 +212,6 @@ public class SearchListener implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		filteredSharks.clear();
-		nonDuplicates = deleteDuplicates();
 		String strRange = range.getSelectedItem().toString();
 		String strGender = gender.getSelectedItem().toString();
 		String strStage = stage.getSelectedItem().toString();
@@ -217,10 +223,6 @@ public class SearchListener implements ActionListener
 		filterByStage(strStage); // filter the results by stage of life
 		filterByTagLoc(strLocation); // filter the results by tag location
 		createPanels();
-		System.out.println("actionPerformed (after range filter):");
-		System.out.println(jaws.past24Hours());
-		System.out.println(nonDuplicates);
-		System.out.println(filteredSharks);
 		
 	}
 }

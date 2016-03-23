@@ -34,8 +34,8 @@ public class Favourites extends JFrame{
 		//favouriteSharks = new ArrayList<>();
 		favouriteSharksModel = new DefaultListModel<>();
 		this.jaws = jaws;
-		loggedIn = null;
-		addUserFavourites();
+		loggedIn = new File("C:\\Users\\Michael\\git\\pracoursework\\PRACoursework\\Users\\Default.txt");
+		//addUserFavourites();
 		createWidgets();
 	}
 
@@ -67,13 +67,13 @@ public class Favourites extends JFrame{
 		pack();
 	}
 	
-	public void addUserFavourites(){
+	/*public void addUserFavourites(){
 		if(loggedIn != null){
 			for(Shark s: loggedIn.getSharks()){
 				addShark(s);
 			}
 		}
-	}
+	}*/
 
 	private double calculateDistance(double lat1, double long1, double lat2, double long2) {
 		double earthRadius = 6371000; // in meters
@@ -90,7 +90,7 @@ public class Favourites extends JFrame{
 		loggedIn = user;
 	}
 	
-	public User getUser(){
+	public File getUser(){
 		return loggedIn;
 	}
 }
