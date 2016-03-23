@@ -1,6 +1,7 @@
 package Jaws.View;
 
 import java.awt.BorderLayout;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -21,7 +22,7 @@ public class Favourites extends JFrame{
 
 	private final static Location KINGS_LOCATION = new Location(51.5119, 0.1161);
 	private JTextArea jtaSharks;
-	private User loggedIn;
+	private File loggedIn;
 	private JList jlSharks;
 	private Jaws jaws;
 	//private List<Shark> favouriteSharks;
@@ -85,7 +86,7 @@ public class Favourites extends JFrame{
 		return (earthRadius * c);
 	}
 
-	public void switchUser(User user){
+	public void switchUser(File user){
 		loggedIn = user;
 	}
 	
