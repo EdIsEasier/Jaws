@@ -5,22 +5,29 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import Jaws.Controller.FavouriteSharkCellRenderer;
 import api.jaws.Jaws;
+import api.jaws.Ping;
+import api.jaws.Shark;
 
 public class Favourites extends JFrame{
 
 	private File loggedIn;
 	private JList jlSharks;
 	private Jaws jaws;
+	private SearchFrame search;
 	private DefaultListModel<String> favouriteSharksModel;
 	private String path;
+	private ArrayList<Ping> sharkPings;
 
 	public Favourites(Jaws jaws){
 		super("Favourites");
@@ -41,6 +48,24 @@ public class Favourites extends JFrame{
 		jlSharks = new JList(favouriteSharksModel);
 		jlSharks.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		jlSharks.setCellRenderer(new FavouriteSharkCellRenderer(jaws));
+		jlSharks.addListSelectionListener(new ListSelectionListener()
+		{
+			@Override
+			public void valueChanged(ListSelectionEvent e)
+			{
+				String selectedShark = jlSharks.getSelectedValue().toString();
+				for(Ping p : sharkPings)
+				{
+					if(p.getName().equals(selectedShark))
+					{
+						search.clearJpAllDetails();
+						search.createDescriptions(jaws.getShark(selectedShark), p);
+						search.setVisible(true);
+						search.toFront();
+					}
+				}
+			}
+		});
 		//add(jtaSharks, BorderLayout.CENTER);
 		add(jlSharks, BorderLayout.CENTER);
 		
@@ -64,7 +89,6 @@ public class Favourites extends JFrame{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
 		}
 	}
 
@@ -76,5 +100,15 @@ public class Favourites extends JFrame{
 	
 	public File getUser(){
 		return loggedIn;
+	}
+
+	public void updateSharks(ArrayList<Ping> pings)
+	{
+		this.sharkPings = pings;
+	}
+
+	public void setSearchFrame(SearchFrame search)
+	{
+		this.search = search;
 	}
 }

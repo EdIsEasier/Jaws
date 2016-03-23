@@ -23,6 +23,7 @@ public class Main
 		}
 		Favourites favourites = new Favourites(jaws);
 		SearchFrame search = new SearchFrame(favourites, jaws);
+		favourites.setSearchFrame(search);
 		User users = new User(favourites);
 		MenuFrame menu = new MenuFrame(users, search, favourites);
 	}
