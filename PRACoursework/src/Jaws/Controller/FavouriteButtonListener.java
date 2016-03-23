@@ -1,6 +1,5 @@
 package Jaws.Controller;
 
-import Jaws.Model.User;
 import Jaws.View.Favourites;
 import api.jaws.Shark;
 
@@ -30,11 +29,11 @@ public class FavouriteButtonListener implements ActionListener
 		if (!favButton.getText().equals("Following"))
 		{
 			favButton.setText("Following");
-			faves.addShark(shark);
+			faves.addShark(shark.getName());
 			writeToFile();
 		}
 	}
-	
+
 	public void writeToFile(){
 		File user = faves.getUser();
 		try{

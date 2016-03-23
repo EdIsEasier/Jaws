@@ -3,7 +3,9 @@ package Jaws.View;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,13 +22,10 @@ import api.jaws.Jaws;
 
 public class Favourites extends JFrame{
 
-	private final static Location KINGS_LOCATION = new Location(51.5119, 0.1161);
-	private JTextArea jtaSharks;
 	private File loggedIn;
 	private JList jlSharks;
 	private Jaws jaws;
-	//private List<Shark> favouriteSharks;
-	private DefaultListModel<Shark> favouriteSharksModel;
+	private DefaultListModel<String> favouriteSharksModel;
 
 	public Favourites(Jaws jaws){
 		super("Favourites");
@@ -44,26 +43,18 @@ public class Favourites extends JFrame{
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		JLabel jlText = new JLabel("Your favourite sharks are this far away from you : ");
 		add(jlText,BorderLayout.NORTH);
-		jtaSharks = new JTextArea();
-		jtaSharks.setEditable(false);
 		jlSharks = new JList(favouriteSharksModel);
 		jlSharks.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		jlSharks.setCellRenderer(new FavouriteSharkCellRenderer());
+		jlSharks.setCellRenderer(new FavouriteSharkCellRenderer(jaws));
 		//add(jtaSharks, BorderLayout.CENTER);
 		add(jlSharks, BorderLayout.CENTER);
 		
 		pack();
 	}
 
-	public void addShark(Shark shark)
+	public void addShark(String sharkName)
 	{
-		String sharkName = shark.getName();
-		Location sharkLocation = jaws.getLastLocation(sharkName);
-		double sharkDistance = calculateDistance(KINGS_LOCATION.getLatitude(), KINGS_LOCATION.getLongitude(), sharkLocation.getLatitude(), sharkLocation.getLongitude());
-		String strSharkDistance = Double.toString(sharkDistance);
-		String sentence = sharkName + " " + strSharkDistance + " meters";
-		favouriteSharksModel.addElement(shark);
-		jtaSharks.append(sharkName + " " + strSharkDistance + " meters");
+		favouriteSharksModel.addElement(sharkName);
 		pack();
 	}
 	
@@ -74,17 +65,6 @@ public class Favourites extends JFrame{
 			}
 		}
 	}*/
-
-	private double calculateDistance(double lat1, double long1, double lat2, double long2) {
-		double earthRadius = 6371000; // in meters
-		double dLat = Math.toRadians(lat2 - lat1);
-		double dLng = Math.toRadians(long2 - long1);
-		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-				Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-		return (earthRadius * c);
-	}
 
 	public void switchUser(File user){
 		loggedIn = user;
