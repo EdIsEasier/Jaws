@@ -22,6 +22,7 @@ public class ResultsPanel extends JPanel{
 	private Shark shark;
 	private Ping date;
 	private Favourites faves;
+	private JButton follow;
 	
 	public ResultsPanel(Shark shark, Ping ping, Favourites faves) {
 		super(new GridLayout(2, 1));
@@ -61,11 +62,18 @@ public class ResultsPanel extends JPanel{
 		JPanel jpBottomStrip = new JPanel(new BorderLayout());
 		jpBottomStrip.add(new JLabel("Last Ping: " + date.getTime()), BorderLayout.WEST);
 		
-		jpBottomStrip.add(new JButton("Follow"){{addActionListener(new FavouriteButtonListener(faves, shark));}}, BorderLayout.EAST);
+		follow = new JButton("Follow");
+		follow.addActionListener(new FavouriteButtonListener(faves, shark));
+		
+		jpBottomStrip.add(follow, BorderLayout.EAST);
 		
 		jpDetails3.add(jpBottomStrip, BorderLayout.SOUTH);
 		
 		add(jpDetails2);
 		add(jpDetails3);
+	}
+	
+	public JButton getFollowed(){
+		return follow;
 	}
 }

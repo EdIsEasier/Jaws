@@ -160,9 +160,15 @@ public class SearchFrame extends JFrame
 	}
 	
 	public void putDescription(String sharkName){
-		jpAllDetails.add(componentMap.get(sharkName));
+		ResultsPanel thePanel = (ResultsPanel) componentMap.get(sharkName);
+		jpAllDetails.add(thePanel);
 	}
 
+	public void switchToFollowing(String sharkName){
+		ResultsPanel thePanel = (ResultsPanel) componentMap.get(sharkName);
+		thePanel.getFollowed().setText("Following");
+	}
+	
 	public JPanel getJpAllDetails()
 	{
 		return jpAllDetails;

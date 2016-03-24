@@ -36,7 +36,6 @@ public class Favourites extends JFrame{
 		favouriteSharksModel = new DefaultListModel<>();
 		this.jaws = jaws;
 		loggedIn = new File(path + "Default.txt");
-		addUserFavourites();
 		createWidgets();
 	}
 
@@ -88,6 +87,7 @@ public class Favourites extends JFrame{
 				BufferedReader reader = new BufferedReader(new FileReader(loggedIn));
 				while((currentShark = reader.readLine()) != null){
 					addShark(currentShark);
+					search.switchToFollowing(currentShark);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -99,6 +99,7 @@ public class Favourites extends JFrame{
 		loggedIn = user;
 		favouriteSharksModel.clear();
 		addUserFavourites();
+		
 	}
 	
 	public File getUser(){
