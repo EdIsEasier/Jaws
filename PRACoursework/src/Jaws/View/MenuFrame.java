@@ -59,7 +59,6 @@ public class MenuFrame extends JFrame{
 				//SearchFrame newSearch = new SearchFrame();
 				setVisible(true);
 				search.setVisible(true);
-				
 			}
 			
 		});
@@ -69,7 +68,6 @@ public class MenuFrame extends JFrame{
 				//Favourites newfavourites = new Favourites();
 				setVisible(true);
 				faves.setVisible(true);
-				
 			}
 			
 		});
@@ -77,7 +75,7 @@ public class MenuFrame extends JFrame{
 			public void actionPerformed(ActionEvent a){
 				LoginCreateFrame loginCreate = new LoginCreateFrame(user);
 				loginCreate.setVisible(true);
-				
+				faves.removeSharknadoWarning();
 			}
 			
 		});
@@ -86,7 +84,7 @@ public class MenuFrame extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				File defaultUser = new File(path + "Default.txt");
 				faves.switchUser(defaultUser);
-				
+				faves.removeSharknadoWarning();
 			}
 			
 		});
