@@ -60,7 +60,7 @@ public class Favourites extends JFrame{
 						if(p.getName().equals(selectedShark))
 						{
 							search.clearJpAllDetails();
-							search.createDescriptions(jaws.getShark(selectedShark), p);
+							search.putDescription(p.getName());
 							search.setVisible(true);
 							search.toFront();
 							break;
