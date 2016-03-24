@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import Jaws.Controller.SearchListener;
+import Jaws.Controller.SharkOfDayController;
 import Jaws.Model.User;
 import api.jaws.Jaws;
 import api.jaws.Ping;
@@ -121,6 +122,8 @@ public class SearchFrame extends JFrame
 		
 		JButton jbSearch = new JButton("Search");
 		JButton jbStatistics = new JButton("Statistics");
+		JButton jbSofDay = new JButton("Shark Of The Day");
+		
 		jbStatistics.addActionListener(new ActionListener(){
 
 			@Override
@@ -130,9 +133,15 @@ public class SearchFrame extends JFrame
 			}
 			
 		});
-		jpTrackerSearch.add(jbSearch, BorderLayout.NORTH);
 		jpTrackerSearch.add(new JLabel(new ImageIcon(this.getClass().getResource("resources/sharkPic.jpg"))), BorderLayout.SOUTH);
-		jpTrackerSearch.add(jbStatistics, BorderLayout.CENTER);
+		JPanel searchStatsAndSharks = new JPanel(new GridLayout(3, 1));
+		searchStatsAndSharks.add(jbSearch);
+		searchStatsAndSharks.add(jbStatistics);
+		searchStatsAndSharks.add(jbSofDay);
+		jpTrackerSearch.add(searchStatsAndSharks, BorderLayout.NORTH);
+		
+		jbSofDay.addActionListener(new SharkOfDayController(nonDuplicates, shark));
+		
 		String range = (String)cbRange.getSelectedItem();
 		String gender = (String)cbGender.getSelectedItem();
 		String stage = (String)cbStage.getSelectedItem();

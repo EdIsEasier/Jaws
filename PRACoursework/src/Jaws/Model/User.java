@@ -33,19 +33,22 @@ public class User {
 		return false;
 	}
 
-	public void addUsers(File user){
+	public boolean addUsers(File user){
 		if(isUsers(user)){
 			JOptionPane warning = new JOptionPane();
 			warning.showMessageDialog(null, "Username Already Taken", "Warning", warning.INFORMATION_MESSAGE);
+			return false;
 		}
 		else{
 			try {
 				user.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
+				return false;
 			}
 			allUsers.add(user);
 			faves.switchUser(user);
+			return true;
 		}
 	}
 
@@ -59,11 +62,13 @@ public class User {
 		return false;
 	}
 
-	public void failLogin(String username){
+	public boolean failLogin(String username){
 		if(!login(username)){
 			JOptionPane warning = new JOptionPane();
 			warning.showMessageDialog(null, "Could Not Find User", "Login Fail", warning.INFORMATION_MESSAGE);
+			return true;
 		}
+		return false;
 	}
 	
 	public ArrayList<File> changeToList(File[] files){

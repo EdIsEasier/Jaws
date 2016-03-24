@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.swing.JButton;
@@ -45,7 +46,10 @@ public class LoginCreateFrame extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				if(!userProfile.getText().equals("")){
 					File file = new File(path + userProfile.getText() + ".txt");
-					user.addUsers(file);
+					if(user.addUsers(file)){
+						closeFrame();
+					}
+					userProfile.setText("");
 				}
 				else{
 					JOptionPane warning = new JOptionPane();
@@ -60,7 +64,10 @@ public class LoginCreateFrame extends JFrame{
 
 			public void actionPerformed(ActionEvent e) {
 				if(!userProfile.getText().equals("")){
-					user.failLogin(userProfile.getText());
+					if(!user.failLogin(userProfile.getText())){
+						closeFrame();
+					}
+					userProfile.setText("");
 				}
 				else{
 					JOptionPane warning = new JOptionPane();
@@ -70,6 +77,11 @@ public class LoginCreateFrame extends JFrame{
 			
 		});
 		
+	}
+	
+	private void closeFrame(){
+		setVisible(false);
+		dispose();
 	}
 
 }
