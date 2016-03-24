@@ -29,6 +29,7 @@ public class ResultsPanel extends JPanel{
 		this.shark = shark;
 		this.date = ping;
 		this.faves = faves;
+		setName(shark.getName());
 
 		this.setBorder(BorderFactory.createEtchedBorder());
 		createWidgets();
@@ -59,12 +60,9 @@ public class ResultsPanel extends JPanel{
 		jpDetails3.add(desc, BorderLayout.CENTER);
 		JPanel jpBottomStrip = new JPanel(new BorderLayout());
 		jpBottomStrip.add(new JLabel("Last Ping: " + date.getTime()), BorderLayout.WEST);
-		if(faves.getUser() == null){
-			jpBottomStrip.add(new JButton("Follow"){{addActionListener(new FavouriteButtonListener(faves, shark));}}, BorderLayout.EAST);
-		}
-		else{
-			jpBottomStrip.add(new JButton("Follow"){{addActionListener(new FavouriteButtonListener(faves, shark));}}, BorderLayout.EAST);
-		}
+		
+		jpBottomStrip.add(new JButton("Follow"){{addActionListener(new FavouriteButtonListener(faves, shark));}}, BorderLayout.EAST);
+		
 		jpDetails3.add(jpBottomStrip, BorderLayout.SOUTH);
 		
 		add(jpDetails2);

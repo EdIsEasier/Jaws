@@ -2,6 +2,7 @@ package Jaws.View;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -9,7 +10,11 @@ import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 import javax.imageio.IIOException;
 import javax.swing.BorderFactory;
@@ -40,7 +45,9 @@ public class SearchFrame extends JFrame
 	private ArrayList<Ping> last24Hours;
 	private ArrayList<Ping> lastWeek;
 	private ArrayList<Ping> lastMonth;
-
+	private ArrayList<Ping> nonDuplicates;
+	private HashMap<String, Component> componentMap;
+	
 	public SearchFrame(Favourites faves, Jaws jaws){
 		super("Search");
 		this.faves = faves;
@@ -48,6 +55,9 @@ public class SearchFrame extends JFrame
 		last24Hours = jaws.past24Hours();
 		lastWeek = jaws.pastWeek();
 		lastMonth = jaws.pastMonth();
+		nonDuplicates = deleteDuplicates();
+		componentMap = new HashMap<String, Component>();
+		createDescriptions();
 		createWidgets();
 	}
 
@@ -129,7 +139,7 @@ public class SearchFrame extends JFrame
 		String tag = (String)cbTag.getSelectedItem();
 		
 		
-		jbSearch.addActionListener(new SearchListener(this, shark, cbRange, cbGender, cbStage, cbTag, last24Hours, lastWeek, lastMonth));
+		jbSearch.addActionListener(new SearchListener(this, shark, cbRange, cbGender, cbStage, cbTag, last24Hours, lastWeek, lastMonth, nonDuplicates));
 		jpAllDetails = new JPanel(new GridLayout(0, 1));
 		JScrollPane jsP = new JScrollPane(jpAllDetails);
 		jpAllDetails.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -142,9 +152,15 @@ public class SearchFrame extends JFrame
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 	
-	public void createDescriptions(Shark shark, Ping ping){
-		ResultsPanel result = new ResultsPanel(shark, ping, faves);
-		jpAllDetails.add(result);
+	public void createDescriptions(){
+		for(Ping p: nonDuplicates){
+			ResultsPanel result = new ResultsPanel(shark.getShark(p.getName()), p, faves);
+			componentMap.put(p.getName(), result);
+		}
+	}
+	
+	public void putDescription(String sharkName){
+		jpAllDetails.add(componentMap.get(sharkName));
 	}
 
 	public JPanel getJpAllDetails()
@@ -160,5 +176,42 @@ public class SearchFrame extends JFrame
 	public Favourites getFaves()
 	{
 		return faves;
+	}
+	
+	private ArrayList<Ping> deleteDuplicates(){
+		ArrayList<Ping> tempPings = new ArrayList<Ping>();
+		ArrayList<Ping> tempPings2 = new ArrayList<Ping>();
+		tempPings.addAll(shark.pastMonth());
+		tempPings2.addAll(shark.pastMonth());
+		ListIterator<Ping> it = tempPings.listIterator(0);
+		while(it.hasNext()){
+			Ping tempPing = it.next();
+			ListIterator<Ping> it2 = tempPings2.listIterator(0);
+			while(it2.hasNext()){
+				Ping tempPing2 = it2.next();
+				if(tempPing.getName().equals(tempPing2.getName())){
+					if(changePingToDate(tempPing2).before(changePingToDate(tempPing))){
+						it2.remove();
+					}
+				}
+			}
+		}
+		return tempPings2;
+	}
+	
+	private Calendar changePingToDate(Ping ping){
+		Calendar calendar = new GregorianCalendar();
+		String time = ping.getTime();
+		String[] dates = time.split(" ");
+		String[] sDate = dates[0].split("-");
+		String[] sTime = dates[1].split(":");
+		int[] date = new int[3];
+		int[] iTime = new int[3];
+		for(int i = 0; i < 3; i++){
+			date[i] = Integer.parseInt(sDate[i]);
+			iTime[i] = Integer.parseInt(sTime[i]);
+		}
+		calendar.set(date[0], date[1], date[2], iTime[0], iTime[1], iTime[2]);
+		return calendar;
 	}
 }

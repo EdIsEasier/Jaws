@@ -19,16 +19,13 @@ public class LoginCreateFrame extends JFrame{
 	private JButton addUser;
 	private JButton login;
 	private User user;
-	private Favourites favs;
 	private String path;
-	private JButton logout;
 	
-	public LoginCreateFrame(User user, Favourites favs){
+	public LoginCreateFrame(User user){
 		super("Login or Create User");
 		setLayout(new BorderLayout());
 		createWidgets();
 		this.user = user;
-		this.favs = favs;
 		path = System.getProperty("user.dir") + "\\Users\\";
 		pack();
 	}
@@ -36,13 +33,11 @@ public class LoginCreateFrame extends JFrame{
 	public void createWidgets(){
 		addUser = new JButton("Create User");
 		login = new JButton("Login");
-		logout = new JButton("Logout");
 		userProfile = new JTextField();
 		JPanel jpBot = new JPanel(new FlowLayout());
 		add(userProfile, BorderLayout.CENTER);
 		jpBot.add(login);
 		jpBot.add(addUser);
-		jpBot.add(logout);
 		add(jpBot, BorderLayout.SOUTH);
 		
 		addUser.addActionListener(new ActionListener(){
@@ -75,13 +70,6 @@ public class LoginCreateFrame extends JFrame{
 			
 		});
 		
-		logout.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-			
-		});
 	}
 
 }

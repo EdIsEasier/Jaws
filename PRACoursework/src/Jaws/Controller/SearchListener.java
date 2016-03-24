@@ -35,7 +35,7 @@ public class SearchListener implements ActionListener
 	private ArrayList<Ping> pastMonth;
 	
 
-	public SearchListener(SearchFrame search, Jaws jaws, JComboBox range, JComboBox gender, JComboBox stage, JComboBox location, ArrayList<Ping> past24Hours, ArrayList<Ping> pastWeek, ArrayList<Ping> pastMonth)
+	public SearchListener(SearchFrame search, Jaws jaws, JComboBox range, JComboBox gender, JComboBox stage, JComboBox location, ArrayList<Ping> past24Hours, ArrayList<Ping> pastWeek, ArrayList<Ping> pastMonth, ArrayList<Ping> nonDuplicates)
 	{
 		this.search = search;
 		pings = new ArrayList<>();
@@ -44,7 +44,7 @@ public class SearchListener implements ActionListener
 		this.gender = gender;
 		this.stage = stage;
 		this.location = location;
-		nonDuplicates = deleteDuplicates();
+		this.nonDuplicates = nonDuplicates;
 		search.getFaves().updateSharks(nonDuplicates);
 		filteredSharks = new ArrayList<Ping>();
 		this.past24Hours = past24Hours;
@@ -150,27 +150,6 @@ public class SearchListener implements ActionListener
 		}
 	}
 	
-	private ArrayList<Ping> deleteDuplicates(){
-		ArrayList<Ping> tempPings = new ArrayList<Ping>();
-		ArrayList<Ping> tempPings2 = new ArrayList<Ping>();
-		tempPings.addAll(jaws.pastMonth());
-		tempPings2.addAll(jaws.pastMonth());
-		ListIterator<Ping> it = tempPings.listIterator(0);
-		while(it.hasNext()){
-			Ping tempPing = it.next();
-			ListIterator<Ping> it2 = tempPings2.listIterator(0);
-			while(it2.hasNext()){
-				Ping tempPing2 = it2.next();
-				if(tempPing.getName().equals(tempPing2.getName())){
-					if(changePingToDate(tempPing2).before(changePingToDate(tempPing))){
-						it2.remove();
-					}
-				}
-			}
-		}
-		return tempPings2;
-	}
-	
 	//could be useful
 	private ArrayList<String> pingToNames(ArrayList<Ping> pings){
 		ArrayList<String> tempStrings = new ArrayList<String>();
@@ -180,29 +159,13 @@ public class SearchListener implements ActionListener
 		return tempStrings;
 	}
 	
-	private Calendar changePingToDate(Ping ping){
-		Calendar calendar = new GregorianCalendar();
-		String time = ping.getTime();
-		String[] dates = time.split(" ");
-		String[] sDate = dates[0].split("-");
-		String[] sTime = dates[1].split(":");
-		int[] date = new int[3];
-		int[] iTime = new int[3];
-		for(int i = 0; i < 3; i++){
-			date[i] = Integer.parseInt(sDate[i]);
-			iTime[i] = Integer.parseInt(sTime[i]);
-		}
-		calendar.set(date[0], date[1], date[2], iTime[0], iTime[1], iTime[2]);
-		return calendar;
-	}
-	
 	//need to order by first found pings
 	private void createPanels(){
 		search.getJpAllDetails().removeAll();
 		Iterator<Ping> it = filteredSharks.iterator();
 		while(it.hasNext()){
 			Ping nextShark = it.next();
-			search.createDescriptions(jaws.getShark(nextShark.getName()), nextShark);
+			search.putDescription(nextShark.getName());
 			search.revalidate();
 			//search.pack();
 		}
