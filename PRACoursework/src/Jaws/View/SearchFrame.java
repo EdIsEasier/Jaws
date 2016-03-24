@@ -178,6 +178,11 @@ public class SearchFrame extends JFrame
 		thePanel.getFollowed().setText("Following");
 	}
 	
+	public void switchToFollow(String sharkName){
+		ResultsPanel thePanel = (ResultsPanel) componentMap.get(sharkName);
+		thePanel.getFollowed().setText("Follow");
+	}
+	
 	public JPanel getJpAllDetails()
 	{
 		return jpAllDetails;

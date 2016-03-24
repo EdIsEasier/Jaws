@@ -7,6 +7,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -123,6 +124,7 @@ public class Favourites extends JFrame{
 					addShark(currentShark);
 					search.switchToFollowing(currentShark);
 				}
+				reader.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -130,6 +132,16 @@ public class Favourites extends JFrame{
 	}
 
 	public void switchUser(File user){
+		try {
+			String currentShark;
+			BufferedReader reader = new BufferedReader(new FileReader(loggedIn));
+			while((currentShark = reader.readLine()) != null){
+				search.switchToFollow(currentShark);
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		loggedIn = user;
 		favouriteSharksModel.clear();
 		addUserFavourites();

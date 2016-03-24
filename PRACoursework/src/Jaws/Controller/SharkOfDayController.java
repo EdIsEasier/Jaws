@@ -64,6 +64,7 @@ public class SharkOfDayController implements ActionListener{
 				SharkOfDayFrame newShark = new SharkOfDayFrame(reader.readLine(), jaws.getVideo(reader.readLine()));
 				newShark.setVisible(true);
 			}
+			reader.close();
 		} catch (IOException e2) {
 			e2.printStackTrace();
 		}
