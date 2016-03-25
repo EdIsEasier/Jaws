@@ -15,12 +15,30 @@ import javax.swing.JPanel;
 
 import Jaws.Model.User;
 
+/**
+ * MenuFrame class is the main menu window,
+ * the first UI component the user sees when
+ * they run the application
+ *
+ * @author Benjamin
+ * @author Edvinas
+ * @author Tomas
+ * @author Hannah
+ */
 public class MenuFrame extends JFrame{
-	private Favourites faves;
-	private SearchFrame search;
-	private User user;
-	private String path;
+	private Favourites faves; // Reference to the Favourites window
+	private SearchFrame search; // Reference to the Search window
+	private User user; // Reference to the User class
+	private String path; // Path to the Users folder
 
+	/**
+	 * Constructor that initialises all the required frame and User class
+	 * references so that the Menu frame can communicate with them
+	 *
+	 * @param user reference to the User class
+	 * @param searchFrame reference to the Search window
+	 * @param favesFrame reference to the Favourites window
+	 */
 	public MenuFrame(User user ,SearchFrame searchFrame, Favourites favesFrame){
 		super("Amnity Police");
 		
@@ -32,8 +50,11 @@ public class MenuFrame extends JFrame{
 		createWidgets();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
-	
-	public void createWidgets(){
+
+	/**
+	 * Initialises and creates all the components for the window
+	 */
+	private void createWidgets(){
 		
 		JLabel picture = new JLabel(new ImageIcon(this.getClass().getResource("resources/sharkPic.jpg")));
 		JButton jbSearch = new JButton("Search");
@@ -51,58 +72,37 @@ public class MenuFrame extends JFrame{
 		bottomButtons.add(jbAddLoginUser);
 		JButton jbLogout = new JButton("LogOut");
 		bottomButtons.add(jbLogout);
-		
-	
+
 		jbSearch.addActionListener(new ActionListener(){
-			
 			public void actionPerformed(ActionEvent e) {
-				//SearchFrame newSearch = new SearchFrame();
-				setVisible(true);
 				search.setVisible(true);
 			}
-			
 		});
+
 		jbFavourites.addActionListener(new ActionListener(){
-			
 			public void actionPerformed(ActionEvent a){
-				//Favourites newfavourites = new Favourites();
-				setVisible(true);
 				faves.setVisible(true);
 			}
-			
 		});
+
 		jbAddLoginUser.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent a){
 				LoginCreateFrame loginCreate = new LoginCreateFrame(user);
 				loginCreate.setVisible(true);
-				faves.removeSharknadoWarning();
 			}
-			
 		});
-		jbLogout.addActionListener(new ActionListener(){
 
+		jbLogout.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
+				// if the user logs out, change the curernt user to the Default user
 				File defaultUser = new File(path + "Default.txt");
 				faves.switchUser(defaultUser);
-				faves.removeSharknadoWarning();
+				faves.removeSharknadoWarning(); // remove Sharknado warning if there is one, so the new user won't see it
 			}
-			
 		});
 		
 		pack();
 		setVisible(true);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		
-	
 	}
-
-	public Favourites getFavouritesFrame()
-	{
-		return faves;
-	}
-
-	/*
-	public static void main(String[] args){
-		MenuFrame f = new MenuFrame();
-	}*/
 }

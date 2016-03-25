@@ -2,99 +2,118 @@ package Jaws.Controller;
 
 import api.jaws.Jaws;
 import api.jaws.Ping;
-import api.jaws.Shark;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
 
-import Jaws.View.ResultsPanel;
 import Jaws.View.SearchFrame;
 
 import javax.swing.JComboBox;
 
-
+/**
+ * SearchListener class is responsible for retrieving the right
+ * sharks based on the provided criteria
+ *
+ * @author Benjamin
+ * @author Edvinas
+ * @author Tomas
+ * @author Hannah
+ */
 public class SearchListener implements ActionListener
 {
-	private Map<Shark, Ping> sharksPings;
-	private List<Ping> pings;
-	private JComboBox range, gender, stage, location;
-	private Jaws jaws;
-	private SearchFrame search;
-	private ArrayList<Ping> nonDuplicates;
-	private List<Ping> filteredSharks;
-	private ArrayList<Ping> past24Hours;
-	private ArrayList<Ping> pastWeek;
-	private ArrayList<Ping> pastMonth;
-	
+	private JComboBox range, gender, stage, location; // combo boxes with the user selected criteria
+	private Jaws jaws; // reference to the Jaws API
+	private SearchFrame search; // reference to the Search frame
+	private ArrayList<Ping> nonDuplicates; // list of pings with no duplicates
+	private List<Ping> filteredSharks; // list of filtered pings
+	private ArrayList<Ping> past24Hours; // list of pings from the past 24 hours
+	private ArrayList<Ping> pastWeek; // list of pings from the last week
+	private ArrayList<Ping> pastMonth; // list of pings from the last month
 
+	/**
+	 * Constructor that initialises all the fields that are passed in
+	 *
+	 * @param search reference to the Search window
+	 * @param jaws reference to the Jaws API
+	 * @param range shark range
+	 * @param gender shark gender
+	 * @param stage shark life stage
+	 * @param location shark tag location
+	 * @param past24Hours pings from the last 24 hours
+	 * @param pastWeek pings from the last week
+	 * @param pastMonth pings from the last month
+	 * @param nonDuplicates pings with no duplicates
+	 */
 	public SearchListener(SearchFrame search, Jaws jaws, JComboBox range, JComboBox gender, JComboBox stage, JComboBox location, ArrayList<Ping> past24Hours, ArrayList<Ping> pastWeek, ArrayList<Ping> pastMonth, ArrayList<Ping> nonDuplicates)
 	{
 		this.search = search;
-		pings = new ArrayList<>();
 		this.jaws = jaws;
 		this.range = range;
 		this.gender = gender;
 		this.stage = stage;
 		this.location = location;
 		this.nonDuplicates = nonDuplicates;
-		//search.getFaves().updateSharks(nonDuplicates);
 		filteredSharks = new ArrayList<Ping>();
 		this.past24Hours = past24Hours;
 		this.pastWeek = pastWeek;
 		this.pastMonth = pastMonth;
 	}
 
-	
+	/**
+	 * Filters the pings by range
+	 *
+	 * @param range range
+	 */
 	public void filterByRange(String range){
 		switch(range){
 		case "Last 24 Hours":
-			for(Ping p: nonDuplicates){
-					for(Ping p24: past24Hours){
-						if(p.getTime().equals(p24.getTime())){
-							filteredSharks.add(p);
-							continue;
+			for(Ping p: nonDuplicates){ // loop over all the non-duplicate sharks
+					for(Ping p24 : past24Hours){ // loop over all the pings from the past 24 hours
+						if(p.getTime().equals(p24.getTime())){ // if their time matches
+							filteredSharks.add(p); // add that ping to all the filtered ones
+							break;
 						}
 					}
 				}
 			break;
 		case "Last Week":
-				for(Ping p: nonDuplicates){
+				for(Ping p : nonDuplicates){
 					for(Ping pw: pastWeek){
 						if(p.getTime().equals(pw.getTime())){
 							filteredSharks.add(p);
-							continue;
+							break;
 						}
 					}
 				}
 			break;
 		case "Last Month":
-				for(Ping p: nonDuplicates){
+				for(Ping p : nonDuplicates){
 					for(Ping pm: pastMonth){
 						if(p.getTime().equals(pm.getTime())){
 							filteredSharks.add(p);
-							continue;
+							break;
 						}
 					}
 				}
 			break;
 		}
 	}
-	
+
+	/**
+	 * Filter the pings by gender
+	 *
+	 * @param gender gender
+	 */
 	private void filterByGender(String gender){
-		Iterator<Ping> it = filteredSharks.iterator();
+		Iterator<Ping> it = filteredSharks.iterator(); // get an array iterator
 		if(gender.equals("Male")){
-			while(it.hasNext()){
-				String tempShark = it.next().getName();
-				if(!jaws.getShark(tempShark).getGender().equals("Male")){
-					it.remove();
+			while(it.hasNext()){ // while there is a shark
+				String tempShark = it.next().getName(); // get its name
+				if(!jaws.getShark(tempShark).getGender().equals("Male")){ // if it's not male
+					it.remove(); // remove it
 				}
 			}
 		}
@@ -107,15 +126,20 @@ public class SearchListener implements ActionListener
 			}
 		}
 	}
-	
+
+	/**
+	 * Filter the pings by life stage
+	 *
+	 * @param stage life stage
+	 */
 	private void filterByStage(String stage){
-		Iterator<Ping> it = filteredSharks.iterator();
+		Iterator<Ping> it = filteredSharks.iterator(); // get an array iterator
 		switch(stage){
 			case "Mature":
-				while(it.hasNext()){
-					String tempShark = it.next().getName();
-					if(!jaws.getShark(tempShark).getStageOfLife().equals("Mature")){
-						it.remove();
+				while(it.hasNext()){ // while there is a shark
+					String tempShark = it.next().getName(); // get its name
+					if(!jaws.getShark(tempShark).getStageOfLife().equals("Mature")){ // if it's not a mature shark
+						it.remove(); // remove it
 					}
 				}
 				break;
@@ -137,56 +161,51 @@ public class SearchListener implements ActionListener
 				break;
 		}
 	}
-	
+
+	/**
+	 * Filter the pings by tag location
+	 *
+	 * @param location tag location
+	 */
 	public void filterByTagLoc(String location){
-		if(!location.equals("All")){
-			Iterator<Ping> it = filteredSharks.iterator();
-			while(it.hasNext()){
-				String tempShark = it.next().getName();
-				if(!jaws.getShark(tempShark).getTagLocation().equals(location)){
-					it.remove();
+		if(!location.equals("All")){ // if the user didn't select "All"
+			Iterator<Ping> it = filteredSharks.iterator(); // get an array iterator
+			while(it.hasNext()){ // while there is another shark
+				String tempShark = it.next().getName(); // get its name
+				if(!jaws.getShark(tempShark).getTagLocation().equals(location)){ // if the shark was tagged elsewhere
+					it.remove(); // remove it
 				}
 			}
 		}
 	}
-	
-	//could be useful
-	private ArrayList<String> pingToNames(ArrayList<Ping> pings){
-		ArrayList<String> tempStrings = new ArrayList<String>();
-		for(Ping p: pings){
-			tempStrings.add(p.getName());
-		}
-		return tempStrings;
-	}
-	
-	//need to order by first found pings
+
+	/**
+	 * Creates shark description panels for each of the filtered sharks
+	 */
 	private void createPanels(){
-		search.getJpAllDetails().removeAll();
+		search.getJpAllDetails().removeAll(); // remove any existing shark descriptions
 		Iterator<Ping> it = filteredSharks.iterator();
 		while(it.hasNext()){
-			Ping nextShark = it.next();
-			search.putDescription(nextShark.getName());
+			Ping nextShark = it.next(); // get the next ping
+			search.putDescription(nextShark.getName()); // add a description of that shark
 			search.revalidate();
-			//search.pack();
 		}
-		
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		filteredSharks.clear();
+		filteredSharks.clear(); // clear all the filtered sharks so there are no duplicates
+		// get all the criteria
 		String strRange = range.getSelectedItem().toString();
 		String strGender = gender.getSelectedItem().toString();
 		String strStage = stage.getSelectedItem().toString();
 		String strLocation = location.getSelectedItem().toString();
 
-		List<Shark> correctOrder = new ArrayList<Shark>();
 		filterByRange(strRange); // filter the results by range
 		filterByGender(strGender); // filter the results by gender
 		filterByStage(strStage); // filter the results by stage of life
 		filterByTagLoc(strLocation); // filter the results by tag location
-		createPanels();
-		
+		createPanels(); // create panels for all the filtered sharks
 	}
 }

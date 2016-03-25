@@ -1,14 +1,9 @@
 package Jaws.View;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -20,15 +15,32 @@ import Jaws.Controller.FavouriteButtonListener;
 import api.jaws.Ping;
 import api.jaws.Shark;
 
+/**
+ * ResultsPanel class is a description panel used to show all the information
+ * about each of the sharks
+ *
+ * @author Benjamin
+ * @author Edvinas
+ * @author Tomas
+ * @author Hannah
+ */
 public class ResultsPanel extends JPanel{
-	private Shark shark;
-	private Ping date;
-	private Favourites faves;
-	private JButton follow;
-	private JButton compare;
-	private SearchFrame search;
-	
-	public ResultsPanel(SearchFrame search, Shark shark, Ping ping, Favourites faves) {
+	private Shark shark; // shark whose information will be shown
+	private Ping date; // sharl's ping
+	private Favourites faves; // reference to the Favourites window
+	private JButton follow; // follow button
+	private JButton compare; // compare button
+	private SearchFrame search; // reference to the search frame
+
+	/**
+	 * Constructor that sets up the panel
+	 *
+	 * @param search reference to the search frame
+	 * @param shark shark whose information will be shown
+	 * @param ping shark's ping
+	 * @param faves reference to the Favourites window
+	 */
+	public ResultsPanel(SearchFrame search,Shark shark, Ping ping, Favourites faves) {
 		super(new GridLayout(2, 1));
 		
 		this.shark = shark;
@@ -40,12 +52,15 @@ public class ResultsPanel extends JPanel{
 		this.setBorder(BorderFactory.createEtchedBorder());
 		createWidgets();
 	}
-	
-	public void createWidgets(){
+
+	/**
+	 * Initialises and creates all the components for the window
+	 */
+	private void createWidgets(){
 		JPanel jpDetails2 = new JPanel(new GridLayout(6, 2));
 		JPanel jpDetails3 = new JPanel(new BorderLayout());
+
 		jpDetails2.add(new JLabel("Name: "));
-		//might just make labels and update from view or whatnot
 		jpDetails2.add(new JTextArea(shark.getName()){{setEditable(false);}});
 		jpDetails2.add(new JLabel("Gender: "));
 		jpDetails2.add(new JTextArea(shark.getGender()){{setEditable(false);}});
@@ -73,7 +88,7 @@ public class ResultsPanel extends JPanel{
 		JPanel followCompare = new JPanel(new GridLayout(2, 1));
 		followCompare.add(follow);
 		followCompare.add(compare);
-		
+
 		compare.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
@@ -86,9 +101,9 @@ public class ResultsPanel extends JPanel{
 				}
 				search.getCompare().setVisible(true);
 			}
-			
+
 		});
-		
+
 		jpBottomStrip.add(followCompare, BorderLayout.EAST);
 		
 		jpDetails3.add(jpBottomStrip, BorderLayout.SOUTH);
@@ -96,7 +111,12 @@ public class ResultsPanel extends JPanel{
 		add(jpDetails2);
 		add(jpDetails3);
 	}
-	
+
+	/**
+	 * Gets the follow button
+	 *
+	 * @return JButton button
+	 */
 	public JButton getFollowed(){
 		return follow;
 	}

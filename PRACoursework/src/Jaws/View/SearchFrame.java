@@ -4,19 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.ListIterator;
 
-import javax.imageio.IIOException;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -24,46 +19,60 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 import Jaws.Controller.SearchListener;
 import Jaws.Controller.SharkOfDayController;
-import Jaws.Model.User;
 import api.jaws.Jaws;
 import api.jaws.Ping;
-import api.jaws.Shark;
 
+/**
+ * SearchFrame class is the window where the user will be able to
+ * retrieve sharks with their descriptions from the Jaws API
+ *
+ * @author Benjamin
+ * @author Edvinas
+ * @author Tomas
+ * @author Hannah
+ */
 public class SearchFrame extends JFrame
 {
-	private JTextArea jtaDescription;
-	//will probably pass in instead, just using for acknowledgement
-	private Jaws shark;
-	private JPanel jpAllDetails;
-	private Favourites faves;
-	private ArrayList<Ping> last24Hours;
-	private ArrayList<Ping> lastWeek;
-	private ArrayList<Ping> lastMonth;
-	private ArrayList<Ping> nonDuplicates;
-	private HashMap<String, Component> componentMap;
-	private CompareView comparison;
-	
+	private Jaws shark; // Reference to the Jaws API
+	private JPanel jpAllDetails; // the panel on the right of the frame where all the shark descriptions are
+	private Favourites faves; // Reference to the Favourites window
+	private ArrayList<Ping> last24Hours; // list of pings from the last 24 hours
+	private ArrayList<Ping> lastWeek; // list of pings from last week
+	private ArrayList<Ping> lastMonth; // list of pings from last month
+	private ArrayList<Ping> nonDuplicates; // list of all the pings with duplicates removed
+	private HashMap<String, Component> componentMap; // map of shark names and their corresponding description panels
+	private CompareView comparison; // reference to the comparison window
+
+	/**
+	 * Constructor that initialises the passed in Favourites and API references,
+	 * gets all the sharks from the API, deletes all the duplicates
+	 * and creates the description panels for all those sharks
+	 *
+	 * @param faves reference to the Favourites window
+	 * @param jaws reference to the Jaws API
+	 */
 	public SearchFrame(Favourites faves, Jaws jaws){
 		super("Search");
 		this.faves = faves;
 		shark = jaws;
-		last24Hours = jaws.past24Hours();
-		lastWeek = jaws.pastWeek();
-		lastMonth = jaws.pastMonth();
-		nonDuplicates = deleteDuplicates();
-		componentMap = new HashMap<String, Component>();
-		comparison = null;
-		createDescriptions();
+		last24Hours = jaws.past24Hours(); // get all the pings from the last 24 hours
+		lastWeek = jaws.pastWeek(); // get all the pings from the last week
+		lastMonth = jaws.pastMonth(); // get all the pings from the last month
+		nonDuplicates = deleteDuplicates(); // delete any duplicate sharks
+		componentMap = new HashMap<String, Component>(); // initialise the map of shark names and their corresponding panels
+		comparison = null; // set the comparison view to null
+		createDescriptions(); // create the shark descriptions
 		createWidgets();
 	}
 
+	/**
+	 * Initialises and creates all the components for the window
+	 */
 	private void createWidgets() {
 		setLayout(new BorderLayout());
 		JPanel overallFrame = new JPanel(new BorderLayout());
@@ -135,6 +144,8 @@ public class SearchFrame extends JFrame
 			}
 			
 		});
+
+		// Get the shark picture from the resources folder
 		jpTrackerSearch.add(new JLabel(new ImageIcon(this.getClass().getResource("resources/sharkPic.jpg"))), BorderLayout.SOUTH);
 		JPanel searchStatsAndSharks = new JPanel(new GridLayout(3, 1));
 		searchStatsAndSharks.add(jbSearch);
@@ -143,13 +154,7 @@ public class SearchFrame extends JFrame
 		jpTrackerSearch.add(searchStatsAndSharks, BorderLayout.NORTH);
 		
 		jbSofDay.addActionListener(new SharkOfDayController(nonDuplicates, shark));
-		
-		String range = (String)cbRange.getSelectedItem();
-		String gender = (String)cbGender.getSelectedItem();
-		String stage = (String)cbStage.getSelectedItem();
-		String tag = (String)cbTag.getSelectedItem();
-		
-		
+
 		jbSearch.addActionListener(new SearchListener(this, shark, cbRange, cbGender, cbStage, cbTag, last24Hours, lastWeek, lastMonth, nonDuplicates));
 		jpAllDetails = new JPanel(new GridLayout(0, 1));
 		JScrollPane jsP = new JScrollPane(jpAllDetails);
@@ -162,85 +167,131 @@ public class SearchFrame extends JFrame
 		pack();
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
-	
+
+	/**
+	 * Creates a description panel for each of the sharks and
+	 * adds it to the componentMap with the corresponding
+	 * shark's name, so it can be accessed later
+	 */
 	public void createDescriptions(){
 		for(Ping p: nonDuplicates){
 			ResultsPanel result = new ResultsPanel(this, shark.getShark(p.getName()), p, faves);
 			componentMap.put(p.getName(), result);
 		}
 	}
-	
+
+	/**
+	 * Adds the passed in shark's description panel to the panel on the right
+	 *
+	 * @param sharkName shark's name
+	 */
 	public void putDescription(String sharkName){
 		ResultsPanel thePanel = (ResultsPanel) componentMap.get(sharkName);
 		jpAllDetails.add(thePanel);
 	}
 
+	/**
+	 * Changes the passed in shark's button to say "Following"
+	 *
+	 * @param sharkName shark's name
+	 */
 	public void switchToFollowing(String sharkName){
 		ResultsPanel thePanel = (ResultsPanel) componentMap.get(sharkName);
 		thePanel.getFollowed().setText("Following");
 	}
-	
+
+	/**
+	 * Changes the passed in shark's button to say "Follow"
+	 *
+	 * @param sharkName shark's name
+	 */
 	public void switchToFollow(String sharkName){
 		ResultsPanel thePanel = (ResultsPanel) componentMap.get(sharkName);
 		thePanel.getFollowed().setText("Follow");
 	}
-	
+
+	/**
+	 * Gets the panel on the right that has all the shark descriptions
+	 *
+	 * @return JPanel the shark results panel
+	 */
 	public JPanel getJpAllDetails()
 	{
 		return jpAllDetails;
 	}
 
+	/**
+	 * Clears the panel on the right so it has no descriptions
+	 */
 	public void clearJpAllDetails()
 	{
 		jpAllDetails.removeAll();
 	}
 
-	public Favourites getFaves()
-	{
-		return faves;
-	}
-	
+	/**
+	 * Removes any duplicate pings, so each shark will only
+	 * appear once
+	 *
+	 * @return ArrayList&lt;Ping&gt; list of sharks without duplicates
+	 */
 	private ArrayList<Ping> deleteDuplicates(){
 		ArrayList<Ping> tempPings = new ArrayList<Ping>();
 		ArrayList<Ping> tempPings2 = new ArrayList<Ping>();
-		tempPings.addAll(shark.pastMonth());
-		tempPings2.addAll(shark.pastMonth());
-		ListIterator<Ping> it = tempPings.listIterator(0);
-		while(it.hasNext()){
-			Ping tempPing = it.next();
-			ListIterator<Ping> it2 = tempPings2.listIterator(0);
-			while(it2.hasNext()){
-				Ping tempPing2 = it2.next();
-				if(tempPing.getName().equals(tempPing2.getName())){
-					if(changePingToDate(tempPing2).before(changePingToDate(tempPing))){
-						it2.remove();
+		tempPings.addAll(shark.pastMonth()); // list of all the pings which will be compared against
+		tempPings2.addAll(shark.pastMonth()); // second list of all the pings which will be returned
+		ListIterator<Ping> it = tempPings.listIterator(0); // first list's iterator
+		while(it.hasNext()){ // if there is another ping
+			Ping tempPing = it.next(); // get that ping
+			ListIterator<Ping> it2 = tempPings2.listIterator(0); // second list's iterator
+			while(it2.hasNext()){ // is the second list has another ping
+				Ping tempPing2 = it2.next(); // get that ping
+				if(tempPing.getName().equals(tempPing2.getName())){ // if the ping from the first list belongs to the same shark
+					if(changePingToDate(tempPing2).before(changePingToDate(tempPing))){ // compare their dates
+						it2.remove(); // remove the older one
 					}
 				}
 			}
 		}
 		return tempPings2;
 	}
-	
+
+	/**
+	 * Changes a ping to a Calendar so their dates and times
+	 * can be compared
+	 *
+	 * @param ping ping to convert
+	 * @return Calendar converted ping
+	 */
 	private Calendar changePingToDate(Ping ping){
-		Calendar calendar = new GregorianCalendar();
-		String time = ping.getTime();
-		String[] dates = time.split(" ");
-		String[] sDate = dates[0].split("-");
-		String[] sTime = dates[1].split(":");
+		Calendar calendar = new GregorianCalendar(); // create new Gregorian Calendar
+		String time = ping.getTime(); // get the ping's time
+		String[] dates = time.split(" "); // split the date and time
+		String[] sDate = dates[0].split("-"); // split the date
+		String[] sTime = dates[1].split(":"); // split the time
 		int[] date = new int[3];
 		int[] iTime = new int[3];
-		for(int i = 0; i < 3; i++){
+		for(int i = 0; i < 3; i++){ // put the date and time into their respective arrays
 			date[i] = Integer.parseInt(sDate[i]);
 			iTime[i] = Integer.parseInt(sTime[i]);
 		}
-		calendar.set(date[0], date[1], date[2], iTime[0], iTime[1], iTime[2]);
+		calendar.set(date[0], date[1], date[2], iTime[0], iTime[1], iTime[2]); // create a calendar with the ping's date and time
 		return calendar;
 	}
-	
+
+	/**
+	 * Gets the comparison view
+	 *
+	 * @return CompareView comparison
+	 */
 	public CompareView getCompare(){
 		return comparison;
 	}
-	
+
+	/**
+	 * Sets the comparison view
+	 *
+	 * @param compare comparison view
+	 */
 	public void setCompare(CompareView compare){
 		comparison = compare;
 	}

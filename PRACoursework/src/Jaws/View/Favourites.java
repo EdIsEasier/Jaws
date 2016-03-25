@@ -24,13 +24,14 @@ import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import Jaws.Controller.FavouriteSharkCellRenderer;
 import api.jaws.Jaws;
 import api.jaws.Location;
 
 /**
  * Favourites class is a frame for the favourite sharks
- * 
+ *
  * @author Benjamin
  * @author Edvinas
  * @author Tomas
@@ -51,7 +52,7 @@ public class Favourites extends JFrame{
 
 	/**
 	 * Constructor takes our Jaws API and initialises all of our fields, sets the path to the users folder
-	 * 
+	 *
 	 * @param jaws the jaws api
 	 */
 	public Favourites(Jaws jaws){
@@ -68,7 +69,7 @@ public class Favourites extends JFrame{
 
 	/**
 	 * creates all of the components and widgets used in our JFrame,  also used to add Action Listeners where needed
-	 * 
+	 *
 	 */
 	private void createWidgets() {
 		setLayout(new BorderLayout());
@@ -83,20 +84,20 @@ public class Favourites extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String[] sharksArr = new String[favouriteSharksModel.toArray().length];
-				System.arraycopy(favouriteSharksModel.toArray(), 0, sharksArr, 0, favouriteSharksModel.toArray().length);
-				ArrayList<String> sharks = new ArrayList<String>(Arrays.asList(sharksArr));
-				HashMap<String, Location> sharksLocs = new HashMap<String, Location>();
+				String[] sharksArr = new String[favouriteSharksModel.toArray().length]; // array to hold all the shark names from the list
+				System.arraycopy(favouriteSharksModel.toArray(), 0, sharksArr, 0, favouriteSharksModel.toArray().length); // copy all the sharks from the list model to the array, because the model returns Object[]
+				ArrayList<String> sharks = new ArrayList<String>(Arrays.asList(sharksArr)); // copy the shark names to a new arary list
+				HashMap<String, Location> sharksLocs = new HashMap<String, Location>(); // hash map of shark names and their locations
 
-				for(String s : sharks)
-					sharksLocs.put(s, jaws.getLastLocation(s));
+				for(String s : sharks) // for all the favourited sharks
+					sharksLocs.put(s, jaws.getLastLocation(s)); // add the shark name and its location to the hash map
 
-				MapFrame map = new MapFrame(Favourites.this);
-				map.showOnMap(sharksLocs);
+				MapFrame map = new MapFrame(Favourites.this); // create a map frame
+				map.showOnMap(sharksLocs); // pass in the shark and location hash map which will be used to show the sharks on a map
 				map.setVisible(true);
 			}
 		});
-		
+
 		jlSharks = new JList(favouriteSharksModel);		//creating JList from the defaultlistmodel of favourite sharks
 		jlSharks.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);		//can only select one thing from the lsit at a time
 		jlSharks.setCellRenderer(new FavouriteSharkCellRenderer(jaws));		//setting the cell rendered to a new created cell renderer that allows you to add the shark name and the location it is away from kings
@@ -121,10 +122,10 @@ public class Favourites extends JFrame{
 		
 		pack();
 	}
-	
+
 	/**
 	 * adds the name of the shark that has been followed to the defaultlistmodel
-	 * 
+	 *
 	 * @param sharkName
 	 */
 	public void addShark(String sharkName)
@@ -151,10 +152,10 @@ public class Favourites extends JFrame{
 			}
 		}
 	}
-	
+
 	/**
 	 * will unfollow the shark, removes the shark from the defaultlistmodel
-	 * 
+	 *
 	 * @param sharkName the name of the shark
 	 */
 	public void unfollowShark(String sharkName)
@@ -162,10 +163,10 @@ public class Favourites extends JFrame{
 		favouriteSharksModel.removeElement(sharkName);	//removes shark from defaultlistmodel
 		search.switchToFollow(sharkName);	//change the following button on the results panel to "Follow"
 	}
-	
+
 	/**
 	 * switches the user to the new given user
-	 * 
+	 *
 	 * @param user the user you want to log in
 	 */
 	public void switchUser(File user){
@@ -188,26 +189,26 @@ public class Favourites extends JFrame{
 	
 	/**
 	 * returns the currently logged in user
-	 * 
+	 *
 	 * @return loggedIn the current logged in user
 	 */
 	public File getUser(){
 		return loggedIn;
 	}
-	
+
 	/**
 	 * sets search to the SearchFrame given
-	 * 
+	 *
 	 * @param search searchframe to update
 	 */
 	public void setSearchFrame(SearchFrame search)
 	{
 		this.search = search;
 	}
-	
+
 	/**
 	 * goes through the list of sharknado sharks and prints their names to the frame
-	 * 
+	 *
 	 * @param sharkNames list of shark names
 	 */
 	public void sharknadoWarning(List<String> sharkNames)
@@ -247,7 +248,7 @@ public class Favourites extends JFrame{
 			sharknado = true;		//there is a sharknado happening
 		}
 	}
-	
+
 	/**
 	 * removes the sharknado warning and sets the sharknado event to false
 	 */
@@ -259,7 +260,7 @@ public class Favourites extends JFrame{
 			sharknado = false;
 		}
 	}
-	
+
 	/**
 	 * if there are any favourited sharks then this will allow the user to show the map of where the sharks are located
 	 */

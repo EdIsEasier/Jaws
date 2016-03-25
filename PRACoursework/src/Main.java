@@ -25,16 +25,23 @@ public class Main
 		User users = new User(favourites);
 		MenuFrame menu = new MenuFrame(users, search, favourites);
 	}
-	
+
+	/**
+	 * Create the default user and shark of the day files
+	 */
 	public static void createFiles(){
+		// Create a Users directory to store all the favourites sharks
 		File usersFile = new File(System.getProperty("user.dir") + "\\Users");
 		usersFile.mkdir();
+		// Create a default user that's used if you haven't logged in or if you log out
 		File defaultUser = new File(System.getProperty("user.dir") + "\\Users\\Default.txt");
 		try {
 			defaultUser.createNewFile();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		// Create a text file to store the shark of the day
 		File sharkOfDay = new File(System.getProperty("user.dir") + "\\SharkDay.txt");
 		try {
 			sharkOfDay.createNewFile();
