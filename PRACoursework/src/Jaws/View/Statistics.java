@@ -139,6 +139,10 @@ public class  Statistics extends JFrame {
 		
 		
 	}
+	
+	/**
+	 * second pie chart was made and follows similar structure to pie chart one
+	 */
 	private JPanel SecondPieChart() {
 		ArrayList<Shark> mature = new ArrayList<Shark>();
 		ArrayList<Shark> immature = new ArrayList<Shark>();
@@ -164,9 +168,15 @@ public class  Statistics extends JFrame {
     return new ChartPanel( chart2 );
 			
 		}
+	/**
+	 * Stuck need to be made
+	 * @return
+	 */
 	private JPanel ThirdPieChart() {
+		return null;
 
 	}
+	
 	public static void main(String[] args) {
 		Statistics sta = new Statistics();
 		sta.setVisible(true);
