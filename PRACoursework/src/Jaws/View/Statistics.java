@@ -32,6 +32,9 @@ public class  Statistics extends JFrame {
 	ArrayList<Shark> SharksLocation;
 
 	private Jaws shark;
+	/**
+	 * This is a constructor which contains the name of my JFrame as well as its size and the creation of the components
+	 */
 	public Statistics(){
 		super ("Statistics");
 		this.setSize(1500, 500);
