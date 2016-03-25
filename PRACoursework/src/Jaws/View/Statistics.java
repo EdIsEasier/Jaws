@@ -27,7 +27,7 @@ import api.jaws.Shark;
 
 public class  Statistics extends JFrame {
 	Jaws jaws = new Jaws("jphHPbni3MIBmMKu", "jbB8OPuNG5Sxw11c");// Access jaws 
-	ArrayList<Ping> Sharks;
+	ArrayList<Ping> Sharks;// Created a new Arraylist field for the pings
 	ArrayList<Shark> SharksObjects;
 	ArrayList<Shark> SharksLocation;
 
