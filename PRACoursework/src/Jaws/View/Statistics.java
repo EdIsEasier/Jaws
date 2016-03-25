@@ -1,12 +1,19 @@
 package Jaws.View;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.ListIterator;
+import java.util.TreeMap;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -22,15 +29,15 @@ public class  Statistics extends JFrame {
 	Jaws jaws = new Jaws("jphHPbni3MIBmMKu", "jbB8OPuNG5Sxw11c");
 	ArrayList<Ping> Sharks;
 	ArrayList<Shark> SharksObjects;
-	
+	ArrayList<Shark> SharksLocation;
+
+	private Jaws shark;
 	public Statistics(){
 		super ("Statistics");
 		this.setSize(1500, 500);
 		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		widgetscreation();
 		this.setLayout(new GridLayout(1,3));
-		
-		
 		
 		
 	}
@@ -43,7 +50,7 @@ public class  Statistics extends JFrame {
     panel2.add(SecondPieChart());
      this.add(panel2);
     JPanel panel3 = new JPanel();
-   	
+   
 		
 	}
 	
@@ -83,7 +90,7 @@ public class  Statistics extends JFrame {
 	    return new ChartPanel( chart2 );
 		
 	}
-
+	
 	
 	
 
@@ -155,9 +162,9 @@ public class  Statistics extends JFrame {
     return new ChartPanel( chart2 );
 			
 		}
+	private JPanel ThirdPieChart() {
 
-
-
+	}
 	public static void main(String[] args) {
 		Statistics sta = new Statistics();
 		sta.setVisible(true);
