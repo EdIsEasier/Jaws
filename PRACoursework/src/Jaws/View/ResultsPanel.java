@@ -3,6 +3,8 @@ package Jaws.View;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,13 +25,16 @@ public class ResultsPanel extends JPanel{
 	private Ping date;
 	private Favourites faves;
 	private JButton follow;
+	private JButton compare;
+	private SearchFrame search;
 	
-	public ResultsPanel(Shark shark, Ping ping, Favourites faves) {
+	public ResultsPanel(SearchFrame search, Shark shark, Ping ping, Favourites faves) {
 		super(new GridLayout(2, 1));
 		
 		this.shark = shark;
 		this.date = ping;
 		this.faves = faves;
+		this.search = search;
 		setName(shark.getName());
 
 		this.setBorder(BorderFactory.createEtchedBorder());
@@ -64,8 +69,27 @@ public class ResultsPanel extends JPanel{
 		
 		follow = new JButton("Follow");
 		follow.addActionListener(new FavouriteButtonListener(faves, shark));
+		compare = new JButton("Compare");
+		JPanel followCompare = new JPanel(new GridLayout(2, 1));
+		followCompare.add(follow);
+		followCompare.add(compare);
 		
-		jpBottomStrip.add(follow, BorderLayout.EAST);
+		compare.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e) {
+				if(search.getCompare() == null){
+					search.setCompare(new CompareView(search));
+					search.getCompare().addPanels(shark);
+				}
+				else{
+					search.getCompare().addPanels(shark);
+				}
+				search.getCompare().setVisible(true);
+			}
+			
+		});
+		
+		jpBottomStrip.add(followCompare, BorderLayout.EAST);
 		
 		jpDetails3.add(jpBottomStrip, BorderLayout.SOUTH);
 		

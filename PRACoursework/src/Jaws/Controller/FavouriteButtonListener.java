@@ -79,8 +79,6 @@ public class FavouriteButtonListener implements ActionListener
 
 			writer.close();
 			reader.close();
-			System.out.println(user.getAbsolutePath());
-			System.out.println(tempUser.getAbsolutePath());
 			Files.delete(user.toPath());
 			Files.move(tempUser.toPath(), user.toPath());
 		}

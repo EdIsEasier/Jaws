@@ -48,6 +48,7 @@ public class SearchFrame extends JFrame
 	private ArrayList<Ping> lastMonth;
 	private ArrayList<Ping> nonDuplicates;
 	private HashMap<String, Component> componentMap;
+	private CompareView comparison;
 	
 	public SearchFrame(Favourites faves, Jaws jaws){
 		super("Search");
@@ -58,6 +59,7 @@ public class SearchFrame extends JFrame
 		lastMonth = jaws.pastMonth();
 		nonDuplicates = deleteDuplicates();
 		componentMap = new HashMap<String, Component>();
+		comparison = null;
 		createDescriptions();
 		createWidgets();
 	}
@@ -163,7 +165,7 @@ public class SearchFrame extends JFrame
 	
 	public void createDescriptions(){
 		for(Ping p: nonDuplicates){
-			ResultsPanel result = new ResultsPanel(shark.getShark(p.getName()), p, faves);
+			ResultsPanel result = new ResultsPanel(this, shark.getShark(p.getName()), p, faves);
 			componentMap.put(p.getName(), result);
 		}
 	}
@@ -233,5 +235,13 @@ public class SearchFrame extends JFrame
 		}
 		calendar.set(date[0], date[1], date[2], iTime[0], iTime[1], iTime[2]);
 		return calendar;
+	}
+	
+	public CompareView getCompare(){
+		return comparison;
+	}
+	
+	public void setCompare(CompareView compare){
+		comparison = compare;
 	}
 }

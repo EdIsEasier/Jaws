@@ -45,7 +45,7 @@ public class SearchListener implements ActionListener
 		this.stage = stage;
 		this.location = location;
 		this.nonDuplicates = nonDuplicates;
-		search.getFaves().updateSharks(nonDuplicates);
+		//search.getFaves().updateSharks(nonDuplicates);
 		filteredSharks = new ArrayList<Ping>();
 		this.past24Hours = past24Hours;
 		this.pastWeek = pastWeek;

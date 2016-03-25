@@ -44,6 +44,7 @@ public class Main
 				writer.append("22/03/2016");
 				writer.close();
 			}
+			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
