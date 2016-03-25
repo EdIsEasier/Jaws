@@ -44,7 +44,7 @@ public class SharkOfDayController implements ActionListener{
 		this.sharks = sharks;
 		randomShark = new File(System.getProperty("user.dir") + "\\SharkDay.txt"); //the file for the random shark
 		rnd = new Random(sharks.size()); //creates an rng to the amount of sharks
-		date = Calendar.getInstance(); //the date you open the frame
+		date = new GregorianCalendar();
 		strDate = new SimpleDateFormat("dd/MM/yyyy").format(date.getTime()); //format the date into a string
 		this.jaws = jaws;
 		
@@ -63,6 +63,7 @@ public class SharkOfDayController implements ActionListener{
 			Calendar calendar = new GregorianCalendar();
 			calendar.set(iTime[2], iTime[1] - 1, iTime[0]); //make the last date into a calendar
 			calendar.add(Calendar.DAY_OF_MONTH, 1); //increment the day by one (so we can see if it has been at least one day)
+			date = calendar.getInstance();
 			if(date.compareTo(calendar) >= 0){	//if the date you opened the frame is greater than the previous date (+ 1 for the day)
 				String sharkName = sharks.get(nextShark).getName(); //get the shark name of the random shark
 				PrintWriter writer = new PrintWriter(new FileWriter(randomShark, false));
