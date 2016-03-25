@@ -44,7 +44,9 @@ public class  Statistics extends JFrame {
 		
 		
 	}
-	
+	/**
+	 * This is where I created the 3 frames for my pie charts
+	 */
 	private void widgetscreation() {
     JPanel panel1 = new JPanel();
     panel1.add(firstPieChart("Last 24 Hours"));
@@ -56,20 +58,26 @@ public class  Statistics extends JFrame {
    
 		
 	}
-	
+	/**
+	 * this  is where I created my first pie chart 
+	 * @param input
+	 * @return
+	 */
 	private JPanel firstPieChart(String input) {
-		if(input.equals("Last 24 Hours")){
-			Sharks = jaws.past24Hours();	
+		if(input.equals("Last 24 Hours")){// so if the case is 24 hours then it will get 24 hours sharks
+			Sharks = jaws.past24Hours(); 
 		}
 		else if(input.equals("Last Week")){
-			Sharks = jaws.pastWeek();
+			Sharks = jaws.pastWeek();// so if the case is 24 hours then it will get past week sharks
 		}else{
-			Sharks = jaws.pastMonth();
+			Sharks = jaws.pastMonth();// so if the case is 24 hours then it will get past month sharks
 			
 		}
+		// I created ArrayLists for the two conditions
 		ArrayList<Shark> maleSharks = new ArrayList<Shark>();
 		ArrayList<Shark> femaleSharks = new ArrayList<Shark>();
 		SharksObjects = new ArrayList<Shark>();
+		// this will get the shark object 
 			
 		for(Ping ping : Sharks){
 			SharksObjects.add(jaws.getShark(ping.getName()));
@@ -84,6 +92,8 @@ public class  Statistics extends JFrame {
 			}
 			
 		}
+		
+		// the pie chart data will be created 
 		DefaultPieDataset dataset = new DefaultPieDataset( );
 		dataset.setValue( "Male",maleSharks.size());
 	    dataset.setValue( "Female",femaleSharks.size()); 
@@ -94,18 +104,7 @@ public class  Statistics extends JFrame {
 		
 	}
 	
-	
-	
-
-	private void chart3() {
-		
-		
-	}
-
-	private void chart2() {
-		
-		
-	}
+//Duplicates are removed 
 
 	private HashSet<Shark> chart1(String input) {
 		ArrayList<Ping> pingwanted;
