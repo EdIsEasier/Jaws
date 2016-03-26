@@ -1,12 +1,19 @@
 package Jaws.View;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.ListIterator;
+import java.util.TreeMap;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -19,10 +26,15 @@ import api.jaws.Ping;
 import api.jaws.Shark;
 
 public class  Statistics extends JFrame {
-	Jaws jaws = new Jaws("jphHPbni3MIBmMKu", "jbB8OPuNG5Sxw11c");
-	ArrayList<Ping> Sharks;
+	Jaws jaws = new Jaws("jphHPbni3MIBmMKu", "jbB8OPuNG5Sxw11c");// Access jaws 
+	ArrayList<Ping> Sharks;// Created a new Arraylist field for the pings
 	ArrayList<Shark> SharksObjects;
-	
+	ArrayList<Shark> SharksLocation;
+
+	private Jaws shark;
+	/**
+	 * This is a constructor which contains the name of my JFrame as well as its size and the creation of the components
+	 */
 	public Statistics(){
 		super ("Statistics");
 		this.setSize(1500, 500);
@@ -31,10 +43,10 @@ public class  Statistics extends JFrame {
 		this.setLayout(new GridLayout(1,3));
 		
 		
-		
-		
 	}
-	
+	/**
+	 * This is where I created the 3 frames for my pie charts
+	 */
 	private void widgetscreation() {
     JPanel panel1 = new JPanel();
     panel1.add(firstPieChart("Last 24 Hours"));
@@ -43,23 +55,29 @@ public class  Statistics extends JFrame {
     panel2.add(SecondPieChart());
      this.add(panel2);
     JPanel panel3 = new JPanel();
-   	
+   
 		
 	}
-	
+	/**
+	 * this  is where I created my first pie chart 
+	 * @param input
+	 * @return
+	 */
 	private JPanel firstPieChart(String input) {
-		if(input.equals("Last 24 Hours")){
-			Sharks = jaws.past24Hours();	
+		if(input.equals("Last 24 Hours")){// so if the case is 24 hours then it will get 24 hours sharks
+			Sharks = jaws.past24Hours(); 
 		}
 		else if(input.equals("Last Week")){
-			Sharks = jaws.pastWeek();
+			Sharks = jaws.pastWeek();// so if the case is 24 hours then it will get past week sharks
 		}else{
-			Sharks = jaws.pastMonth();
+			Sharks = jaws.pastMonth();// so if the case is 24 hours then it will get past month sharks
 			
 		}
+		// I created ArrayLists for the two conditions
 		ArrayList<Shark> maleSharks = new ArrayList<Shark>();
 		ArrayList<Shark> femaleSharks = new ArrayList<Shark>();
 		SharksObjects = new ArrayList<Shark>();
+		// this will get the shark object 
 			
 		for(Ping ping : Sharks){
 			SharksObjects.add(jaws.getShark(ping.getName()));
@@ -74,6 +92,8 @@ public class  Statistics extends JFrame {
 			}
 			
 		}
+		
+		// the pie chart data will be created 
 		DefaultPieDataset dataset = new DefaultPieDataset( );
 		dataset.setValue( "Male",maleSharks.size());
 	    dataset.setValue( "Female",femaleSharks.size()); 
@@ -83,19 +103,8 @@ public class  Statistics extends JFrame {
 	    return new ChartPanel( chart2 );
 		
 	}
-
 	
-	
-
-	private void chart3() {
-		
-		
-	}
-
-	private void chart2() {
-		
-		
-	}
+//Duplicates are removed 
 
 	private HashSet<Shark> chart1(String input) {
 		ArrayList<Ping> pingwanted;
@@ -130,6 +139,10 @@ public class  Statistics extends JFrame {
 		
 		
 	}
+	
+	/**
+	 * second pie chart was made and follows similar structure to pie chart one
+	 */
 	private JPanel SecondPieChart() {
 		ArrayList<Shark> mature = new ArrayList<Shark>();
 		ArrayList<Shark> immature = new ArrayList<Shark>();
@@ -155,9 +168,15 @@ public class  Statistics extends JFrame {
     return new ChartPanel( chart2 );
 			
 		}
+	/**
+	 * Stuck need to be made
+	 * @return
+	 */
+	private JPanel ThirdPieChart() {
+		return null;
 
-
-
+	}
+	
 	public static void main(String[] args) {
 		Statistics sta = new Statistics();
 		sta.setVisible(true);
