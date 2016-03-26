@@ -136,10 +136,10 @@ public class SearchFrame extends JFrame
 		JButton jbSofDay = new JButton("Shark Of The Day");
 		
 		jbStatistics.addActionListener(new ActionListener(){
-
+//adding actionlistener for the Statistics class
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				Statistics a = new Statistics();
 				
 			}
 			

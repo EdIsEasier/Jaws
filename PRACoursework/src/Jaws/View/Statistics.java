@@ -1,6 +1,5 @@
 package Jaws.View;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -30,8 +29,6 @@ public class  Statistics extends JFrame {
 	ArrayList<Ping> Sharks;// Created a new Arraylist field for the pings
 	ArrayList<Shark> SharksObjects;
 	ArrayList<Shark> SharksLocation;
-
-	private Jaws shark;
 	/**
 	 * This is a constructor which contains the name of my JFrame as well as its size and the creation of the components
 	 */
@@ -41,6 +38,7 @@ public class  Statistics extends JFrame {
 		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		widgetscreation();
 		this.setLayout(new GridLayout(1,3));
+		this.setVisible(true);
 		
 		
 	}
@@ -162,7 +160,7 @@ public class  Statistics extends JFrame {
 	dataset.setValue( "Mature",mature.size());
     dataset.setValue( "Immature",immature.size()); 
     dataset.setValue( "Undetermined",undetermined.size()); 
-    JFreeChart chart = ChartFactory.createPieChart(
+    JFreeChart chart = ChartFactory.createPieChart(// this will convert the dataset into a pie chart
     "Stage Of Life", dataset,true,true,false);
     JFreeChart chart2 =chart;
     return new ChartPanel( chart2 );
@@ -172,16 +170,19 @@ public class  Statistics extends JFrame {
 	 * Stuck need to be made
 	 * @return
 	 */
-	private JPanel ThirdPieChart() {
-		return null;
+	//private ArrayList<Ping> nonDuplicates;
+	//private JPanel thirdPieChart() {
+		//HashSet<Shark> sharkslocation = new HashSet<>();
+		//for(int i = 0; i < nonDuplicates.size();i++){
+			
+			
+	//	}
 
-	}
+	//}
 	
-	public static void main(String[] args) {
-		Statistics sta = new Statistics();
-		sta.setVisible(true);
+		
 		
 
 	}
 
-}
+

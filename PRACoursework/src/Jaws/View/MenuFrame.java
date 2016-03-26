@@ -62,7 +62,7 @@ public class MenuFrame extends JFrame{
 		JLabel picture = new JLabel(new ImageIcon(this.getClass().getResource("resources/sharkPic.jpg")));
 		JButton jbSearch = new JButton("Search");
 		JButton jbFavourites = new JButton("Favourites");
-		setLayout(new BorderLayout());
+	    setLayout(new BorderLayout());
 		JPanel bottomButtons = new JPanel(new GridLayout(4, 0));
 		JPanel spaceborder = new JPanel(new BorderLayout());
 		add(spaceborder);
