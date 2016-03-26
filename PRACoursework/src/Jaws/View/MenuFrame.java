@@ -53,6 +53,9 @@ public class MenuFrame extends JFrame{
 
 	/**
 	 * Initialises and creates all the components for the window
+	 * 
+	 * @see SearchFrame
+	 * @see Favourites
 	 */
 	private void createWidgets(){
 		

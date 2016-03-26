@@ -70,6 +70,7 @@ public class Favourites extends JFrame{
 	/**
 	 * creates all of the components and widgets used in our JFrame,  also used to add Action Listeners where needed
 	 *
+	 * @see MapFrame
 	 */
 	private void createWidgets() {
 		setLayout(new BorderLayout());
@@ -136,6 +137,8 @@ public class Favourites extends JFrame{
 	
 	/**
 	 * will populate the favourites tab with all of the sharks that have been followed by the logged in user
+	 * 
+	 * @see SearchFrame
 	 */
 	public void addUserFavourites(){
 		if(loggedIn != null){	//if there is someone logged in
@@ -157,6 +160,7 @@ public class Favourites extends JFrame{
 	 * will unfollow the shark, removes the shark from the defaultlistmodel
 	 *
 	 * @param sharkName the name of the shark
+	 * @see SearchFrame
 	 */
 	public void unfollowShark(String sharkName)
 	{
@@ -168,6 +172,7 @@ public class Favourites extends JFrame{
 	 * switches the user to the new given user
 	 *
 	 * @param user the user you want to log in
+	 * @see SearchFrame
 	 */
 	public void switchUser(File user){
 		try {
@@ -200,6 +205,7 @@ public class Favourites extends JFrame{
 	 * sets search to the SearchFrame given
 	 *
 	 * @param search searchframe to update
+	 * @see SearchFrame
 	 */
 	public void setSearchFrame(SearchFrame search)
 	{

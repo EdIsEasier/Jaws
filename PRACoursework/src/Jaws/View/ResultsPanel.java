@@ -55,6 +55,8 @@ public class ResultsPanel extends JPanel{
 
 	/**
 	 * Initialises and creates all the components for the window
+	 * 
+	 * @see SearchFrame
 	 */
 	private void createWidgets(){
 		JPanel jpDetails2 = new JPanel(new GridLayout(6, 2));

@@ -172,6 +172,8 @@ public class SearchFrame extends JFrame
 	 * Creates a description panel for each of the sharks and
 	 * adds it to the componentMap with the corresponding
 	 * shark's name, so it can be accessed later
+	 * 
+	 * @see ResultsPanel
 	 */
 	public void createDescriptions(){
 		for(Ping p: nonDuplicates){
@@ -184,6 +186,7 @@ public class SearchFrame extends JFrame
 	 * Adds the passed in shark's description panel to the panel on the right
 	 *
 	 * @param sharkName shark's name
+	 * @see ResultsPanel
 	 */
 	public void putDescription(String sharkName){
 		ResultsPanel thePanel = (ResultsPanel) componentMap.get(sharkName);
@@ -204,6 +207,7 @@ public class SearchFrame extends JFrame
 	 * Changes the passed in shark's button to say "Follow"
 	 *
 	 * @param sharkName shark's name
+	 * @see ResultsPanel
 	 */
 	public void switchToFollow(String sharkName){
 		ResultsPanel thePanel = (ResultsPanel) componentMap.get(sharkName);
@@ -233,12 +237,13 @@ public class SearchFrame extends JFrame
 	 * appear once
 	 *
 	 * @return ArrayList&lt;Ping&gt; list of sharks without duplicates
+	 * @see Ping
 	 */
 	private ArrayList<Ping> deleteDuplicates(){
 		ArrayList<Ping> tempPings = new ArrayList<Ping>();
 		ArrayList<Ping> tempPings2 = new ArrayList<Ping>();
-		tempPings.addAll(shark.pastMonth()); // list of all the pings which will be compared against
-		tempPings2.addAll(shark.pastMonth()); // second list of all the pings which will be returned
+		tempPings.addAll(lastMonth); // list of all the pings which will be compared against
+		tempPings2.addAll(lastMonth); // second list of all the pings which will be returned
 		ListIterator<Ping> it = tempPings.listIterator(0); // first list's iterator
 		while(it.hasNext()){ // if there is another ping
 			Ping tempPing = it.next(); // get that ping
@@ -261,6 +266,7 @@ public class SearchFrame extends JFrame
 	 *
 	 * @param ping ping to convert
 	 * @return Calendar converted ping
+	 * @see Ping
 	 */
 	private Calendar changePingToDate(Ping ping){
 		Calendar calendar = new GregorianCalendar(); // create new Gregorian Calendar
@@ -282,6 +288,7 @@ public class SearchFrame extends JFrame
 	 * Gets the comparison view
 	 *
 	 * @return CompareView comparison
+	 * @see CompareView
 	 */
 	public CompareView getCompare(){
 		return comparison;
@@ -291,6 +298,7 @@ public class SearchFrame extends JFrame
 	 * Sets the comparison view
 	 *
 	 * @param compare comparison view
+	 * @see CompareView
 	 */
 	public void setCompare(CompareView compare){
 		comparison = compare;

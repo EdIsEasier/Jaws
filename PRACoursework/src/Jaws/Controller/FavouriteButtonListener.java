@@ -44,7 +44,12 @@ public class FavouriteButtonListener implements ActionListener
 		path = System.getProperty("user.dir") + "\\Users\\";
 	}
 
-	@Override
+	/**
+	 * the button press for the follow button, if the shark is not being followed then follow the shark, if it is then unfollow it
+	 * 
+	 * @param ActionEvent the button press
+	 * @see Favourites
+	 */
 	public void actionPerformed(ActionEvent e)
 	{
 		JButton favButton = (JButton)e.getSource(); // get the Follow button

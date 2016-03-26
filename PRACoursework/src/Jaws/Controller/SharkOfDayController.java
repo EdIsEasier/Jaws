@@ -49,7 +49,13 @@ public class SharkOfDayController implements ActionListener{
 		this.jaws = jaws;
 		
 	}
-
+	
+	/**
+	 * will find the shark of the day and display it on screen
+	 * 
+	 * @param ActionEvent the press of the shark of the day button
+	 * @see Jaws
+	 */
 	public void actionPerformed(ActionEvent e) {	//when the action happens, in this case clicking the shark of the day button
 		int nextShark = rnd.nextInt(sharks.size() - 1);	//find a random shark
 		try {

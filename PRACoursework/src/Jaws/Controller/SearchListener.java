@@ -66,6 +66,7 @@ public class SearchListener implements ActionListener
 	 * Filters the pings by range
 	 *
 	 * @param range range
+	 * @see Ping
 	 */
 	public void filterByRange(String range){
 		switch(range){
@@ -106,6 +107,7 @@ public class SearchListener implements ActionListener
 	 * Filter the pings by gender
 	 *
 	 * @param gender gender
+	 * @see Jaws
 	 */
 	private void filterByGender(String gender){
 		Iterator<Ping> it = filteredSharks.iterator(); // get an array iterator
@@ -131,6 +133,7 @@ public class SearchListener implements ActionListener
 	 * Filter the pings by life stage
 	 *
 	 * @param stage life stage
+	 * @see Jaws
 	 */
 	private void filterByStage(String stage){
 		Iterator<Ping> it = filteredSharks.iterator(); // get an array iterator
@@ -166,6 +169,7 @@ public class SearchListener implements ActionListener
 	 * Filter the pings by tag location
 	 *
 	 * @param location tag location
+	 * @see Jaws
 	 */
 	public void filterByTagLoc(String location){
 		if(!location.equals("All")){ // if the user didn't select "All"
@@ -181,6 +185,8 @@ public class SearchListener implements ActionListener
 
 	/**
 	 * Creates shark description panels for each of the filtered sharks
+	 * 
+	 * @see SearchFrame
 	 */
 	private void createPanels(){
 		search.getJpAllDetails().removeAll(); // remove any existing shark descriptions
@@ -192,7 +198,12 @@ public class SearchListener implements ActionListener
 		}
 	}
 	
-	@Override
+	/**
+	 * filters out all of the sharks on the search button press and displays the sharks in the categories that you have chosen on the SearchFrame
+	 * 
+	 * @param ActionEvent the button press
+	 * 
+	 */
 	public void actionPerformed(ActionEvent e)
 	{
 		filteredSharks.clear(); // clear all the filtered sharks so there are no duplicates

@@ -46,6 +46,8 @@ public class LoginCreateFrame extends JFrame{
 	
 	/**
 	 * creates all of the components of the frame and adds the Action Listeners to the correct components
+	 * 
+	 * @see User
 	 */
 	public void createWidgets(){
 		addUser = new JButton("Create User");		//button to create user

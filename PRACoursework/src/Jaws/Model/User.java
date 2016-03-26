@@ -58,6 +58,7 @@ public class User {
 	 *
 	 * @param user user to add
 	 * @return boolean true if the user was added successfully, false otherwise
+	 * @see Favourites
 	 */
 	public boolean addUsers(File user){
 		if(isUsers(user)){ // if the user exists
@@ -83,6 +84,7 @@ public class User {
 	 *
 	 * @param username username to log into
 	 * @return boolean true if successfully logged in, false otherwise
+	 * @see Favourites
 	 */
 	public boolean login(String username){
 		for(File f: allUsers){

@@ -41,6 +41,7 @@ public class CompareView extends JFrame{
 	 * adds a panel with all of the shark details you want to compare to the frame
 	 * 
 	 * @param shark the shark you want to compare
+	 * @see ComparisonPanel
 	 */
 	public void addPanels(Shark shark){
 		ComparisonPanel compare = new ComparisonPanel(shark);	//create a panel with the shark details
